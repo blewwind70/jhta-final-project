@@ -11,10 +11,11 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
 		$(function() {
-			var $priceBox = $("div#price-box tbody");
+			var $priceListTbody = $("div#price-box tbody");
 			var $movieListTbody = $("#movie-list-box tbody");
 			var $playingDate = $("#playing-date");
 			var $timeTableTbody = $("#time-table tbody");
+			var $priceKeyBox = $("#price-key-box");
 			
 			// Date Format function
 			var getStringToDate = function(date) {
@@ -35,7 +36,7 @@
 			// 가격 계산 function
             var calculatePrice = function() {
                 var totalPrice = 0;
-                $priceBox.children("tr").each(function() {
+                $priceListTbody.children("tr").each(function() {
                     var $amountTd = $(this).children(".amount-td");
                     var $priceTd = $(this).children(".price-td");
                     var pricePerOne = parseInt($(this).children("td.one-price").text());
@@ -78,6 +79,28 @@
             $playingDate.val(getStringToDate(new Date()));
             $("#playing-date-btn").trigger("click");
             
+            // 첫 시작시 가격 btn 불러오기
+            $.ajax({
+            	type:"GET",
+            	url:"pricekey.esc",
+            	dataType:"json",
+            	success:function(result) {
+            		$priceKeyBox.empty();
+            		
+            		$(result).each(function() {
+	            		var htmlContents = "";
+	            		
+	            		htmlContents += "<button type='button' id='price-key-btn-" + this.id + "' class='btn btn-boots btn-lg price-key-btn'>";
+	            		htmlContents += "	<div class='btn-kind'>" + this.type + "</div>";
+	            		htmlContents += "	<div class='btn-price'>" + this.price + "</div>";
+	            		htmlContents += "</button>";
+	
+	            		$priceKeyBox.append(htmlContents);
+            		});
+            	}
+            });
+            
+            
             // Movie List tr 위임 Event
             $movieListTbody.on("click", "tr", function() {
             	var searchingDate = $playingDate.val();
@@ -104,6 +127,8 @@
             				
             				$timeTableTbody.append(htmlContents);
             			});
+            			
+            			$("#hidden-movieId").val(movieId);
             		}
             	});
             });
@@ -111,12 +136,16 @@
             // Time List tr 위임 Event
             $timeTableTbody.on("click", "tr", function() {
             	$(this).addClass("selected-time").siblings("tr").removeClass("selected-time");
+            	
+            	var timetableId = $(this).attr("id").replace("time-tr-", "");
+            	$("#hidden-timetableId").val(timetableId);
             });
             
-            // 가격 btn Click Event
-			$(".price-key-btn").on("click", function() {
-                var $tr = $priceBox.children("tr");
+            // 가격 btn Click 위임 Event
+			$priceKeyBox.on("click", ".price-key-btn", function() {
+                var $tr = $priceListTbody.children("tr");
                 
+                var priceKeyId = $(this).attr("id").replace("price-key-btn-", "");
 				var kind = $(this).children(".btn-kind").text();
                 var amount = 0;
 				var price = $(this).children(".btn-price").text();
@@ -140,7 +169,7 @@
                     amount = 1;
                     hasKind = false;
                     
-                    htmlContents += "<tr>";
+                    htmlContents += "<tr id='price-tr-" + priceKeyId + "'>";
                     htmlContents += "	<td class='kind-td'>" + kind + "</td>";
                     htmlContents += "   <td class='amount-td'>" + amount + "</td>";
                     htmlContents += "   <td class='price-td'>" + price + "</td>";
@@ -152,13 +181,13 @@
                     htmlContents += "   <td class='one-price sr-only'>" + price + "</td>";
                     htmlContents += "</tr>";
                     
-                    $priceBox.append(htmlContents);
+                    $priceListTbody.append(htmlContents);
                     calculatePrice();
                 }
 			});
 			
-            // 구매 btn 위임 Event
-			$priceBox.on("click", ".remove-btn",function() {
+            // 구매취소 btn 위임 Event
+			$priceListTbody.on("click", ".remove-btn", function() {
                 var $amountTd = $(this).parent("td").siblings("td.amount-td");
 
                 if(parseInt($amountTd.text()) > 1) {
@@ -169,6 +198,26 @@
                     calculatePrice();
                 }
 			});
+            
+            // 구매 btn Event
+            $("#seat-select-btn").on("click", function(e) {
+            	e.preventDefault();
+            	
+            	var keyIdList = "";
+            	var amountList= "";
+            	$priceListTbody.find("tr").each(function() {
+            		var priceKeyId = $(this).attr("id").replace("price-tr-", "");
+            		var amount = $(this).find("td.amount-td").text();
+            		
+            		keyIdList += priceKeyId + ",";
+            		amountList += amount + ",";
+            	});
+            	
+            	$("#hidden-priceKeyId").val(keyIdList);
+            	$("#hidden-amount").val(amountList);
+            	
+            	$(this).closest("form").submit();
+            });
 		});
 	</script>
    	<%@ include file="/WEB-INF/views/pos/common/style.jsp" %>
@@ -259,7 +308,7 @@
                 </div>
                 
                 <div id="movie-list-box" class="border-box">
-                    <table class="table table-hover">
+                    <table class="table table-condensed">
                         <tbody>
 
                         </tbody>
@@ -269,7 +318,7 @@
             
             <div class="col-sm-4">
                 <div id="time-table-box" class="border-box">
-                    <table id="time-table" class="table table-hover">
+                    <table id="time-table" class="table table-condensed">
                         <tbody>
 
                         </tbody>
@@ -278,25 +327,14 @@
                 
                 <div class="border-box">
 					<div id="price-key-box">
-						<button type="button" class="btn btn-boots btn-lg price-key-btn">
-							<div class="btn-kind">성인</div>
-							<div class="btn-price">11000</div>
-						</button>
-						<button type="button" class="btn btn-boots btn-lg price-key-btn">
-							<div class="btn-kind">청소년</div>
-							<div class="btn-price">8000</div>
-						</button>
-						<button type="button" class="btn btn-boots btn-lg price-key-btn">
-							<div class="btn-kind">장애인</div>
-							<div class="btn-price">4000</div>
-						</button>
+
 					</div>
                 </div>
             </div>
             
             <div class="col-sm-4">
                 <div id="price-box" class="border-box">
-					<table class="table table-hover">
+					<table class="table table-condensed">
 						<thead>
 							<tr>
 								<th>구분</th><th>수량</th><th>요금</th><th></th>
@@ -309,9 +347,11 @@
                 
                 <div class="border-box">
                     <div id="final-check-box">
-                        <form action="seat.html" class="col-sm-4">
+                        <form method="post" action="seat.esc" class="col-sm-4">
                         	<input type="hidden" name="movieId" id="hidden-movieId"/>
                         	<input type="hidden" name="timetableId" id="hidden-timetableId"/>
+                        	<input type="hidden" name="priceKeyId" id="hidden-priceKeyId"/>
+                        	<input type="hidden" name="amount" id="hidden-amount"/>
                             <button type="submit" id="seat-select-btn" class="btn btn-boots btn-lg">좌석 선택</button>
                         </form>
                         

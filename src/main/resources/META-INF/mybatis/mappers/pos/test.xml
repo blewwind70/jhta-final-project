@@ -56,25 +56,12 @@
 		and A.id = #{movieId}
 		order by started_at
 	</select>
+	
+	<select id="getAllCustomerType" resultType="CustomerType">
+		select
+			id
+			,type
+			,price
+		from customer_types
+	</select>
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -3,14 +3,14 @@ package com.es.pos.web;
 import java.util.Date;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.es.management.vo.CustomerType;
 import com.es.movie.vo.MovieTimetable;
 import com.es.movie.vo.MovieTranslation;
 import com.es.pos.service.MovieSelectService;
@@ -23,8 +23,14 @@ public class PosController {
 	private MovieSelectService movieSelectService;
 
 	@RequestMapping("/home.esc")
-	public String movieSelect(HttpSession session) {
+	public String movieSelect() {
 		return "main";
+	}
+	
+	@GetMapping("/pricekey.esc")
+	@ResponseBody
+	public List<CustomerType> priceKey() {
+		return movieSelectService.getAllPriceKey();
 	}
 	
 	@GetMapping("/movie.esc")
@@ -41,5 +47,10 @@ public class PosController {
 		Date date = DateUtil.yyyymmdd(playingdate);
 		
 		return movieSelectService.findMovieTimeOfMovie(date, movieid);
+	}
+	
+	@PostMapping("/seat.esc")
+	public String seat() {
+		return "seat";
 	}
 }
