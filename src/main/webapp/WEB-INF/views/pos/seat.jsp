@@ -12,6 +12,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script>
         $(function() {
+        	var $seatBox = $("#seat-box");
+        	var screenId = $("#movie-info-box tr.screen-tr").attr("id").replace("screen-tr-", "");
+        	var timetableId = $("#hidden-timetableId").val();
+        	
+        	// 선택된 좌석 가져오는 function
             var getSelectedSeat = function() {
                 $("#selected-seat-td").empty();
                 
@@ -22,8 +27,28 @@
                 
                 return selectedSeat;
             };
+            
+            // 첫 시작시 seat 정보 AJAX 요청
+            $.ajax({
+            	type:"GET",
+            	url:"seat.esc",
+            	data:{screenId:screenId,timetableId:timetableId},
+            	dataType:"json",
+            	success:function(result) {
+            		$(result).each(function() {
+            			var htmlContents = "";
+            			
+            			htmlContents += "<div class='seat seat-" + this.status + " col-sm-1'>";
+            			htmlContents += "	<label id='seat-no-" + this.id +"''>" + this.name + "</label>"
+            			htmlContents += "</div>";
+            			
+            			$seatBox.append(htmlContents);
+            		});
+            	}
+            });
 
-            $("div.seat").on("click", function() {
+            // seat click 위임 event
+            $seatBox.on("click","div.seat-Y", function() {
                 $(this).toggleClass("selected-seat");
                 
                 var selectedSeat = getSelectedSeat();
@@ -34,7 +59,19 @@
                 }
                 
                 $("#selected-seat-td").empty().text(selectedSeat);
-            }); 
+            });
+            
+            // 결제 btn Event
+            $("#payment-btn").on("click", function(e) {
+            	e.preventDefault();
+            	var seatId = "";
+            	$("div.selected-seat label").each(function() {
+	            	seatId += $(this).attr("id").replace("seat-no-", "") + ",";
+            	});
+            	
+            	$("#hidden-seatId").val(seatId);
+            	$(this).closest("form").submit();
+            });
         });
     </script>
     <%@ include file="/WEB-INF/views/pos/common/style.jsp" %>
@@ -58,7 +95,7 @@
             height: 700px;
         }
         #screen-box {
-            margin: 50px;
+            margin: 40px;
             margin-left: 150px;
             padding-left: 50px;
             border: 1px solid white;
@@ -75,10 +112,19 @@
             padding-top: 30px;
             border: 1px solid white;
             width: 70px;
-            height: 80px;
+            height: 70px;
             color: white;
             cursor: pointer;
             text-align: center;
+            border-radius: 5px;
+        }
+        div.seat-N {
+        	background-color: red;
+        }
+        div.seat-R {
+        	border: 1px solid dimgrey;
+        	background-color: silver;
+        	color: dimgrey;
         }
         div.selected-seat {
             background-color: #6a5dc0;
@@ -117,59 +163,27 @@
                 <div id="theater-box" class="col-sm-8">
                     <div id="screen-box" class="row">
                         <div class="col-sm-2">
-                            <h3>S</h3>
+                            <h4>S</h4>
                         </div>
                         <div class="col-sm-2">
-                            <h3>C</h3>
+                            <h4>C</h4>
                         </div>
                         <div class="col-sm-2">
-                            <h3>R</h3>
+                            <h4>R</h4>
                         </div>
                         <div class="col-sm-2">
-                            <h3>E</h3>
+                            <h4>E</h4>
                         </div>
                         <div class="col-sm-2">
-                            <h3>E</h3>
+                            <h4>E</h4>
                         </div>
                         <div class="col-sm-2">
-                            <h3>N</h3>
+                            <h4>N</h4>
                         </div>
                     </div>
 
                     <div id="seat-box" class="row">
-                        <div class="seat col-sm-1">
-                            <label>A1</label>
-                        </div>
-                        <div class="seat col-sm-1">
-                            <label>A2</label>
-                        </div>
-                        <div class="seat col-sm-1">
-                            <label>A3</label>
-                        </div>
-                        <div class="seat col-sm-1">
-                            <label>A4</label>
-                        </div>
-                        <div class="seat col-sm-1">
-                            <label>A5</label>
-                        </div>
-                        <div class="seat col-sm-1">
-                            <label>A6</label>
-                        </div>
-                        <div class="seat col-sm-1">
-                            <label>A7</label>
-                        </div>
-                        <div class="seat col-sm-1">
-                            <label>A8</label>
-                        </div>
-                        <div class="seat col-sm-1">
-                            <label>A9</label>
-                        </div>
-                        <div class="seat col-sm-1">
-                            <label>A10</label>
-                        </div>
-                        <div class="seat col-sm-1">
-                            <label>B1</label>
-                        </div>
+                    
                     </div>
                 </div>
 
@@ -178,16 +192,16 @@
                         <table class="table table-condensed">
                             <tbody>
                                 <tr>
-                                    <th>영화제목</th><td class="text-right">토르 : 라그나로크</td>
+                                    <th>영화제목</th><td class="text-right">${movieInfo.name }</td>
                                 </tr>
                                 <tr>
-                                    <th>시간</th><td class="text-right">2017-11-04 13:45</td>
+                                    <th>시간</th><td class="text-right"><fmt:formatDate value="${timetable.startedAt }" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                                </tr>
+                                <tr id="screen-tr-${timetable.screenMovie.screen.id }" class="screen-tr">
+                                    <th>상영관</th><td class="text-right">${timetable.screenMovie.screen.name }</td>
                                 </tr>
                                 <tr>
-                                    <th>상영관</th><td class="text-right">2관</td>
-                                </tr>
-                                <tr>
-                                    <th>잔여석</th><td class="text-right">10석</td>
+                                    <th>잔여석</th><td class="text-right">${timetable.screenMovie.screen.seatsCount }석</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -197,7 +211,7 @@
                         <table class="table table-condensed">
                             <tbody>
                                 <tr>
-                                    <th>선택할 좌석 수</th><td class="text-right"><span id="able-select-seat">2</span> 석</td>
+                                    <th>선택할 좌석 수</th><td class="text-right"><span id="able-select-seat">${totalAmount }</span> 석</td>
                                 </tr>
                                 <tr>
                                     <th colspan="2">선택한 좌석</th>
@@ -210,9 +224,14 @@
                     </div>
                     
                     <div id="move-btn-box">
-                        <form action="payment.html">
-                            <button type="submit" class="btn btn-boots btn-lg">결제</button>
-                            <a href="select.html" class="btn btn-boots btn-lg pull-right">취소</a>
+                        <form method="post" action="payment.esc">
+                        	<input type="hidden" name="movieId" id="hidden-movieId" value="${movieInfo.movie.id }"/>
+                        	<input type="hidden" name="timetableId" id="hidden-timetableId" value="${timetable.id }"/>
+                        	<input type="hidden" name="priceKeyId" id="hidden-priceKeyId" value="${keyIdList }"/>
+                        	<input type="hidden" name="amount" id="hidden-amount" value="${amountList }"/>
+                        	<input type="hidden" name="seatId" id="hidden-seatId"/>
+                            <button type="submit" id="payment-btn" class="btn btn-boots btn-lg">결제</button>
+                            <a href="home.esc" class="btn btn-boots btn-lg pull-right">취소</a>
                         </form>
                     </div>
                 </div>

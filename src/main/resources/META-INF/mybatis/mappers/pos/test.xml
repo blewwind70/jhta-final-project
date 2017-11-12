@@ -57,11 +57,77 @@
 		order by started_at
 	</select>
 	
-	<select id="getAllCustomerType" resultType="CustomerType">
+	<select id="getMovieTimetableById" parameterType="int" resultType="MovieTimeTable">
+		select
+			C.id					id
+			,C.started_at			startedAt
+			,C.ended_at				endedAt
+			,C.online_purchase		onlinePurchase
+			,C.offline_purchase		offlinePurchase
+			,C.screen_movie_id		"screenMovie.id"
+			,C.ordered				ordered
+			,D.id					"screenMovie.screen.id"
+			,D.name					"screenMovie.screen.name"
+			,D.seats_count			"screenMovie.screen.seatsCount"
+		from movies A, screen_movies B, movie_timetable C, screens D
+		where A.id = B.movie_id
+		and B.id = C.screen_movie_id
+		and B.screen_id = D.id
+		and C.id = #{value}
+	</select>
+	
+	<select id="getCustomerType" parameterType="int" resultType="CustomerType">
 		select
 			id
 			,type
 			,price
 		from customer_types
+		<where>
+			<if test="value > 0">
+				and id = #{value}
+			</if>
+		</where>
+	</select>
+			
+	<select id="getSeatBySeatId" parameterType="int" resultType="Seat">
+		select
+			id
+			,status
+			,detail
+			,name
+		from seats
+		where id = #{value}
+	</select>
+	
+	<select id="getSeatsByScreenId" parameterType="int" resultType="Seat">
+		select
+			A.id				"screen.id"
+			,A.seats_count		"screen.seatsCount"
+			,A.NAME				"screen.name"
+			,B.id				id
+			,B.status			status
+			,B.detail			detail
+			,B.name				name
+		from screens A, seats B
+		where A.id = B.screen_id
+		and A.id = #{value}
+	</select>
+	
+	<select id="getDiscount" parameterType="int" resultType="Discount">
+		select 
+			id
+			,name
+			,detail
+			,discount_percent		discountPercent
+			,started_date			startedDate
+			,end_date				endDate
+			,discount_type			discountType
+			,discount_price			discountPrice
+		from discounts
+		<where>
+			<if test="value > 0">
+				and id = #{value}
+			</if>
+		</where>
 	</select>
 </mapper>

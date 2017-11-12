@@ -3,10 +3,12 @@ package com.es.pos.mapper;
 import java.util.List;
 
 import com.es.pos.vo.PosLoginHistory;
+import com.es.pos.vo.Ticket;
 import com.es.pos.vo.TicketReceipt;
 
 public interface TicketMapper {
 	
+	List<Ticket> getReservedSeatsByTimetableId(int timetableId);
 	// 신용카드번호로 정보조회
 	List<TicketReceipt> getCardSelect(String creditNo);
 	// 신용카드번호로 얻은 정보의 디테일한 정보 얻기

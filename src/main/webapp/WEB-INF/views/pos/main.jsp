@@ -268,6 +268,7 @@
             margin-top: -2px;
             background-color: #6a5dc0;
             font-size: 16px;
+            color: white;
         }
         #grade-0 {
             background-color: forestgreen;
@@ -357,7 +358,7 @@
                         
                         <div class="col-sm-6 col-sm-offset-2">
                             <div id="total-price-box" class=" border-box">
-                                <label style="color: white;">총 가격</label>
+                                <label>총 가격</label>
                                 <span class="pull-right"></span>
                             </div>
                         </div>

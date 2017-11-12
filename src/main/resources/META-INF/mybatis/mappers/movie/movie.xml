@@ -86,7 +86,7 @@
 		from 
 			movie_translation
 		where 
-			movie_id = #{value};
+			movie_id = #{value}
 	</select>
 	
 	<select id="getMovieImage" parameterType="int" resultType="MovieImage">

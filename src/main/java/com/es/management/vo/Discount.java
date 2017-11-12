@@ -10,6 +10,8 @@ public class Discount {
 	private Integer discountPercent;
 	private Date startedDate;
 	private Date endDate;
+	private String discountType;
+	private String discountPrice;
 	
 	public Integer getId() {
 		return id;
@@ -46,5 +48,17 @@ public class Discount {
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	public String getDiscountType() {
+		return discountType;
+	}
+	public void setDiscountType(String discountType) {
+		this.discountType = discountType;
+	}
+	public String getDiscountPrice() {
+		return discountPrice;
+	}
+	public void setDiscountPrice(String discountPrice) {
+		this.discountPrice = discountPrice;
 	}
 }

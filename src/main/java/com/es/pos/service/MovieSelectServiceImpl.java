@@ -9,13 +9,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.es.management.vo.CustomerType;
+import com.es.movie.mapper.MovieMapper;
 import com.es.movie.vo.MovieTimetable;
 import com.es.movie.vo.MovieTranslation;
+import com.es.movie.vo.Seat;
 import com.es.pos.mapper.PosTestMapper;
+import com.es.pos.mapper.TicketMapper;
+import com.es.pos.vo.Ticket;
 
 @Service
 public class MovieSelectServiceImpl implements MovieSelectService {
 
+	@Autowired
+	private MovieMapper movieMapper;
+	@Autowired
+	private TicketMapper ticketMapper;
 	@Autowired
 	private PosTestMapper posTestMapper;
 
@@ -36,6 +44,36 @@ public class MovieSelectServiceImpl implements MovieSelectService {
 
 	@Override
 	public List<CustomerType> getAllPriceKey() {
-		return posTestMapper.getAllCustomerType();
+		return posTestMapper.getCustomerType(0);
+	}
+
+	@Override
+	public CustomerType getPriceKeyByTypeId(int typeId) {
+		return posTestMapper.getCustomerType(typeId).get(0);
+	}
+	
+	@Override
+	public MovieTranslation findMovieInfo(int movieId) {
+		return movieMapper.getMovieTranslation(movieId);
+	}
+	
+	@Override
+	public MovieTimetable findMovieTimetable(int timetableId) {
+		return posTestMapper.getMovieTimetableById(timetableId);
+	}
+	
+	@Override
+	public Seat getSeatInfo(int seatId) {
+		return posTestMapper.getSeatBySeatId(seatId);
+	}
+
+	@Override
+	public List<Seat> getSeatInfoInScreen(int screenId) {
+		return posTestMapper.getSeatsByScreenId(screenId);
+	}
+
+	@Override
+	public List<Ticket> getReservedSeatInfoInTimetable(int timetableId) {
+		return ticketMapper.getReservedSeatsByTimetableId(timetableId);
 	}
 }
