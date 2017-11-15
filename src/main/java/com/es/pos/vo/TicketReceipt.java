@@ -21,6 +21,7 @@ public class TicketReceipt {
 	private Date purchaseDate;
 	private String creditNo;
 	private String printed;
+	private Integer miliege;
 	
 	private Employee employee;
 	
@@ -96,5 +97,11 @@ public class TicketReceipt {
 	}
 	public void setEmployee(Employee employee) {
 		this.employee = employee;
+	}
+	public Integer getMiliege() {
+		return miliege;
+	}
+	public void setMiliege(Integer miliege) {
+		this.miliege = miliege;
 	}
 }

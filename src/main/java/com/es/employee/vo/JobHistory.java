@@ -6,10 +6,9 @@ public class JobHistory {
 
 	private Integer id;
 	private String jobType;
-	private Employee employee;
+	private Integer employeeId;
 	private Date startedDate;
 	private Date endedDate;
-	
 	public Integer getId() {
 		return id;
 	}
@@ -22,11 +21,11 @@ public class JobHistory {
 	public void setJobType(String jobType) {
 		this.jobType = jobType;
 	}
-	public Employee getEmployee() {
-		return employee;
+	public Integer getEmployeeId() {
+		return employeeId;
 	}
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+	public void setEmployeeId(Integer employeeId) {
+		this.employeeId = employeeId;
 	}
 	public Date getStartedDate() {
 		return startedDate;
@@ -40,4 +39,11 @@ public class JobHistory {
 	public void setEndedDate(Date endedDate) {
 		this.endedDate = endedDate;
 	}
+	@Override
+	public String toString() {
+		return "JobHistory [id=" + id + ", jobType=" + jobType + ", employeeId=" + employeeId + ", startedDate="
+				+ startedDate + ", endedDate=" + endedDate + "]";
+	}
+	
+	
 }

@@ -16,6 +16,7 @@ public class InformationSelectController {
 	@Autowired
 	private InformationSelectService informationSelectService;
 	
+	// 네비버튼을 누르면 실행되는 controller
 	@RequestMapping("/informationSelect.esc")
 	public String getAllCustomers(Model model) {
 		List<Customer> customers = informationSelectService.getAllCustomers();

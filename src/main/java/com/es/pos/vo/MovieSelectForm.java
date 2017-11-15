@@ -2,22 +2,22 @@ package com.es.pos.vo;
 
 public class MovieSelectForm {
 
-	private int movieId;
-	private int timetableId;
+	private Integer movieId;
+	private Integer timetableId;
 	private String priceKeyId;
 	private String amount;
 	private String seatId;
 	
-	public int getMovieId() {
+	public Integer getMovieId() {
 		return movieId;
 	}
-	public void setMovieId(int movieId) {
+	public void setMovieId(Integer movieId) {
 		this.movieId = movieId;
 	}
-	public int getTimetableId() {
+	public Integer getTimetableId() {
 		return timetableId;
 	}
-	public void setTimetableId(int timetableId) {
+	public void setTimetableId(Integer timetableId) {
 		this.timetableId = timetableId;
 	}
 	public String getPriceKeyId() {

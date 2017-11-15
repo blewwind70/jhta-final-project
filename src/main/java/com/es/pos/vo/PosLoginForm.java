@@ -2,27 +2,26 @@ package com.es.pos.vo;
 
 public class PosLoginForm {
 
-	private int posId;
-	private long empId;
-	private long empPwd;
+	private Integer posId;
+	private Long empId;
+	private Long empPwd;
 	
-	public int getPosId() {
+	public Integer getPosId() {
 		return posId;
 	}
-	public void setPosId(int posId) {
+	public void setPosId(Integer posId) {
 		this.posId = posId;
 	}
-	public long getEmpId() {
+	public Long getEmpId() {
 		return empId;
 	}
-	public void setEmpId(long empId) {
+	public void setEmpId(Long empId) {
 		this.empId = empId;
 	}
-	public long getEmpPwd() {
+	public Long getEmpPwd() {
 		return empPwd;
 	}
-	public void setEmpPwd(long empPwd) {
+	public void setEmpPwd(Long empPwd) {
 		this.empPwd = empPwd;
 	}
-
 }

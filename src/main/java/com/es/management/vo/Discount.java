@@ -12,6 +12,7 @@ public class Discount {
 	private Date endDate;
 	private String discountType;
 	private String discountPrice;
+	private CustomerType customerType;
 	
 	public Integer getId() {
 		return id;
@@ -61,4 +62,22 @@ public class Discount {
 	public void setDiscountPrice(String discountPrice) {
 		this.discountPrice = discountPrice;
 	}
+	public CustomerType getCustomerType() {
+		return customerType;
+	}
+	public void setCustomerType(CustomerType customerType) {
+		this.customerType = customerType;
+	}
+	@Override
+	public String toString() {
+		return "Discount [id=" + id + ", name=" + name + ", detail=" + detail + ", discountPercent=" + discountPercent
+				+ ", startedDate=" + startedDate + ", endDate=" + endDate + ", discountType=" + discountType
+				+ ", discountPrice=" + discountPrice + ", customerType=" + customerType + "]";
+	}
+	
+	
+	
+	
+	
+	
 }

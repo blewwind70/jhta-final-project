@@ -6,22 +6,30 @@ import java.text.SimpleDateFormat;
 
 public class DateEditor extends PropertyEditorSupport {
 
-	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	private SimpleDateFormat yyyymmddhhmmss = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private SimpleDateFormat yyyymmdd = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
 		try {
-			setValue(sdf.parse(text));
-		} catch (ParseException e) {
-			setValue(null);
+			setValue(yyyymmddhhmmss.parse(text));
+		} catch (ParseException e1) {
+			try {
+				setValue(yyyymmdd.parse(text));
+			} catch (ParseException e2) {
+				
+			}
 		}
 	}
 	
 	@Override
 	public String getAsText() {
 		String text = "";
+		
 		if(getValue() != null) {
-			text = sdf.format(getValue());
+			text = yyyymmddhhmmss.format(getValue());
+			if(text == null)
+				text = yyyymmdd.format(getValue());
 		}
 		return text;
 	}

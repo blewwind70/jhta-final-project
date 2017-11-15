@@ -2,11 +2,18 @@ package com.es.pos.mapper;
 
 import java.util.List;
 
+import com.es.pos.vo.DiscountTicket;
 import com.es.pos.vo.PosLoginHistory;
 import com.es.pos.vo.Ticket;
 import com.es.pos.vo.TicketReceipt;
 
 public interface TicketMapper {
+	
+	int getReceiptSeq();
+	
+	void addTicketReceipt(TicketReceipt ticketReceipt);
+	void addTicket(Ticket ticket);
+	void addDiscountTicket(DiscountTicket discountTicket);
 	
 	List<Ticket> getReservedSeatsByTimetableId(int timetableId);
 	// 신용카드번호로 정보조회
@@ -19,4 +26,5 @@ public interface TicketMapper {
 	PosLoginHistory getFosAndDateSelect(TicketReceipt ticketReceipt);
 	// 유저아이디로 상세정보 값 출력
 	TicketReceipt getRidDetailSelect(int customerId);
+	
 }

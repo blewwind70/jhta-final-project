@@ -2,15 +2,15 @@ package com.es.movie.vo;
 
 import java.util.Date;
 
-import com.es.util.MovieTimeSerializer;
+import com.es.util.TimeSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class MovieTimetable {
 
 	private Integer id;
-	@JsonSerialize(using=MovieTimeSerializer.class)
+	@JsonSerialize(using=TimeSerializer.class)
 	private Date startedAt;
-	@JsonSerialize(using=MovieTimeSerializer.class)
+	@JsonSerialize(using=TimeSerializer.class)
 	private Date endedAt;
 	private Integer onlinePurchase;
 	private Integer offlinePurchase;

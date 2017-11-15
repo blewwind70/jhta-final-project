@@ -22,14 +22,24 @@ public class Pagination {
 	}
 	
 	public Integer getBeginPage() {
-		return 1 + (pageNo - 1) * pagePerBlock;
+		return 1 + (getCurrentBlock() - 1) * pagePerBlock;
 	}
 	public Integer getEndPage() {
-		return (int) Math.ceil(totalItems / rowPerPage);
+		int blockLastPage = getCurrentBlock() * pagePerBlock;
+		int lastPage = getLastPage(); 
+		if(blockLastPage > lastPage)
+			return lastPage;
+		else return blockLastPage;
+	}
+	public Integer getLastPage() {
+		return (int) Math.ceil(totalItems / (double)rowPerPage);
 	}
 	
 	public Integer getCurrentBlock() {
-		return (int) Math.ceil(pageNo / pagePerBlock);
+		return (int) Math.ceil(pageNo / (double)pagePerBlock);
+	}
+	public Integer getEndBlock() {
+		return (int) Math.ceil(getLastPage() / (double)pagePerBlock);
 	}
 
 	public Integer getPageNo() {

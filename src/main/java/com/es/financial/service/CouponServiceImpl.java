@@ -27,22 +27,34 @@ public class CouponServiceImpl implements CouponService {
 	
 	@Override
 	public void addCoupon(Coupon coupon) {
-		System.out.println(1);
+		
 		couponMapper.addCoupon(coupon);
 	}
+	// Customer의 검색조건에 맞는 값 조회
 	
 	@Override
-	public List<Customer> searchCustomers(Criteria criteria) {
-		return finTestMapper.searchCustomers(criteria);
+	public List<Customer> searchByCoupon(Criteria criteria) {
+		return customerMapper.searchByCoupon(criteria);
 	}
-
+		
+	public List<Customer> searchByGift(Criteria criteria) {
+		return customerMapper.searchByGift(criteria);
+	}
+	@Override
+	public List<Customer> searchByOther(Criteria criteria) {
+		return customerMapper.searchByOther(criteria);
+	}
+	
+	// Customer의 모든값 조회
 	@Override
 	public List<Customer> getAllCustomers() {
 		return customerMapper.getAllCustomers();
 	}
+	// Customer의 상세정보 중 사용자 조회
 	@Override
 	public Customer searchDetailCustomer(int id) {
-		return finTestMapper.searchDetailCustomer(id);
+		return customerMapper.searchDetailCustomer(id);
 	}
+
 
 }

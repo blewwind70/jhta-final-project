@@ -5,6 +5,26 @@
   
 <mapper namespace="com.es.pos.mapper.TicketMapper">
 
+	<select id="getReceiptSeq" resultType="int">
+		select seq_ticket_receipts.nextval
+		from dual
+	</select>
+
+	<insert id="addTicketReceipt" parameterType="TicketReceipt">
+		insert into ticket_receipts (id, rid, price, purchase_type, discounted_price, pos_id, customer_id, credit_no, miliege)
+		values (#{id}, #{rid}, #{price}, #{purchaseType}, #{discountedPrice,jdbcType=NUMERIC}, #{pos.id}, #{customer.id,jdbcType=NUMERIC}, #{creditNo,jdbcType=VARCHAR}, #{miliege,jdbcType=NUMERIC})
+	</insert>
+	
+	<insert id="addTicket" parameterType="Ticket">
+		insert into tickets (id, seat_id, movie_timetable_id, ticket_receipt_id, customer_type_id)
+		values (seq_tickets.nextval, #{seat.id}, #{movieTimetable.id}, #{ticketReceipt.id}, #{customerType.id})
+	</insert>
+	
+	<insert id="addDiscountTicket" parameterType="DiscountTicket">
+		insert into discount_ticket (id, ticket_receipt_id, discount_id)
+		values (seq_discount_ticket.nextval, #{ticketReceipt.id}, #{discount.id})
+	</insert>
+
 	<select id="getReservedSeatsByTimetableId" parameterType="int" resultType="Ticket">
 		select
 			C.id				"movieTimetable.id"
@@ -104,6 +124,8 @@
     		A.deleted				deleted,
     		A.purchase_date			purchaseDate,
     		A.credit_no				creditNo,
+    		A.printed				printed,
+    		A.miliege				miliege,
 			B.username				"customer.username",
 			B.password				"customer.password",
 			B.name					"customer.name",
@@ -180,26 +202,4 @@
 		and 
 			A.customer_id = #{value}
 	</select>
-
 </mapper>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

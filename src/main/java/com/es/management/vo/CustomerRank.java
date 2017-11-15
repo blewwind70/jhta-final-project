@@ -24,4 +24,9 @@ public class CustomerRank {
 	public void setPriority(Integer priority) {
 		this.priority = priority;
 	}
+	@Override
+	public String toString() {
+		return "CustomerRank [id=" + id + ", type=" + type + ", priority=" + priority + "]";
+	}
+	
 }

@@ -79,7 +79,7 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <a href="select.html" class="navbar-brand">
+                <a href="home.esc" class="navbar-brand">
                     <img alt="brand" src="/resources/images/pos/logo.jpg" style="width: 150px;"/>
                 </a>
             </div>
@@ -87,7 +87,7 @@
             <div id="nav-ul-box">
                 <ul class="nav navbar-nav">
                     <li><p class="navbar-text"><label>출근시간</label> <fmt:formatDate value="${sessionScope.LOGIN_INFO.signedIn }" pattern="HH:mm:ss"/></p></li>
-                    <li><p class="navbar-text"><label>POS</label> ${sessionScope.LOGIN_INFO.pos.pid }</p></li>
+                    <li><p class="navbar-text"><label id="pos-id-${sessionScope.LOGIN_INFO.pos.id }" class="pos-id-label">POS</label> ${sessionScope.LOGIN_INFO.pos.pid }</p></li>
                     <li><p class="navbar-text"><label>현재시간</label> <span id="now-time"></span></p></li>
                     <li>
                         <p class="navbar-text">

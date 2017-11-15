@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 	<div class="box">
-		<form action="${pageforward }" class="form-horizontal" method="get">
-			<input type="hidden" value="${param.pageNo }" name="pageNo"/>
+		<form action="${pageforward }" class="form-horizontal" method="get" id="form-search">
+			<input type="hidden" value="${param.pageNo }" name="pageNo" id="input-page-no"/>
 			<div class="form-group">
 				<div class="col-md-2">
 					<select name="opt" class="form-control">
@@ -51,4 +51,27 @@
 		<div class="text-right">
 			<a id="btn-check" class="btn btn-default"><i class="fa fa-search fa-fw"></i> 상세조회</a>
 		</div>
+		
+		<div class="text-center">
+			<ul class="pagination" id="ul-pagination">
+				<c:if test="${page.pageNo > 1 }">
+					<li><a href="${page.pageNo-1 }">&laquo;</a></li>
+				</c:if>
+				<c:forEach begin="${page.beginPage }" end="${page.endPage}" var="eachPage">
+					<li class="${page.pageNo == eachPage ? 'active' : ''}"><a href="${eachPage }">${eachPage }</a></li>
+				</c:forEach>
+				<c:if test="${page.pageNo ne page.lastPage }">
+					<li><a href="${page.pageNo + 1 }">&raquo;</a></li>
+				</c:if>
+			</ul>
+		</div>
 	</div>
+	
+<script>
+	$('#ul-pagination a').click(function(e) {
+		e.preventDefault();
+		var pageNo = $(this).attr('href');
+		$('#input-page-no').val(pageNo);
+		$('#form-search').submit();
+	})
+</script>

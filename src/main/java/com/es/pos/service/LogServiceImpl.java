@@ -23,6 +23,9 @@ public class LogServiceImpl implements LogService {
 	@Override
 	public Employee findEmployeeById(long id, long pwd) {
 		Employee employee = posTestMapper.getEmployeeByIdentifier(id);
+		if(employee == null) {
+			return null;
+		}
 		
 		long noMinusPhone = Long.parseLong(employee.getPhone().replaceAll("-", ""));
 		if(noMinusPhone != pwd) {

@@ -16,7 +16,6 @@ public class TimeSerializer extends JsonSerializer<Date> {
 	public void serialize(Date value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
 		String strTime = sdf.format(value);
 		gen.writeString(strTime);
-		
 	}
 
 }

@@ -70,56 +70,7 @@
 							<td>66</td>
 							<td>100</td>
 						</tr>
-						<tr>
-							<td>1관</td>
-							<td>2회</td>
-							<td>토르</td>
-							<td>12:00</td>
-							<td>14:40</td>
-							<td>53</td>
-							<td>47</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td>1관</td>
-							<td>1회</td>
-							<td>토르</td>
-							<td>9:00</td>
-							<td>11:40</td>
-							<td>34</td>
-							<td>66</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td>1관</td>
-							<td>1회</td>
-							<td>토르</td>
-							<td>9:00</td>
-							<td>11:40</td>
-							<td>34</td>
-							<td>66</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td>1관</td>
-							<td>1회</td>
-							<td>토르</td>
-							<td>9:00</td>
-							<td>11:40</td>
-							<td>34</td>
-							<td>66</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td>1관</td>
-							<td>1회</td>
-							<td>토르</td>
-							<td>9:00</td>
-							<td>11:40</td>
-							<td>34</td>
-							<td>66</td>
-							<td>100</td>
-						</tr>
+						
 					</tbody>
 				</table>
 				</div>
@@ -130,4 +81,29 @@
  </div>
 	
 </body>
+<script>
+$(function() {
+	
+	$('#날짜아이디').on("change", function(){
+		var selectDate = $(this).val()
+		console.log(selectDate)
+		
+	 	$.ajax({
+			type: "GET",
+        	url: ".esc",
+        	data:{date: selectDate},
+        	dataType: "json",
+        	success:function(result) {
+        		var html = "";
+        		console.log(result);
+        		$.each(result, function(index, item){	
+        			html += ""
+        		})
+        		$("뿌려질곳").html(html)
+        	}
+		})  
+	})
+	
+})
+</script>
 </html>

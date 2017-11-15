@@ -3,12 +3,15 @@ package com.es.financial.vo;
 import java.util.Date;
 
 import com.es.management.vo.Customer;
+import com.es.util.DateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class CouponCustomer {
 
 	private Integer id;
 	private Integer used;
 	private Date receivedAt;
+	@JsonSerialize(using=DateSerializer.class)
 	private Date expiredAt;
 	private Customer customer;
 	private Coupon coupon;

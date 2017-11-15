@@ -3,6 +3,8 @@ package com.es.employee.vo;
 import java.util.Date;
 import java.util.List;
 
+import com.es.financial.vo.DailyReport;
+
 public class Employee {
 
 	private Integer id;
@@ -17,14 +19,45 @@ public class Employee {
 	private Date dismissedAt;
 	private Date birth;
 	
-	private int totalWorkingHoursPerMonth;
+	private int salaryPerMonth;
+	private int mismatchPerMonth;
+	private int workingHoursPerMonth;
 	
 	private List<EmployeeTimetable> timetables;
 	private List<EmployeeManagement> managements;
+	private List<EmployeeManagement> theifRecords;
+	private List<DailyReport> mismatches;
+	private int salary;
 	
 	private List<JobHistory> jobHistory;
 	private List<PayHistory> payHistory;
 	
+	
+	public List<DailyReport> getMismatches() {
+		return mismatches;
+	}
+	public void setMismatches(List<DailyReport> mismatches) {
+		this.mismatches = mismatches;
+	}
+	public List<EmployeeManagement> getTheifRecords() {
+		return theifRecords;
+	}
+	public void setTheifRecords(List<EmployeeManagement> theifRecords) {
+		this.theifRecords = theifRecords;
+	}
+	
+	public int getWorkingHoursPerMonth() {
+		return workingHoursPerMonth;
+	}
+	public void setWorkingHoursPerMonth(int workingHoursPerMonth) {
+		this.workingHoursPerMonth = workingHoursPerMonth;
+	}
+	public int getSalary() {
+		return salary;
+	}
+	public void setSalary(int salary) {
+		this.salary = salary;
+	}
 	public List<JobHistory> getJobHistory() {
 		return jobHistory;
 	}
@@ -103,11 +136,18 @@ public class Employee {
 	public void setBirth(Date birth) {
 		this.birth = birth;
 	}
-	public int getTotalWorkingHoursPerMonth() {
-		return totalWorkingHoursPerMonth;
+	
+	public int getSalaryPerMonth() {
+		return salaryPerMonth;
 	}
-	public void setTotalWorkingHoursPerMonth(int totalWorkingHoursPerMonth) {
-		this.totalWorkingHoursPerMonth = totalWorkingHoursPerMonth;
+	public void setSalaryPerMonth(int salaryPerMonth) {
+		this.salaryPerMonth = salaryPerMonth;
+	}
+	public int getMismatchPerMonth() {
+		return mismatchPerMonth;
+	}
+	public void setMismatchPerMonth(int mismatchPerMonth) {
+		this.mismatchPerMonth = mismatchPerMonth;
 	}
 	public List<EmployeeTimetable> getTimetables() {
 		return timetables;
@@ -125,7 +165,12 @@ public class Employee {
 	public String toString() {
 		return "Employee [id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", hourlyPay="
 				+ hourlyPay + ", gender=" + gender + ", accountNo=" + accountNo + ", jobType=" + jobType + ", hiredAt="
-				+ hiredAt + ", dismissedAt=" + dismissedAt + ", birth=" + birth + ", totalWorkingHoursPerMonth="
-				+ totalWorkingHoursPerMonth + ", timetables=" + timetables + ", managements=" + managements + "]";
+				+ hiredAt + ", dismissedAt=" + dismissedAt + ", birth=" + birth + ", salaryPerMonth=" + salaryPerMonth
+				+ ", mismatchPerMonth=" + mismatchPerMonth + ", workingHoursPerMonth=" + workingHoursPerMonth
+				+ ", timetables=" + timetables + ", managements=" + managements + ", theifRecords=" + theifRecords
+				+ ", mismatches=" + mismatches + ", salary=" + salary + ", jobHistory=" + jobHistory + ", payHistory="
+				+ payHistory + "]";
 	}
+	
+	
 }

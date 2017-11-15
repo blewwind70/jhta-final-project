@@ -1,6 +1,8 @@
 package com.es.financial.rest;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -25,7 +27,15 @@ public class CouponAjaxController {
 	@RequestMapping("/searchCustomers.esc")
 	@ResponseBody
 	public List<Customer> searchCustomers(Criteria criteria) {
-		return couponService.searchCustomers(criteria);
+		System.out.println(criteria);
+		if(criteria.getOpt().equals("couponId")) {			
+			return couponService.searchByCoupon(criteria);
+		} else if(criteria.getOpt().equals("giftId")) {
+			return couponService.searchByGift(criteria);
+		} else {
+			System.out.println(criteria);
+			return couponService.searchByOther(criteria);
+		}
 	}
 	
 	@RequestMapping("/searchDetailCustomers.esc")

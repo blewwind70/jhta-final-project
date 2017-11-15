@@ -5,10 +5,17 @@
   
 <mapper namespace="com.es.financial.mapper.CouponMapper">
 	<insert id="addCoupon" parameterType="Coupon">
-		insert into coupones
-		(ID, DISTRIBUTE_TYPE, DISTRIBUTE_UNTIL, RECEIVED, REASON, CUSTOMER_RANK_ID, NAME)
+		insert into coupones (
+		ID,
+		DISTRIBUTE_TYPE,		
+		DISTRIBUTE_UNTIL,		
+		RECEIVED, 
+		REASON, 
+		CUSTOMER_RANK_ID,		
+		NAME					
+		)
 		values
-		(id_seq.nextval, #{distributeType}, #{distributUntil}, #{received}, #{reason}, 1, #{name})
+		(id_seq.nextval, #{distributeType}, #{distributUntil}, #{RECEIVED}, #{reason}, #{"customerRank.id"}, #{name})
 	</insert> 
 	
 	

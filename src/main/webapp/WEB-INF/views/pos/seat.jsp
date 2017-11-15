@@ -46,7 +46,6 @@
             		});
             	}
             });
-
             // seat click 위임 event
             $seatBox.on("click","div.seat-Y", function() {
                 $(this).toggleClass("selected-seat");

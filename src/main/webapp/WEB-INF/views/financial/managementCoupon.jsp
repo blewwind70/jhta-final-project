@@ -10,7 +10,7 @@
 	<%@ include file="/WEB-INF/views/common/head.jsp" %>
 </head>
 <body>
-	<c:set var="nav_active" value="management" />
+	<c:set var="nav_active" value="financial" />
 	
 	<%@ include file="/WEB-INF/views/common/nav.jsp" %>
 	<div class="row">
@@ -20,7 +20,7 @@
 		</div>
 		<div class="col-md-10">
 			<div class="container" style="margin-top: 50px;">
-				<h2 class="page-header">쿠폰 / 사은품별 지급 관리</h2>
+				<h2 class="page-header">쿠폰 / 사은품 조회 및 수령등록</h2>
 				<div class="row">
 					<form id="search-form" class="form-inline">
 						<div class="form-group">
@@ -28,6 +28,8 @@
 								<option value="username">아이디</option>
 								<option value="name">이름</option>
 								<option value="grade">등급</option>
+								<option value="couponId">쿠폰 번호</option>
+								<option value="giftId">사은품 번호</option>
 							</select> 
 							<select class="form-control" id="vip">
 								<option value=1>VIP</option>
@@ -62,61 +64,7 @@
 						<button type="button" class="btn btn-default" id="btn-modal"><i class="fa fa-list fa-fw"></i>상세조회</button>
 					</div>
 				</div>
-				<div class="row box">
-					<form action="add.esc" method="post" id="type-form" class="form-horizontal">
-						<div class="form-group">
-							<label class="control-label col-sm-1">상품분류</label>
-							<div class="col-sm-5">
-								<select class="form-control">
-										<option>쿠폰</option>	
-										<option>사은품</option>
-								</select>
-							</div>
-							<label class="control-label col-sm-1">상품명</label>
-							<div class="col-sm-5">
-										<select class="form-control" name="name">
-											<option>어린이날 쿠폰</option>
-											<option>새해 쿠폰</option>
-										</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-sm-1">지급방식</label>
-							<div class="col-sm-5">
-								<select class="form-control" name="distributeType">
-									<option value="O">현장지급</option>
-									<option value="I">인터넷지급</option>
-									<option value="D">소포</option>
-								</select>
-							</div>
-							<label class="control-label col-sm-1">지급기한</label>
-							<div class="col-sm-5">
-								<input type="date" class="form-control" name="distributUntil">
-							</div>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-sm-1">수령가능등급</label>
-							<div class="col-sm-5">
-								<select class="form-control" name="customerRank">
-									<option value="1">VIP</option>
-									<option value="2">PLATINUM</option>
-									<option value="3">GOLD</option>
-									<option value="4">SILVER</option>
-									<option value="5">BRONZE</option>
-								</select>
-							</div>
-						
-							<label class="control-label col-sm-1">지급사유</label>
-							<div class="col-sm-5">
-								<textarea rows="2" cols="60" name="reason"></textarea>
-							</div>
-						
-							<div class="col-sm-1 col-sm-offset-11">
-								<button type="submit" class="btn btn-primary ">등록</button>
-							</div>
-						</div>
-					</form>
-				</div>
+				
 				<div class="modal fade" id="form-modal" role="dialog">
 					<div class="modal-dialog modal-lg">
 						<div class="modal-content">
@@ -138,42 +86,25 @@
 												<th>메일주소</th><td id="detailEmail" />
 											</tr>
 										</table>
-										
 									</div>
-
-									<div>
+									<div class="form-group">
+										
 										<label class="control-label">쿠폰 내역</label>
 										<div class="row box">
 											<table class="table table-condensed ">
 												<thead>
 													<tr>
 														<th class="col-sm-1"><input type="checkbox"
-															name="check"></th>
-														<th class="col-sm-3">쿠폰명</th>
-														<th class="col-sm-2">수령여부</th>
-														<th class="col-sm-3">수령날짜</th>
-														<th class="col-sm-3">사용날짜</th>
+															name="check" id="check"></th>
+														<th class="col-sm-3" id="couponName">쿠폰명</th>
+														<th class="col-sm-2" id="couponReceived">수령여부</th>
+														<th class="col-sm-3" id="customerReceived">수령날짜</th>
+														<th class="col-sm-3" id="customerExpired">만료날짜</th>
 													</tr>
 												</thead>
 												<tbody>
-													<div>
-														<tr>
-															<td class="col-sm-1"><input type="checkbox"
-																name="check"></td>
-															<td class="col-sm-3">어린이날 쿠폰</td>
-															<td class="col-sm-2">N</td>
-															<td class="col-sm-3">2017-04-11</td>
-															<td class="col-sm-3">2017-08-21</td>
-														</tr>
-														<tr>
-															<td class="col-sm-1"><input type="checkbox"
-																name="check"></td>
-															<td class="col-sm-3">새해 쿠폰</td>
-															<td class="col-sm-2">N</td>
-															<td class="col-sm-3">2017-04-11</td>
-															<td class="col-sm-3">2017-08-21</td>
-														</tr>
-													</div>
+													
+													
 												</tbody>
 											</table>
 											<div class="text-right">
@@ -193,7 +124,6 @@
 														<th class="col-sm-3">사은품명</th>
 														<th class="col-sm-3">수령여부</th>
 														<th class="col-sm-3">수령날짜</th>
-														
 													</tr>
 												</thead>
 												<tbody>
@@ -267,7 +197,11 @@ $(function(){
 						$("#detailBirth").text(result.birth);
 						$("#detailPhone").text(result.phone);
 						$("#detailEmail").text(result.email); 
+						
 					}
+				}),
+				$.ajax({
+					
 				})
 			})
 		} else {
@@ -293,6 +227,7 @@ $(function(){
 				dataType : "json",
 				success : function(result) {
 					var html = "";
+					
 					$.each(result, function(index, item) {
 						html += "<tr class='highlight' style='background-color: white' id='"+item.id+"'>"
 						html += "<td>" + item.username + "</td>"

@@ -2,16 +2,23 @@ package com.es.management.vo;
 
 import java.util.Date;
 
+import com.es.util.DateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 public class LostCustomerItem {
 
 	private Integer id;
 	private String itemName;
 	private String receiverPhone;
 	private String receiverName;
+	@JsonSerialize(using=DateSerializer.class)
 	private Date returnedAt;
+	@JsonSerialize(using=DateSerializer.class)
 	private Date foundDate;
 	private	String finder;
 	private String status;
+	private String giver;
+	private String findLocation;
 	
 	public Integer getId() {
 		return id;
@@ -60,5 +67,17 @@ public class LostCustomerItem {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getGiver() {
+		return giver;
+	}
+	public void setGiver(String giver) {
+		this.giver = giver;
+	}
+	public String getFindLocation() {
+		return findLocation;
+	}
+	public void setFindLocation(String findLocation) {
+		this.findLocation = findLocation;
 	}
 }

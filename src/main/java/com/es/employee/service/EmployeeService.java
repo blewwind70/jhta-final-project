@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.es.common.vo.Pagination;
 import com.es.employee.vo.Employee;
+import com.es.employee.vo.EmployeeManagement;
+import com.es.employee.vo.EmployeeTimetable;
 
 public interface EmployeeService {
 	/**
@@ -40,4 +42,10 @@ public interface EmployeeService {
 	public Employee delete(int id);
 
 	public void dummy();
+
+	public boolean registerPunish(EmployeeManagement mng, Date date);
+
+	public List<EmployeeTimetable> timetableByDate(Date when);
+
+	public void timetableUpdate(EmployeeTimetable timetables);
 }

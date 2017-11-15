@@ -16,7 +16,7 @@ div.row{
 <%@ include file="/WEB-INF/views/common/head.jsp"%>
 </head>
 <body>
-	<c:set var="nav_active" value="management" />
+	<c:set var="nav_active" value="financial" />
 
 	<%@ include file="/WEB-INF/views/common/nav.jsp"%>
 	<div class="row">

@@ -19,6 +19,19 @@
 		from employees E, daily_reports D
 		where E.id = D.employee_id
 	</select>
+	
+	<select id="readMismatchRecordByEmpIdAndDate" parameterType="hashmap" resultType="DailyReport">
+		select
+			id,
+			report,
+			working_date as workingDate,
+			mismatch_money as mismatchMoney
+		from
+			daily_reports
+		where
+			to_char(working_date, 'YYYYMM') = to_char(#{when}, 'YYYYMM')
+			and employee_id = #{id}
+	</select>
 </mapper>
 
 

@@ -100,7 +100,6 @@
             	}
             });
             
-            
             // Movie List tr 위임 Event
             $movieListTbody.on("click", "tr", function() {
             	var searchingDate = $playingDate.val();
@@ -120,7 +119,7 @@
             				var htmlContents = "";
             				
             				htmlContents += "<tr id='time-tr-" + this.id + "'>";
-            				htmlContents += "	<td>" + this.startedAt + "</td>";
+            				htmlContents += "	<td>" + this.startedAt.substr(10, 6) + "</td>";
             				htmlContents += "	<td>" + this.screenMovie.screen.name + "</td>";
             				htmlContents += "	<td>" + this.screenMovie.screen.seatsCount + "</td>";
             				htmlContents += "</tr>";
@@ -189,7 +188,6 @@
             // 구매취소 btn 위임 Event
 			$priceListTbody.on("click", ".remove-btn", function() {
                 var $amountTd = $(this).parent("td").siblings("td.amount-td");
-
                 if(parseInt($amountTd.text()) > 1) {
                     $amountTd.text(parseInt($amountTd.text()) - 1);
                     calculatePrice();
@@ -222,22 +220,6 @@
 	</script>
    	<%@ include file="/WEB-INF/views/pos/common/style.jsp" %>
     <style>
-        .nav-tabs {
-            width: 1770px;
-            height: 51px;
-            margin-left: 15px;
-            padding: 5px;
-            background-color: #6a5dc0;
-        }
-      	ul.nav-tabs > li > a {
-            font-size: 17px;
-            color: white;
-        }
-        ul.nav-tabs > li.active > a {
-            font-weight: bolder;
-            font-size: 20px;
-            color: #6a5dc0 ;
-        }
 		#main-box {
 			border: 10px solid #6a5dc0;
 			height: 700px;
@@ -292,12 +274,8 @@
     <%@ include file="/WEB-INF/views/pos/common/nav.jsp" %>
     
     <div class="container">
-        <div class="row">
-            <ul class="nav nav-default nav-tabs">
-              <li role="presentation" class="active"><a href="select.html">발권</a></li>
-              <li role="presentation"><a href="refund.html">환불</a></li>
-            </ul>
-        </div>
+    <c:set var="nowPage" value="mainPage"/>
+ 	<%@ include file="/WEB-INF/views/pos/common/nav-tab.jsp" %>
         
         <div id="main-box">
             <div class="col-sm-4">

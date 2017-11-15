@@ -31,5 +31,11 @@ public class CustomerType {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
+	@Override
+	public String toString() {
+		return "CustomerType [id=" + id + ", type=" + type + ", price=" + price + ", detail=" + detail + "]";
+	}
+	
+	
 	
 }

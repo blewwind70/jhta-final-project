@@ -59,16 +59,16 @@
 			<if test="keyword != null || keyword != '' ">
 				<choose>
 					<when test="opt == 'name' ">
-					and name like '%' || #{keyword} || '%'
+					and A.name like '%' || #{keyword} || '%'
 					</when>
 					<when test="opt == 'publishDate'">
-					and publishDate like '%' || #{keyword} || '%'
+					and B.publish_date like '%' || #{keyword} || '%'
 					</when>
 					<when test="opt == 'openDate' ">
-					and openDate like '%' || #{keyword} || '%'
+					and B.open_date like '%' || #{keyword} || '%'
 					</when>
 					<when test="opt == 'closeDate' ">
-					and closeDate like '%' || #{keyword} || '%'
+					and B.close_date like '%' || #{keyword} || '%'
 					</when>
 				</choose>
 			</if>
@@ -102,22 +102,81 @@
 	
 	<select id="getGenreTranslation" parameterType="int" resultType="GenreTranslation">
 		select
-			A.id,
-			A.type,
-			A.lang_iso,
-			A.lang_default,
-			A.genre_id,
-			B.movie_id
+			A.id				id,
+			A.type				type,
+			A.lang_iso			langiso,
+			A.lang_default		langdefault,
+			A.genre_id			"genre.id",			
+			B.movie_id			"movie.id"
 		from 
 			genre_translation A , movie_genre B
 		where 
-			A.genre_id = B.genre_id;
+			A.genre_id = B.genre_id
 		and
-			movie_id = #{value}
+			B.movie_id = #{value}
 	</select>
 	
 	<select id="getMovie" parameterType="int" resultType="Movie">
+		select
+			id				id,
+			publish_date	publishDate,
+			open_date		openDate,
+			age_limit		ageLimit,
+			close_date		closeDate,
+			dubbed			dubbed
+		from
+			movies
+		where
+			id = #{value}
 		
+	</select>
+<!-- 상영종료 추가하기 -->
+	<update id="updateCloseDate" parameterType="int">
+		update
+			movies
+		set 
+			close_date = SYSDATE
+		where
+			id = #{value}
+	</update>
+	
+<!-- 시간표등록 등록가능영화 조회 -->
+	<select id="getMovieTranslationsByDate" parameterType="date" resultType="MovieTranslation">
+		select 
+			A.name			name,
+			B.id			id,
+			B.open_date		openDate,
+			B.close_date	closeDate,
+			B.dubbed		dubbed
+		from 
+			movie_translation A, movies B
+		where   
+			A.MOVIE_ID = B.ID
+		and
+			B.OPEN_DATE &lt;= #{value}
+		and 
+			(#{value} &lt; B.CLOSE_DATE  
+		or	
+			B.CLOSE_DATE is null)
+	</select>
+<!-- 시간표등록  -->
+	<insert id="addMovieTimetable" parameterType="MovieTimetable">
+		insert into movie_timetable
+			(id, started_at, ended_at, screen_movie_id)
+		values
+			(seq_movie_timetable.nextval, #{startedAt}, #{endedAt}, #{screenMovie.id})
+		
+	</insert>
+	
+	<insert id="addScreenMovie" parameterType="ScreenMovie">
+		insert into screen_movies
+			(id, screen_id, movie_id)
+		values
+			(#{id}, #{screen.id}, #{movie.id})
+	
+	</insert>
+	<select id="getScreenMovieSeq" resultType="int" >
+		select seq_screen_movies.nextval from dual
 	</select>
 	
 </mapper>

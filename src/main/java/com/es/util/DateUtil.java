@@ -35,6 +35,10 @@ public class DateUtil {
 		return null;
 	}
 	
+	public static String yyyymmddhhmmss(Date date) {
+		return YYYYMMDDHHmmSS.format(date);
+	}
+	
 	public static Date yyyymmddhhmmss(String date) {
 		try {
 			return YYYYMMDDHHmmSS.parse(date);

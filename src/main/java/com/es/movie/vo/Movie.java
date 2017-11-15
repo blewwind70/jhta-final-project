@@ -1,6 +1,7 @@
 package com.es.movie.vo;
 
 import java.util.Date;
+import java.util.List;
 
 import com.es.util.DateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -16,6 +17,10 @@ public class Movie {
 	@JsonSerialize(using=DateSerializer.class)
 	private Date closeDate;
 	private Integer dubbed;
+	
+	private MovieTranslation movieTranslation;
+	private MovieImage movieImage;
+	private List<GenreTranslation> genreTranslation;
 	
 	public Integer getDubbed() {
 		return dubbed;
@@ -53,4 +58,24 @@ public class Movie {
 	public void setCloseDate(Date closeDate) {
 		this.closeDate = closeDate;
 	}
+	public MovieTranslation getMovieTranslation() {
+		return movieTranslation;
+	}
+	public void setMovieTranslation(MovieTranslation movieTranslation) {
+		this.movieTranslation = movieTranslation;
+	}
+	public MovieImage getMovieImage() {
+		return movieImage;
+	}
+	public void setMovieImage(MovieImage movieImage) {
+		this.movieImage = movieImage;
+	}
+	public List<GenreTranslation> getGenreTranslation() {
+		return genreTranslation;
+	}
+	public void setGenreTranslation(List<GenreTranslation> genreTranslation) {
+		this.genreTranslation = genreTranslation;
+	}
+	
+	
 }

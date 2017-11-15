@@ -74,26 +74,19 @@
 										<table class="table">
 											<tbody>
 												<tr>
-													<th>영화명</th>
-													<td id="name"></td>
-													<th>더빙여부</th>
-													<td id="dubbed">N</td>
-													<th>포스터</th>
-													<td id="imgs" rowspan="4"><img src="/resources/images/movie/bb.jpg"/></td>
+													<th>영화명</th><td id="name"></td>
+													<th>더빙여부</th><td id="dubbed">N</td>
+													<th>포스터</th><td id="imgaes" rowspan="4"><img id="imgs" src=""/></td>
 												</tr>
 												<tr>
-													<th>배급일</th>
-													<td id="publish"></td>
-													<th>개봉일</th>
-													<td id="open"></td>
+													<th>배급일</th><td id="publish"></td>
+													<th>개봉일</th><td id="open"></td>
 
 
 												</tr>
 												<tr>
-													<th>국가</th>
-													<td id="country"></td>
-													<th>장르</th>
-													<td id="genre"></td>
+													<th>국가</th>	<td id="country"></td>
+													<th>장르</th><td id="genre"></td>
 												</tr>
 
 											</tbody>
@@ -119,60 +112,122 @@
     	 $("#mainTbody").on("click", ".highlight", function() {
 			$(".highlight").css("background-color", "white");
 			$(this).css("background-color", "red");
+			var selectTarget = null;
+			selectTarget = $(this).attr('id');
 			
-			var selectTarget = $(this).attr('id');
-			
-			
-			if(selectTarget) {
+			var target = $(this);
+			if(selectTarget !=null) {
+				//상영종료
+				$("#btn-close-movie").click(function(){
+					
+					$.ajax({
+                    	type: "POST",
+                    	url: "updateCloseDate.esc",
+                    	data:{id: selectTarget},
+                    	dataType: "json",
+                    	success:function(result) {
+                    		console.log(result.closeDate);
+                    		$("#mainTbody tr[id="+selectTarget+"] :nth-child(4)").text(result.closeDate);
+                    	}
+                    })
+					
+					
+				})
+				
+				
+				
 				//모달창
-				$("#btn-open-modal").click(function() {
+				$("#btn-open-modal").click(function(e) {
+					e.preventDefault;
 					$("#myModal").modal("show");
 					
 					$.ajax({
                     	type: "GET",
-                    	url: ".esc",
+                    	url: "getDetailMovie.esc",
                     	data:{id: selectTarget},
                     	dataType: "json",
                     	success:function(result) {
-                    		/* $("#id").text(result.id); */
+                    		$("#name").text(result.movieTranslation.name);
+                    		$("#publish").text(result.publishDate);
+                    		$("#open").text(result.openDate);
+                    		$("#country").text(result.movieTranslation.publishCountry);
+                    		//장르 
+                    		var genres = result.genreTranslation.map(function(genre) {
+                    			return genre.type;
+                    		}).join(", ");
+                    		$("#genre").text(genres);
+                    		//더빙여부
+                    		if( result.dubbed == 0) {
+                    			$("#dubbed").text('N');
+                    		} else {
+                    			$("#dubbed").text('Y');
+                    		}
+                    		//이미지  
+                    		if (result.movieImage.imageUri !=null) {
+                    			$("#imgs").attr("src","/resources/images/movie/"+result.movieImage.imageUri+"");
+                    		}else {
+                    			$("#imgs").attr("src","");
+                    		}
+                    		
                     	}
                     })
+                    
                     return false;
 				})
-
+			}  else {
+				alert("값을 선택하지 않았습니다. 선택해주세요");
 			}
-			
-			
 		})
     	
-        
-         
          // 검색조건 AJax처리 
          $("#search-btn").click(function(e) {
 			e.preventDefault();
 			var opt = $("#opt").val();
 			var keyword = $("#keyword").val();
-			$.ajax({
-				type: "POST",
-				url: "searchByMovieTrans.esc",
-				data: {opt: opt, keyword: keyword},
-				dataType: "json",
-				success: function(result) {
-					console.log(result)
-					var html = "";
-					$.each(result, function(index, item) {
-						console.log(item.movie.publishDate)
-						html += "<tr class='highlight' id='"+item.id+"'>"
-            			html += "<td>"+item.name+"</td>"
-            			html += "<td>"+item.movie.publishDate+"</td>"
-            			html += "<td>"+item.movie.openDate+"</td>"
-            			html += "<td>"+item.movie.closeDate+"</td>"
-            			html += "</tr>"
-					})
-					$("#mainTbody").html(html);	
-				}
-			})
+			
+			if(keyword) {
+				$.ajax({
+					type: "POST",
+					url: "searchByMovieTrans.esc",
+					data: {opt: opt, keyword: keyword},
+					dataType: "json",
+					success: function(result) {
+						var html = "";
+						
+						if(result.length == 0 ){
+							html += "<tr style='background-color: white'>"
+	            			html += "<td>-</td>"
+	            			html += "<td>-</td>"
+	            			html += "<td>-</td>"
+	            			html += "<td>-</td>"
+	            			html += "</tr>"
+	            			
+	            		$("#mainTbody").html(html);	
+						} else {
+							$.each(result, function(index, item) {
+								
+								html += "<tr class='highlight' style='background-color: white' id='"+item.movie.id+"'>"
+		            			html += "<td>"+item.name+"</td>"
+		            			html += "<td>"+item.movie.publishDate+"</td>"
+		            			html += "<td>"+item.movie.openDate+"</td>"
+		            			if (item.movie.closeDate != null) {
+			            			html += "<td>"+item.movie.closeDate+"</td>"	
+		            			} else {
+		            				html += "<td>상영중</td>"
+		            			}
+		            			html += "</tr>"
+							})  
+							
+							$("#mainTbody").html(html);	
+						}
+					}
+				})	
+			} else {
+        		alert("검색어가 입력되지 않았습니다. 검색어를 입력해 주세요.")
+        	}	
 		})
+		
+		
          
      })
 </script>

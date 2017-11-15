@@ -6,6 +6,9 @@ public class GenreTranslation {
 	private String langiso;
 	private String langdefault;
 	private Genre	genre;
+	
+	private MovieGenre movieGenre;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -35,6 +38,12 @@ public class GenreTranslation {
 	}
 	public void setGenre(Genre genre) {
 		this.genre = genre;
+	}
+	public MovieGenre getMovieGenre() {
+		return movieGenre;
+	}
+	public void setMovieGenre(MovieGenre movieGenre) {
+		this.movieGenre = movieGenre;
 	}
 	
 	

@@ -6,8 +6,8 @@
 		<div class="text-right-on-same-line"><i class="fa fa-angle-right"></i></div>
 	</h3>
 	<ul>
-		<li class="${side_active eq 'management' ? 'active' : '' }"><a href="/financial/managementCoupon.esc">쿠폰 / 사은품 지급 관리</a></li>
-		<li class="${side_active eq 'search' ? 'active' : '' }"><a href="/financial/searchCoupon.esc">쿠폰 / 사은품별 조회</a></li>
+		<li class="${side_active eq 'management' ? 'active' : '' }"><a href="/financial/managementCoupon.esc">쿠폰 / 사은품 조회</a></li>
+		<li class="${side_active eq 'search' ? 'active' : '' }"><a href="/financial/searchCoupon.esc">쿠폰 / 사은품 지급</a></li>
 	</ul>
 	<h3>포스별 정산 관리
 		<div class="text-right-on-same-line"><i class="fa fa-angle-right"></i></div>

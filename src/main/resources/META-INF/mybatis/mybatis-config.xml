@@ -31,6 +31,9 @@
 		<typeAlias alias="CustomerType" type="com.es.management.vo.CustomerType"/>
 		<typeAlias alias="Discount" type="com.es.management.vo.Discount"/>
 		<typeAlias alias="LostCustomerItem" type="com.es.management.vo.LostCustomerItem"/>
+		<typeAlias alias="DiscountForm" type="com.es.management.web.form.DiscountForm"/>
+		<typeAlias alias="UpdateGiveItemForm" type="com.es.management.web.form.UpdateGiveItemForm"/>
+		<typeAlias alias="InsertItemForm" type="com.es.management.web.form.InsertItemForm"/>
 		
 		<!-- Movie -->
 		<typeAlias alias="Genre" type="com.es.movie.vo.Genre"/>
@@ -50,6 +53,7 @@
 		<typeAlias alias="PosLoginHistory" type="com.es.pos.vo.PosLoginHistory"/>
 		<typeAlias alias="Ticket" type="com.es.pos.vo.Ticket"/>
 		<typeAlias alias="TicketReceipt" type="com.es.pos.vo.TicketReceipt"/>
+		<typeAlias alias="DiscountTicket" type="com.es.pos.vo.DiscountTicket"/>
 	</typeAliases>
 
 	<mappers>
@@ -71,6 +75,7 @@
 		<mapper resource="META-INF/mybatis/mappers/management/discount.xml"/>
 		<mapper resource="META-INF/mybatis/mappers/management/ticket-select.xml"/>
 		<mapper resource="META-INF/mybatis/mappers/management/test.xml"/>
+		<mapper resource="META-INF/mybatis/mappers/management/lost_and_found.xml"/>
 		
 		<!-- Movie -->
 		<mapper resource="META-INF/mybatis/mappers/movie/movie.xml"/>

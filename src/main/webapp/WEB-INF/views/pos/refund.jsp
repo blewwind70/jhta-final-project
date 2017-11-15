@@ -10,25 +10,76 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
+	<script type="text/javascript">
+		$(function() {
+			// 판매번호 자동 '-' 추가 function
+			var autoMinus = function(str) {
+				str = str.replace(/[^0-9]/g, '');
+				var tmp = '';
+				
+				if(str.length < 4){
+					return str;
+				} else if(str.length < 8){
+					tmp += str.substr(0, 4);
+					tmp += '-';
+					tmp += str.substr(4);
+					return tmp;
+				} else if(str.length < 12){
+					tmp += str.substr(0, 4);
+					tmp += '-';
+					tmp += str.substr(4, 4);
+					tmp += '-';
+					tmp += str.substr(8);
+					return tmp;
+				} else if(str.length <= 16) {        
+					tmp += str.substr(0, 4);
+					tmp += '-';
+					tmp += str.substr(4, 4);
+					tmp += '-';
+					tmp += str.substr(8, 4);
+					tmp += '-';
+					tmp += str.substr(12, 4);
+					return tmp;
+				} else {
+					tmp += str.substr(0, 4);
+					tmp += '-';
+					tmp += str.substr(4, 4);
+					tmp += '-';
+					tmp += str.substr(8, 4);
+					tmp += '-';
+					tmp += str.substr(12, 4);
+					return tmp;
+				}
+				return str;
+			}
+			
+			// 판매번호 자동 '-' 추가 Event
+			$("#receipt-no-input").on("keyup", function() {
+				var autoNo = autoMinus($(this).val());
+				$(this).val(autoNo);
+			});
+			
+			// 조회 btn Event
+			$("#search-btn").on("click", function() {
+				var receiptNo = $("#receipt-no-input").val();
+				
+				$.ajax({
+					type:"GET",
+					url:"searchticket.esc",
+					data:{rid:receiptNo},
+					dataType:"json",
+					success:function(result) {
+						
+					},
+					error:function() {
+						alert("존재하지 않는 판매번호입니다.");
+					}
+				});
+			});
+		});
+	</script>
     <%@ include file="/WEB-INF/views/pos/common/style.jsp" %>
     <style>
-        .nav-tabs {
-            width: 1770px;
-            height: 51px;
-            margin-left: 15px;
-            padding: 5px;
-            background-color: #6a5dc0;
-        }
-      	ul.nav-tabs > li > a {
-            font-size: 17px;
-            color: white;
-        }
-        ul.nav-tabs > li.active > a {
-            font-weight: bolder;
-            font-size: 20px;
-            color: #6a5dc0 ;
-        }
 		#main-box {
 			border: 10px solid #6a5dc0;
 			height: 700px;
@@ -46,6 +97,9 @@
 		#search-ticket-form {
 			margin-top: 8px;
 			margin-bottom: -5px;
+		}
+		#receipt-no-input {
+			font-size: 20px;
 		}
 		#payment-table-box {
 			height: 280px;
@@ -70,12 +124,8 @@
     <%@ include file="/WEB-INF/views/pos/common/nav.jsp" %>
     
     <div class="container">
-        <div class="row">
-            <ul class="nav nav-default nav-tabs">
-              <li role="presentation"><a href="select.html">발권</a></li>
-              <li role="presentation" class="active"><a href="refund.html">환불</a></li>
-            </ul>
-        </div>
+    <c:set var="nowPage" value="refundPage"/>
+	<%@ include file="/WEB-INF/views/pos/common/nav-tab.jsp" %>
         
         <div id="main-box">
         	<div class="row">
@@ -85,10 +135,10 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">판매번호</label>
 								<div class="col-sm-7">
-									<input type="text" name="receipt-no" class="form-control"/>
+									<input type="text" name="receiptNo" id="receipt-no-input" class="form-control"/>
 								</div>
 
-								<button type="submit" class="btn btn-boots btn-sm">조회</button>
+								<button type="button" id="search-btn" class="btn btn-boots btn-sm">조회</button>
 							</div>
 						</form>
 					</div>
@@ -145,7 +195,7 @@
 						<table class="table table-bordered">
 							<thead>
 								<tr>
-									<th></th><th>구매내용</th><th>수량</th><th>구매액</th>
+									<th></th><th>구매내용</th><th>상영관</th><th>상영시간</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -153,7 +203,7 @@
 									<td>
 										<input type="checkbox" name="purchase"/>
 									</td>
-									<td>토르 : 라그나로크</td><td>1</td><td>22000</td>
+									<td>토르 : 라그나로크</td><td>1관</td><td>22000</td>
 								</tr>
 							</tbody>
 						</table>

@@ -5,15 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.es.management.mapper.CustomerMapper;
 import com.es.pos.mapper.TicketMapper;
 import com.es.pos.vo.TicketReceipt;
 
 @Service
 public class CardHistoryImpl implements CardHistoryService{
-
-	@Autowired
-	private CustomerMapper customerMapper;
 	
 	@Autowired
 	private TicketMapper ticketMapper;

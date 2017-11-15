@@ -17,6 +17,10 @@ public class Criteria {
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	@Override
+	public String toString() {
+		return "Criteria [opt=" + opt + ", keyword=" + keyword + "]";
+	}
 	
 	
 	

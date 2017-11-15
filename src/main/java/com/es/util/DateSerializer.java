@@ -17,4 +17,6 @@ public class DateSerializer extends JsonSerializer<Date>{
 			String strDate = sdf.format(value);
 			gen.writeString(strDate);
 	}
+	
+	
 }

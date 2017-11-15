@@ -9,8 +9,10 @@ public interface PosMapper {
 	int addLoginHistorySeq();
 	void addPosLoginHistory(PosLoginHistory posLoginHistory);
 	void addEmployeeTimetable(EmployeeTimetable employeeTimetable);
+	
 	Pos getPosById(int posId);
 	EmployeeTimetable getEmployeeTimetableByPosHistory(PosLoginHistory posLoginHistory);
+	
 	void updateEmployeeTimetable(EmployeeTimetable employeeTimetable);
 	void updatePosLoginHistory(PosLoginHistory posLoginHistory);
 }

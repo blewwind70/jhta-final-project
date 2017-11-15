@@ -18,6 +18,7 @@
 	<c:set var="nav_active" value="employee" />
 	
 	<%@ include file="/WEB-INF/views/common/nav.jsp" %>
+	<%@ include file="/WEB-INF/views/employee/common_view.jsp" %>
 	<div class="row">
 		<div class="col-md-2 div-side">
 			<c:set var="side_active" value="register" />
@@ -105,7 +106,7 @@
 			
 		</div>
 	</div>
-	<%@ include file="/WEB-INF/views/employee/common_view.jsp" %>
+	
 </body>
 <script>
 	$(function() {

@@ -57,4 +57,11 @@ public class Coupon {
 	public void setCustomerRank(CustomerRank customerRank) {
 		this.customerRank = customerRank;
 	}
+	@Override
+	public String toString() {
+		return "Coupon [id=" + id + ", distributeType=" + distributeType + ", distributUntil=" + distributUntil
+				+ ", received=" + received + ", reason=" + reason + ", name=" + name + ", customerRank=" + customerRank
+				+ "]";
+	}
+	
 }

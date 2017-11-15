@@ -27,25 +27,27 @@ public class MovieListImpl implements MovieListService{
 	//영화 상세정보
 	@Override
 	public MovieTranslation getMovieTranslation(int id) {
-		return null;
+		return movieMapper.getMovieTranslation(id);
 	}
 
 	@Override
 	public MovieImage getMovieImage(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return movieMapper.getMovieImage(id);
 	}
 
 	@Override
 	public Movie getMovie(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return movieMapper.getMovie(id);
 	}
 
 	@Override
 	public List<GenreTranslation> getGenreTranslation(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return movieMapper.getGenreTranslation(id);
+	}
+	//영화조회 - 상영종료
+	@Override
+	public void updateCloseDate(int id) {
+		movieMapper.updateCloseDate(id);
 	}
 	
 }

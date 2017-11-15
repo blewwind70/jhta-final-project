@@ -18,7 +18,6 @@ import com.es.movie.vo.MovieTranslation;
 @Service
 public class AddMovieImpl implements AddMovieService{
 	
-	//Áö±ÝÀº TEST
 	@Autowired
 	private MovieMapper movieMapper;
 	

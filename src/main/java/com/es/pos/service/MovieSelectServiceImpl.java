@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.es.management.mapper.CustomerMapper;
 import com.es.management.vo.CustomerType;
 import com.es.movie.mapper.MovieMapper;
 import com.es.movie.vo.MovieTimetable;
@@ -24,6 +25,8 @@ public class MovieSelectServiceImpl implements MovieSelectService {
 	private MovieMapper movieMapper;
 	@Autowired
 	private TicketMapper ticketMapper;
+	@Autowired
+	private CustomerMapper customerMapper;
 	@Autowired
 	private PosTestMapper posTestMapper;
 
@@ -44,12 +47,12 @@ public class MovieSelectServiceImpl implements MovieSelectService {
 
 	@Override
 	public List<CustomerType> getAllPriceKey() {
-		return posTestMapper.getCustomerType(0);
+		return customerMapper.getCustomerType(0);
 	}
 
 	@Override
 	public CustomerType getPriceKeyByTypeId(int typeId) {
-		return posTestMapper.getCustomerType(typeId).get(0);
+		return customerMapper.getCustomerType(typeId).get(0);
 	}
 	
 	@Override

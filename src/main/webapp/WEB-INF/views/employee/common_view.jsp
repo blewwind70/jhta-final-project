@@ -1,4 +1,9 @@
 <%@ page pageEncoding="UTF-8"%>
+<style>
+	.info {
+		background: #FFF !important;
+	}
+</style>
 
 <div id="modal-alert" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog modal-lg" role="document">

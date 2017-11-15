@@ -20,6 +20,7 @@
 <body>
 	<c:set var="nav_active" value="employee" />
 	<%@ include file="/WEB-INF/views/common/nav.jsp" %>
+	<%@ include file="/WEB-INF/views/employee/common_view.jsp" %>
 	<div class="row">
 		<div class="col-md-2">
 			<c:set var="side_active" value="punishment" />
@@ -34,7 +35,7 @@
 		</div>
 	</div>
 	
-	<div id="modal-emploee-detail" class="modal fade" tabindex="-1" role="dialog" style="padding: 12px;">
+	<div id="modal-employee" class="modal fade" tabindex="-1" role="dialog" style="padding: 12px;">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -59,30 +60,25 @@
 									</colgroup>
 									<tr>
 										<th>사원번호</th>
-										<td>1</td>
+										<td class='info' id="td-id"></td>
 										<th>이름</th>
-										<td>강감찬</td>
+										<td class='info' id="td-name"></td>
 										<th>사원타입</th>
-										<td>매점</td>
+										<td class='info' id="td-job-type"></td>
 									</tr>
 									<tr>
 										<th>생년월일</th>
-										<td>1995-05-30</td>
+										<td class='info' id="td-birth"></td>
 										<th>연락처</th>
-										<td colspan="3">010-0000-0000</td>
+										<td class='info' colspan="3" id="td-phone"></td>
 									</tr>
 									<tr>
 										<th>입사일</th>
-										<td>1995-05-30</td>
+										<td class='info' id="td-hired-date"></td>
 										<th>퇴사일</th>
-										<td><input type="date" class="form-control" value="2017-02-02"/></td>
+										<td><td class="info" id="td-dismissed-date"></td></td>
 									</tr>
 								</table>
-							</div>
-						
-							<div class="text-right">
-								<a class="btn btn-default"><i class="fa fa-pencil fa-fw"></i> 수정</a>
-								<a class="btn btn-default"><i class="fa fa-fire fa-fw"></i> 퇴사처리</a>
 							</div>
 						</div>
 						
@@ -95,21 +91,22 @@
 										<col width="33.3%" />
 										<col width="33.3%" />
 									</colgroup>
-									<tr>
-										<th>징계분류</th>
-										<th>징계상세</th>
-										<th>날짜</th>
-									</tr>
-									<tr>
-										<td>횡령</td>
-										<td>퇴근 시 금고에서 돈을 가져감</td>
-										<td>2017-02-2</td>
-									</tr>
+									<thead>
+										
+										<tr>
+											<th>징계분류</th>
+											<th>징계상세</th>
+											<th>날짜</th>
+										</tr>
+									</thead>
+									<tbody class='info' id="tbody-thief">
+										
+									</tbody>
 								</table>
 								
 							</div>
 							<div class="text-right">
-								<a class="btn btn-default"><i class="fa fa-check fa-fw"></i> 등록</a>
+								<a class="btn btn-default" id="btn-punish-register"><i class="fa fa-check fa-fw"></i> 등록</a>
 							</div>
 						</div>
 					</div>
@@ -121,5 +118,108 @@
 	  	</div>
 	</div>
 	
+	<div id="modal-punish" class="modal fade" tabindex="-1" role="dialog" style="padding: 12px;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title">징계등록</h4>
+				</div>
+		      	<div class="modal-body" style="padding: 12px !important; margin: 12px !important;">
+		      		<div class="form-group">
+		      			<label>징계분류</label>
+		      			<select class="form-control" name="pdetail">
+		      				<option value="T">횡령</option>
+		      				<option value="O">기타</option>
+		      			</select>
+		      			<label>징계상세</label>
+		      			<input type="text" class="form-control" name="preason"/>
+		      			<label>날짜</label>
+		      			<input type="date" class="form-control" name="pdate"/>
+		      		</div>
+		      	</div>
+		      	<div class="modal-footer">
+		        	<button id="btn-punish-db" class="btn btn-default btn-block"><i class="fa fa-check fa-fw">등록</i></button>
+		      	</div>
+	    	</div>
+	  	</div>
+	</div>
+	
 </body>
+<script>
+var efn = (function() {
+	var emp;
+	return function(empId) {
+		if(empId) 
+			emp = empId;
+		return emp;
+	};
+})();
+$(function() {
+	$('#btn-punish-register').click(function() {
+		$('#modal-punish').modal();
+		
+	});
+	$('#btn-punish-db').click(function() {
+		var pDetail = $('select[name=pdetail]').val(),
+		preason = $('input[name=preason]').val(),
+		pdate = $('input[name=pdate]').val();
+		var data = {
+			detail: pDetail,
+			reason: preason,
+			date: pdate,
+			employeeId: efn(),
+		};
+		console.log(data);
+		$.ajax({
+			url: '/employee/punish.esc',
+			type: 'post',
+			dataType: 'json',
+			data: data,
+			success: function(management) {
+				if(management.rejected) {
+					alert('해당 직원은 선택된 날짜에 일한적이 없습니다');
+				} else {
+					alert('등록되었습니다');
+				}
+			}
+		});
+	});
+});
+
+function modalSearch(empId) {
+	efn(empId);
+	$.ajax({
+		type: 'get',
+		url: '/employee/detail.esc',
+		dataType: 'json',
+		async: true,
+		data: {id: empId, when: moment().format('YYYY-MM-DD HH:mm:SS')},
+		success: function(emp) {
+			$('#td-id').text(emp.id);
+			$('#td-name').text(emp.name);
+			$('#td-job-type').text(emp.jobType === 'T' ? '티켓팅' : '안내');
+			$('#td-birth').text(moment(emp.birth, 'x').format('YYYY-MM-DD'));
+			$('#td-phone').text(emp.phone);
+			$('#td-hired-date').text(moment(emp.hiredAt, 'x').format('YYYY-MM-DD'));
+			if(emp.dismissedAt) $('#td-dismissed-date').text(moment(emp.dismissedAt, 'x').format('YYYY-MM-DD'));
+			$tbodyTheif = $('#tbody-thief');
+			var html = '';
+			
+			$.each(emp.theifRecords, function(index, record) {
+				html = "<tr>";
+				html += "<td>횡령</td>";
+				html += "<td>"+record.reason+"</td>";
+				html += "<td>"+(moment(record.timetable.startedAt, 'x').format('YYYY-MM-DD'))+"</td>";
+				html += "</tr>";
+				
+				$tbodyTheif.append($(html));
+			});
+			
+			
+			$('#modal-employee').modal();
+		}
+	});
+}
+</script>
 </html>

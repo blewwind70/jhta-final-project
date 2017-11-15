@@ -17,6 +17,7 @@ public class InformationSelectAjaxController {
 	@Autowired
 	private InformationSelectService informationSelectService;
 	
+	// ajax에서 받은 id값을 통해 detail값을 추출한다.
 	@RequestMapping("/getDetailCustomer.esc")
 	@ResponseBody
 	public Customer getDetailCustomer(int id) {
@@ -24,6 +25,7 @@ public class InformationSelectAjaxController {
 		return customer;
 	}
 	
+	// ajax에서 받은 criteria값을 통해 customer값을 추출한다.
 	@RequestMapping("/getSearchCustomers.esc")
 	@ResponseBody
 	public List<Customer> getSearchCustomers(Criteria criteria) {
