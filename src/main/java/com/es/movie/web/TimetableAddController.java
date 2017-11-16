@@ -50,6 +50,7 @@ public class TimetableAddController {
 		int count = 0;
 		for(Integer index : timetableForm.getTables().keySet()) {
 			List<Timetable> tables = timetableForm.getTables().get(index);
+			
 			for(Timetable table : tables) {
 				if(table.getStartedAt() == null || "".equals(table.getStartedAt().trim())) {
 					continue;
@@ -63,10 +64,11 @@ public class TimetableAddController {
 				movieTimetable.setStartedAt(dateStartedAt);
 				movieTimetable.setEndedAt(dateEndedAt);
 				
+				System.out.println(table.getOrdered());
 				Integer ordered = table.getOrdered();
 				movieTimetable.setOrdered(ordered);
 				
-				System.out.println(screenMovie.getScreen());
+				//System.out.println(screenMovie.getScreen());
 				screenMovie.setScreen(screen);
 				screenMovie.getScreen().setId(index);
 				
@@ -86,11 +88,14 @@ public class TimetableAddController {
 					screenMovie.setMovie(movie);
 					screenMovie.getMovie().setId(movie_id4);					
 				}
-				count++;
+				
+				
+				
 				
 				
 				timetableAddService.addTimetable(movieTimetable, screenMovie);
 			}
+			count++;
 		}
 		return "redirect:timetableadd.esc";
 		

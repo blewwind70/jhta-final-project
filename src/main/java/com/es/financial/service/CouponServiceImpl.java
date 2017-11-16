@@ -9,6 +9,9 @@ import com.es.common.vo.Criteria;
 import com.es.financial.mapper.CouponMapper;
 import com.es.financial.mapper.FinTestMapper;
 import com.es.financial.vo.Coupon;
+import com.es.financial.vo.CouponCustomer;
+import com.es.financial.vo.Gift;
+import com.es.financial.vo.GiftCustomer;
 import com.es.management.mapper.CustomerMapper;
 import com.es.management.vo.Customer;
 
@@ -24,12 +27,22 @@ public class CouponServiceImpl implements CouponService {
 	@Autowired
 	private FinTestMapper finTestMapper;
 	
-	
+	// 등록
 	@Override
 	public void addCoupon(Coupon coupon) {
 		
 		couponMapper.addCoupon(coupon);
 	}
+	
+	// 업데이트
+	@Override
+	public void changeReceived(int[] gid) {
+		
+		for(int id : gid) {
+			couponMapper.changeReceived(id);
+		}
+	}
+	
 	// Customer의 검색조건에 맞는 값 조회
 	
 	@Override
@@ -45,16 +58,26 @@ public class CouponServiceImpl implements CouponService {
 		return customerMapper.searchByOther(criteria);
 	}
 	
-	// Customer의 모든값 조회
-	@Override
-	public List<Customer> getAllCustomers() {
-		return customerMapper.getAllCustomers();
-	}
+	
 	// Customer의 상세정보 중 사용자 조회
 	@Override
-	public Customer searchDetailCustomer(int id) {
-		return customerMapper.searchDetailCustomer(id);
+	public Customer getDetailCustomer(int id) {
+		return customerMapper.getDetailCustomer(id);
 	}
 
+	@Override
+	public List<CouponCustomer> getDetailCoupon(int id) {
+		return customerMapper.getDetailCoupon(id);
+	}
+
+	@Override
+	public List<GiftCustomer> getDetailGift(int id) {
+		return customerMapper.getDetailGift(id);
+	}
+
+	
+	
+
+	
 
 }

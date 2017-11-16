@@ -3,6 +3,7 @@ package com.es.financial.vo;
 import java.util.Date;
 
 import com.es.management.vo.Customer;
+import com.es.pos.vo.TicketReceipt;
 import com.es.util.DateSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
@@ -10,11 +11,13 @@ public class CouponCustomer {
 
 	private Integer id;
 	private Integer used;
+	@JsonSerialize(using=DateSerializer.class)
 	private Date receivedAt;
 	@JsonSerialize(using=DateSerializer.class)
 	private Date expiredAt;
 	private Customer customer;
 	private Coupon coupon;
+	private TicketReceipt ticketReceipt;
 	
 	public Integer getId() {
 		return id;
@@ -51,5 +54,11 @@ public class CouponCustomer {
 	}
 	public void setCoupon(Coupon coupon) {
 		this.coupon = coupon;
+	}
+	public TicketReceipt getTicketReceipt() {
+		return ticketReceipt;
+	}
+	public void setTicketReceipt(TicketReceipt ticketReceipt) {
+		this.ticketReceipt = ticketReceipt;
 	}
 }

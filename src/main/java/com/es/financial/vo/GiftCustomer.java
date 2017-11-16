@@ -3,12 +3,16 @@ package com.es.financial.vo;
 import java.util.Date;
 
 import com.es.management.vo.Customer;
+import com.es.util.DateSerializer;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 public class GiftCustomer {
 
 	private Integer id;
+	@JsonSerialize(using=DateSerializer.class)
 	private Date receivedAt;
 	private Customer customer;
+	private Integer received;
 	private Gift gift;
 	
 	public Integer getId() {
@@ -34,5 +38,11 @@ public class GiftCustomer {
 	}
 	public void setGift(Gift gift) {
 		this.gift = gift;
+	}
+	public Integer getReceived() {
+		return received;
+	}
+	public void setReceived(Integer received) {
+		this.received = received;
 	}
 }

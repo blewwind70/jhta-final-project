@@ -61,4 +61,12 @@ public class MovieTimetable {
 	public void setScreenMovie(ScreenMovie screenMovie) {
 		this.screenMovie = screenMovie;
 	}
+	@Override
+	public String toString() {
+		return "MovieTimetable [id=" + id + ", startedAt=" + startedAt + ", endedAt=" + endedAt + ", onlinePurchase="
+				+ onlinePurchase + ", offlinePurchase=" + offlinePurchase + ", screenMovie=" + screenMovie
+				+ ", ordered=" + ordered + "]";
+	}
+	
+	
 }

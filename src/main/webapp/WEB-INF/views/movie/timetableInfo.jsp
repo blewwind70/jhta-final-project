@@ -24,10 +24,12 @@
 				 	<div class= "form-group">
 						<label class="control-label col-sm-1">일자선택 </label> 
 						<div class="col-sm-3">
-							<input type="date" class="form-control" />
+							<input type="date" class="form-control" id="select-dates"/>
 						</div>
 						<div class="col-sm-1 col-sm-offset-7">
-							<button class="btn btn-success form-control" ><i class="fa fa-table fa-fw"></i> 엑셀</button>
+							<button class="btn btn-success form-control" >
+							<i class="fa fa-table fa-fw"></i> 엑셀
+							</button>
 						</div>
 					</div>
 				 </form>
@@ -38,14 +40,14 @@
 				<div class="box">
 				<table class="table table-bordered" style="text-align: center">
 					<colgroup>
-						<col width="12.5%" ;/>
-						<col width="12.5%" ;/>
-						<col width="12.5%" ;/>
-						<col width="12.5%" ;/>
-						<col width="12.5%" ;/>
-						<col width="12.5%" ;/>
-						<col width="12.5%" ;/>
-						<col width="12.5%" ;/>
+						<col width="12.5%"/>
+						<col width="12.5%"/>
+						<col width="12.5%"/>
+						<col width="12.5%"/>
+						<col width="12.5%"/>
+						<col width="12.5%"/>
+						<col width="12.5%"/>
+						<col width="12.5%"/>
 					</colgroup>
 					<thead>
 						<tr>
@@ -84,22 +86,22 @@
 <script>
 $(function() {
 	
-	$('#날짜아이디').on("change", function(){
+	$('#select-dates').on("change", function(){
 		var selectDate = $(this).val()
 		console.log(selectDate)
 		
 	 	$.ajax({
 			type: "GET",
-        	url: ".esc",
-        	data:{date: selectDate},
+        	url: "getTimetableInfo.esc",
+        	data:{playingDate: selectDate},
         	dataType: "json",
         	success:function(result) {
         		var html = "";
         		console.log(result);
-        		$.each(result, function(index, item){	
+        		/* $.each(result, function(index, item){	
         			html += ""
         		})
-        		$("뿌려질곳").html(html)
+        		$("뿌려질곳").html(html) */
         	}
 		})  
 	})

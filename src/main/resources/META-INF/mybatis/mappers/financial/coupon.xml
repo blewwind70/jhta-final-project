@@ -17,7 +17,11 @@
 		values
 		(id_seq.nextval, #{distributeType}, #{distributUntil}, #{RECEIVED}, #{reason}, #{"customerRank.id"}, #{name})
 	</insert> 
-	
+ 	<update id="changeReceived" parameterType="int">
+		update gift_customers
+		set RECEIVED = 1
+		where id = #{id}
+	</update> 
 	
 </mapper>
 

@@ -2,6 +2,7 @@ package com.es.pos.mapper;
 
 import java.util.List;
 
+import com.es.financial.vo.CouponCustomer;
 import com.es.pos.vo.DiscountTicket;
 import com.es.pos.vo.PosLoginHistory;
 import com.es.pos.vo.Ticket;
@@ -26,5 +27,9 @@ public interface TicketMapper {
 	PosLoginHistory getFosAndDateSelect(TicketReceipt ticketReceipt);
 	// 유저아이디로 상세정보 값 출력
 	TicketReceipt getRidDetailSelect(int customerId);
+	List<Ticket> getTicketByReceiptId(int receiptId);
+	List<DiscountTicket> getDiscountsByReceiptId(int receiptId);
+	List<CouponCustomer> getCouponesByReceiptId(int receiptId);
 	
+	void updateReceipt(TicketReceipt ticketReceipt);
 }

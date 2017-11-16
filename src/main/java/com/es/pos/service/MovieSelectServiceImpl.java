@@ -42,7 +42,15 @@ public class MovieSelectServiceImpl implements MovieSelectService {
 		map.put("playingDate", playingDate);
 		map.put("movieId", movieId);
 		
-		return posTestMapper.getMovieTimetableByDateNMovieId(map);
+		List<MovieTimetable> timetableList = posTestMapper.getMovieTimetableByDateNMovieId(map);
+		for(MovieTimetable timetable : timetableList) {
+			int reservedSeats = ticketMapper.getReservedSeatsByTimetableId(timetable.getId()).size();
+			int totalSeats = timetable.getScreenMovie().getScreen().getSeatsCount();
+			
+			timetable.getScreenMovie().getScreen().setSeatsCount(totalSeats - reservedSeats);
+		}
+		
+		return timetableList;
 	}
 
 	@Override

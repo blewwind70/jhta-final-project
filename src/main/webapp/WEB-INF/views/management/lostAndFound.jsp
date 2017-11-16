@@ -116,7 +116,7 @@
                                 </tr>
                                 <tr>
                                     <th>처리상황</th>
-                                    <td>
+                                    <td id="selectBoxTd">
                                         <select name="status" id="status" class="form-control">
                                             <option value="K">보관</option>
                                             <option value="G">인계</option>
@@ -177,16 +177,18 @@
 <script>
      $(function() {
     	 
+    	 var value = "";
     	 // 고객테이블 클릭 시 하이라이트 처리
 	       $("#mainTbody").on("click", ".detailhighlight", function() {
-              $(".detailhighlight").css("background-color", "white");
-              $(this).css("background-color", "#FA58F4");
+	    	   $("#mainTbody .active").attr("class", "detailhighlight");
+	           $(".detailhighlight").css("background-color", "white");
+	           $(this).attr("class", "active");
               
               // customer의 id값
-              var value = $(this).attr('id');
+              value = $(this).attr('id');
               console.log(value)
+	       })   
               
-              if(value) {
               	// 모달창 열림 스크립트 모달값 조회
        	       $("#btn-open-modal").click(function(e) {
        	    	    e.preventDefault();
@@ -208,6 +210,7 @@
 			           	 }
 	       	      	})
 	       	      	console.log(value)
+	              if(value) {
        	          $.ajax({
 	                   	type: "GET",
 	                   	url: "getDetailLostItemSelect.esc",
@@ -221,22 +224,48 @@
 	                   		$("#detailTable #finder").text(result.finder);
 	                   		$("#detailTable #findLocation").text(result.findLocation);
 	                   		$("input[name=id]").val(result.id);
+	                   		
+	                   		var html = "";
+	                   		
+	                   		if(result.returnedAt) {
+	                   			var statusValue = "";
+	                   			if(result.status == "G") {
+	                   				var statusValue = "인계"; 
+	                   			}
+	                   			if(result.status == "P") {
+	                   				var statusValue = "경찰서 인계";
+	                   			}
+	                   			$("#status").remove();
+	                   			$("#selectBoxTd").append("<input class='form-control' value='"+statusValue+"' readonly='readonly' id='status'>")
+	                   			$("#insertGive").hide();
+				           		$("#btnSuccess").hide();
+	                   		}else {
+	                   			
+	                   			html += "<select name='status' id='status' class='form-control'>"
+	                   			html += "<option value='K'>보관</option>"
+	                   			html += "<option value='G'>인계</option>"
+	                   			html += "<option value='P'>경찰서 인계</option>"
+	                   			html += "</select>"
+	                   			$("#status").remove();
+	                   			$("#selectBoxTd").append(html)
+	                   			$("#insertGive").show();
+				           		$("#btnSuccess").show();
+	                   		}
 	                   	}
 	               })
        	           return false;
+	              }else {
+	                	
+                	alert("값을 선택하지 않았습니다. 선택해주세요");
+                	
+                	// 모달창 닫힘 스크립트
+         	        $("#btn-open-modal").click(function() {
+         	           $("#myModal").modal("hide");
+         	           return false;
+         	        })
+                  }
        	       })
               	
-              }else {
-              	
-              	alert("값을 선택하지 않았습니다. 선택해주세요");
-              	
-              	// 모달창 닫힘 스크립트
-       	        $("#btn-open-modal").click(function() {
-       	           $("#myModal").modal("hide");
-       	           return false;
-       	        })
-              }
-              
               // 모달창 안에서 물건을 돌려주었을 때 입력폼에 값을 넣지 않았을 때 알럿을 띄우는 작업
               $("#btnSuccess").click(function(e) {
             	  var giver = $("#giver").val();
@@ -252,7 +281,7 @@
             		  return;
             	  }
               })
-	      })
+	      
          
          // 검색 값 조회
          $("#search-btn").click(function(e) {

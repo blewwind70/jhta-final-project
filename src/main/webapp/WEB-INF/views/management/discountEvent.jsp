@@ -192,14 +192,15 @@
 			
 			var startDateCompare = new Date(startDateValue[0], parseInt(startDateValue[1])-1, startDateValue[2]);
 	        var endDateCompare = new Date(endDateValue[0], parseInt(endDateValue[1])-1, endDateValue[2]);
+	        
 	        if(discountType == "P") {
-	        	if(!(name || customerTypeId || discountPercent || detail)) {
+	        	if(!(name && customerTypeId && discountPercent && detail)) {
 		        	alert("값을 입력하지 않았습니다. 값을 입력해 주세요.")
 		        	e.preventDefault();
 		        	return;
 		        }	
 	        }else {
-	        	if(!(name || customerTypeId || discountPrice || detail)) {
+	        	if(!(name && customerTypeId && discountPrice && detail)) {
 		        	alert("값을 입력하지 않았습니다. 값을 입력해 주세요.")
 		        	e.preventDefault();
 		        	return;

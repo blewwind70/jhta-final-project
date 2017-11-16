@@ -20,7 +20,7 @@ public class TimetableAddAjaxController {
 	@RequestMapping("/getMovieTranslationsByDate.esc")
 	@ResponseBody
 	public List<MovieTranslation> getMovieTranslationsByDate(Date date) {
-		System.out.println(date);
+		//System.out.println(date);
 		return timetableAddService.getMovieTranslationsByDate(date);
 	}
 	

@@ -22,6 +22,7 @@ public interface PosTestMapper {
 	List<Seat> getSeatsByScreenId(int screenId);
 	List<CouponCustomer> getCouponesByCustomerId(int customerId);
 	CouponCustomer getCouponCustomerById(int customerId);
+	MovieTranslation getMovieTranslateByScreenMovieId(int screenMovieId);
 	
 	void updateCouponCustomerInfo(CouponCustomer couponCustomer);
 	void updateCustomerInfo(Customer customer);

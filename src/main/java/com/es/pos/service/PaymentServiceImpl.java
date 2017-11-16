@@ -33,7 +33,7 @@ public class PaymentServiceImpl implements PaymentService {
 	private PosTestMapper posTestMapper;
 	
 	@Override
-	public void sellMovieTicket(List<Ticket> tickets, List<Discount> discounts, TicketReceipt receipt) {
+	public void sellMovieTicket(List<Ticket> tickets, List<Discount> discounts, List<CouponCustomer> coupones, TicketReceipt receipt) {
 		Date now = new Date();
 		String dateNo = new SimpleDateFormat("yyyy-MMdd").format(now);
 		
@@ -46,8 +46,9 @@ public class PaymentServiceImpl implements PaymentService {
 		receipt.setId(receiptSeq);
 		receipt.setRid(rid);
 		Customer customer = receipt.getCustomer();
-		if(customer != null) {
-			receipt.setMiliege(customer.getMiliege());			
+		Integer miliege = customer.getMiliege();
+		if(customer != null && miliege != null) {
+			receipt.setMiliege(miliege);			
 		}
 		
 		ticketMapper.addTicketReceipt(receipt);
@@ -63,6 +64,13 @@ public class PaymentServiceImpl implements PaymentService {
 			discountTicket.setTicketReceipt(receipt);
 			
 			ticketMapper.addDiscountTicket(discountTicket);
+		}
+		
+		for(CouponCustomer forCoupon : coupones) {
+			forCoupon.setUsed(1);
+			forCoupon.setTicketReceipt(receipt);
+			
+			posTestMapper.updateCouponCustomerInfo(forCoupon);
 		}
 	}
 	
@@ -97,12 +105,6 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public CouponCustomer findCouponOfCustomer(int customerId) {
 		return posTestMapper.getCouponCustomerById(customerId);
-	}
-
-	@Override
-	public void changeUsedCoupone(CouponCustomer couponCustomer) {
-		couponCustomer.setUsed(1);
-		posTestMapper.updateCouponCustomerInfo(couponCustomer);
 	}
 
 	@Override

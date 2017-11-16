@@ -51,7 +51,7 @@
 									<option value="D">소포</option>
 								</select>
 							</div>
-							<label class="control-label col-sm-1">지급기한</label>
+							<label class="control-label col-sm-1">지급날짜</label>
 							<div class="col-sm-5">
 								<input type="date" class="form-control" id="distributUntil"
 									name="distributUntil">

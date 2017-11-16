@@ -14,6 +14,8 @@ public class PaymentForm {
 	private Integer usedPoint;
 	private String usedDiscount;
 	
+	private String receiptNo;
+	
 	public Integer getPaymentPrice() {
 		return paymentPrice;
 	}
@@ -79,5 +81,11 @@ public class PaymentForm {
 	}
 	public void setUsedDiscount(String usedDiscount) {
 		this.usedDiscount = usedDiscount;
+	}
+	public String getReceiptNo() {
+		return receiptNo;
+	}
+	public void setReceiptNo(String receiptNo) {
+		this.receiptNo = receiptNo;
 	}
 }

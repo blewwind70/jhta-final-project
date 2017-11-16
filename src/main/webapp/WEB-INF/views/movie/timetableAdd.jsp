@@ -171,90 +171,7 @@
 								</td>
 								
 							</tr>
-							<!-- <tr>
-								<td class="ordered">2회차	</td>
-								<td>
-									<input type="hidden" id="" value="2" name="tables[1][1].ordered">
-									<div class="form-group">
-										<label>광고시작시간</label> 
-										<input type="time" id="adv-time-1-1" class="form-control adv-start-time"  name="tables[1][1].startedAt"/>
-									</div>
-									<div class="form-group">
-										<label>영화시작시간</label> 
-										<input type="time" id="start-time-1-1" class="form-control movie-start-time" />
-									</div>
-									<div class="form-group">
-										<label>영화상영시간</label> 
-										<input type="text" id="play-time-1-1" class="form-control" style="width: 128px;" value="120분" />
-									</div>
-									<div class="form-group">
-										<label>영화종료시간</label> 
-										<input type="time" id="end-time-1-1"	class="form-control movie-end-time" name="tables[1][1].endedAt" />
-									</div>
-								</td>
-
-								<td>
-									<input type="hidden" id="" value="2" name="tables[2][1].ordered">
-									<div class="form-group">
-										<label>광고시작시간</label> 
-										<input type="time" id="adv-time-1-2" class="form-control adv-start-time" name="tables[2][1].startedAt"/>
-									</div>
-									<div class="form-group">
-										<label>영화시작시간</label> 
-										<input type="time" id="start-time-1-2" class="form-control movie-start-time" />
-									</div>
-									<div class="form-group">
-										<label>영화상영시간</label> 
-										<input type="text" id="play-time-1-2" class="form-control" style="width: 128px;" value="120분" />
-									</div>
-									<div class="form-group">
-										<label>영화종료시간</label> 
-										<input type="time" id="end-time-1-2"	class="form-control movie-end-time" name="tables[2][1].endedAt"/>
-									</div>
-								</td>
-
-								<td>
-									<input type="hidden" id="" value="2" name="tables[3][1].ordered">
-									<div class="form-group">
-										<label>광고시작시간</label> 
-										<input type="time" id="adv-time-1-3" class="form-control adv-start-time" name="tables[3][1].startedAt"/>
-									</div>
-									<div class="form-group">
-										<label>영화시작시간</label> 
-										<input type="time" id="start-time-1-3" class="form-control movie-start-timel" />
-									</div>
-									<div class="form-group">
-										<label>영화상영시간</label> 
-										<input type="text" id="play-time-1-3" class="form-control" style="width: 128px;" value="120분" />
-									</div>
-									<div class="form-group">
-										<label>영화종료시간</label> 
-										<input type="time" id="end-time-1-3"	class="form-control movie-end-time" name="tables[3][1].endedAt"/>
-									</div>
-								</td>
-
-								<td>
-									<input type="hidden" id="" value="2" name="tables[4][1].ordered">
-									<div class="form-group">
-										<label>광고시작시간</label> 
-										<input type="time" id="adv-time-1-4" class="form-control adv-start-time" name="tables[4][1].startedAt"/>
-									</div>
-									<div class="form-group">
-										<label>영화시작시간</label> 
-										<input type="time" id="start-time-1-4" class="form-control movie-start-time" />
-									</div>
-									<div class="form-group">
-										<label>영화상영시간</label> 
-										<input type="text" id="play-time-1-4" class="form-control" style="width: 128px;" value="120분" />
-									</div>
-									<div class="form-group">
-										<label>영화종료시간</label> 
-										<input type="time" id="end-time-1-4"	class="form-control movie-end-time" name="tables[4][1].endedAt"/>
-									</div>
-								</td>
-								
-							</tr> -->
-
+							
 						</tbody>
 					</table>
 					
@@ -365,7 +282,7 @@ $(function(){
       html += '<input type="hidden" id="" value="'+ordered+'" name="tables[3]['+tablecnt+'].ordered">';
       html += '<div class="form-group">';
       html += '<label>광고시작시간</label>';
-      html += '<input type="time" id="adv-time-'+ordered+'-3" class="form-control adv-start-time" name=tables[3]['+tablecnt+'].startedAt" />';
+      html += '<input type="time" id="adv-time-'+ordered+'-3" class="form-control adv-start-time" name="tables[3]['+tablecnt+'].startedAt"/>';
       html += '</div>';
       html += '<div class="form-group">';
       html += '<label>영화시작시간</label>';
@@ -384,7 +301,7 @@ $(function(){
       html += '<input type="hidden" id="" value="'+ordered+'" name="tables[4]['+tablecnt+'].ordered">';
       html += '<div class="form-group">';
       html += '<label>광고시작시간</label>';
-      html += '<input type="time" id="adv-time-'+ordered+'-4" class="form-control adv-start-time" name=tables[4]['+tablecnt+'].startedAt"/>';
+      html += '<input type="time" id="adv-time-'+ordered+'-4" class="form-control adv-start-time" name="tables[4]['+tablecnt+'].startedAt"/>';
       html += '</div>';
       html += '<div class="form-group">';
       html += '<label>영화시작시간</label>';

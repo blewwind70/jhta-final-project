@@ -3,6 +3,7 @@ package com.es.movie.mapper;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.es.common.vo.Criteria;
 import com.es.movie.vo.Genre;
@@ -38,14 +39,24 @@ public interface MovieMapper {
 		void updateCloseDate(int id);
 		
 	
-	// 시간표등록 - 등록가능영화가져오기
+	// 시간표등록 - 날짜로 등록가능영화가져오기
 		List<MovieTranslation> getMovieTranslationsByDate(Date date);
 	
 	// 시간표등록 
 		void addMovieTimetable(MovieTimetable  movieTimetable);
 		void addScreenMovie(ScreenMovie screenMovie);
 		int getScreenMovieSeq();
-
+		
+	//특정 연/월/일에 상영하는 모든 영화 조회 (중복 제외) 
+		List<MovieTranslation> getMoviesByDate(Date playingDate);
+	//특정 연/월/일에 상영하는 모든 영화 조회
+		List<MovieTranslation> getAllMoviesByDate(Date playingDate);
+		
+	// 특정 연/월/일 + Movie_id로 상영시간 조회  map에 playingDate, movieId 이름으로 담기
+	List<MovieTimetable> getMovieTimetableByDateNMovieId(Map<String, Object> map);
+	
+	//단순 ID로 MovieTimetable 조회
+	List<MovieTimetable> getMovieTimetableByscreenId(int movieId);
 		
 		
 }

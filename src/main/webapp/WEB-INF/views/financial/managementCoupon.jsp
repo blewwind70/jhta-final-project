@@ -20,7 +20,7 @@
 		</div>
 		<div class="col-md-10">
 			<div class="container" style="margin-top: 50px;">
-				<h2 class="page-header">쿠폰 / 사은품 조회 및 수령등록</h2>
+				<h2 class="page-header">쿠폰 / 사은품 조회 및 수령</h2>
 				<div class="row">
 					<form id="search-form" class="form-inline">
 						<div class="form-group">
@@ -71,7 +71,7 @@
 							<div class="modal-header">
 								<h4 class="modal-title">상세조회</h4>
 							</div>
-							<form>
+							<form id="gift-form" action="changeReceived.esc" method="post">
 								<div class="modal-body">
 									<div class="form-group">
 										<table class="table table-condensed">
@@ -88,67 +88,42 @@
 										</table>
 									</div>
 									<div class="form-group">
-										
 										<label class="control-label">쿠폰 내역</label>
 										<div class="row box">
 											<table class="table table-condensed ">
 												<thead>
 													<tr>
-														<th class="col-sm-1"><input type="checkbox"
-															name="check" id="check"></th>
-														<th class="col-sm-3" id="couponName">쿠폰명</th>
-														<th class="col-sm-2" id="couponReceived">수령여부</th>
-														<th class="col-sm-3" id="customerReceived">수령날짜</th>
-														<th class="col-sm-3" id="customerExpired">만료날짜</th>
+														<th class="col-sm-3" >쿠폰명</th>
+														<th class="col-sm-3" >사용여부</th>
+														<th class="col-sm-3" >사용날짜</th>
+														<th class="col-sm-3" >만료날짜</th>
 													</tr>
 												</thead>
-												<tbody>
-													
+												<tbody id="modalCouponTable">
 													
 												</tbody>
 											</table>
-											<div class="text-right">
-												<button id="btn-modal" class="btn btn-primary btn-sm">수령완료</button>
-											</div>
 										</div>
 									</div>
 
-									<div>
+									<div class="form-group">
 										<label class="control-label">사은품 내역</label>
 										<div class="row box" >
 											<table class="table table-condensed ">
 												<thead>
 													<tr>
-														<th class="col-sm-1"><input type="checkbox"
-															name="check"></th>
+														<th class="col-sm-1"><input type="checkbox" id="giftCheck" ></th>
 														<th class="col-sm-3">사은품명</th>
-														<th class="col-sm-3">수령여부</th>
-														<th class="col-sm-3">수령날짜</th>
+														<th class="col-sm-4">수령여부</th>
+														<th class="col-sm-4">수령날짜</th>
 													</tr>
 												</thead>
-												<tbody>
-													<div>
-														<tr>
-															<td class="col-sm-1"><input type="checkbox"
-																name="check"></td>
-															<td class="col-sm-3">수첩</td>
-															<td class="col-sm-3">N</td>
-															<td class="col-sm-3">2017-04-11</td>
-															
-														</tr>
-														<tr>
-															<td class="col-sm-1"><input type="checkbox"
-																name="check"></td>
-															<td class="col-sm-3">인형</td>
-															<td class="col-sm-3">N</td>
-															<td class="col-sm-3">2017-04-11</td>
-															
-														</tr>
-													</div>
+												<tbody id="modalGiftTable">
+													
 												</tbody>
 											</table>
 											<div class="text-right">
-												<button id="btn-modal" class="btn btn-primary btn-sm">수령완료</button>
+												<button id="btn-received" class="btn btn-primary btn-sm" name="updateGiftReceived">수령완료</button>
 											</div>
 										</div>
 									</div>
@@ -170,6 +145,33 @@
 <script type="text/javascript">
 $(function(){
 	
+	 // 상세페이지 체크박스 전체 셀렉트
+	$('input#giftCheck').change(function() {
+			var isChecked = $(this).is(':checked');
+			if(isChecked) {
+				$('input[name=gid]').prop("checked", true);
+			} else {
+				$('input[name=gid]').prop("checked", false);
+			}
+	});
+	// 수령변환
+	$('#btn-received').click(function(event){
+		event.preventDefault();
+		
+		$.ajax({
+			type:'POST',
+			url:"changeReceived.esc",
+			data:$("#gift-form").serialize(),
+			dataType:"text",
+			success:function(result) {
+				$("input[name=gid]:checked").each(function() {
+					$(this).closest("tr").find(".received-td").text("Y");
+				});
+			}
+		})
+		
+	}); 
+	
 	// 하이라이트
 	$("#searchTable").on("click",".highlight", function() {
 	    $(".highlight").css("background-color", "white");
@@ -190,19 +192,54 @@ $(function(){
 					},
 					dataType:"json",
 					success:function(result){
-						console.log(result);
-						$("#detailId").text(result.username); 
-						$("#detailName").text(result.name);
-						$("#detailGrade").text(result.customerRank.type);
-						$("#detailBirth").text(result.birth);
-						$("#detailPhone").text(result.phone);
-						$("#detailEmail").text(result.email); 
+						$("#detailId").text(result.searchAll.username); 
+						$("#detailName").text(result.searchAll.name);
+						$("#detailGrade").text(result.searchAll.customerRank.type); 
+						$("#detailBirth").text(result.searchAll.birth);
+						$("#detailPhone").text(result.searchAll.phone);
+						$("#detailEmail").text(result.searchAll.email); 
+						var html="";
+						$.each(result.searchCoupon, function(index, item) {
+							html += "<tr>"
+							html += "<td>"+item.coupon.name+"</td>"
+							if(item.used == 1){
+								html += "<td>Y</td>"
+							} else {
+								html += "<td>N</td>"
+							}
+							if(item.receivedAt != null){
+								html += "<td>"+item.receivedAt+"</td>"
+							} else {
+								html += "<td></td>"
+							}
+							html += "<td>"+item.expiredAt+"</td>"
+							html += "</tr>"
+						});
+						$("#modalCouponTable").html(html);
+						var html="";
+						$.each(result.searchGift, function(index, item) {
+					
+							html += "<tr>"
+							html += "<td><input type='checkbox' name='gid' value='"+item.id+"'/></td>"
+							html += "<td>"+item.gift.name+"</td>"
+							if(item.received == 1){
+								
+								html += "<td class='received-td'>Y</td>"
+							} else {
+								html += "<td class='received-td'>N</td>"
+							}
+							if(item.receivedAt != null){
+								html += "<td>"+item.receivedAt+"</td>"
+							} else {
+								html += "<td></td>"
+							}
+							html += "</tr>"
+						});
+						$("#modalGiftTable").html(html);
 						
 					}
-				}),
-				$.ajax({
-					
 				})
+				
 			})
 		} else {
 			history.go;

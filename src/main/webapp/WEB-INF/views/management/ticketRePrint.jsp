@@ -52,7 +52,6 @@
         <div id="myModal" class="modal fade" role="dialog">
           <div class="modal-dialog modal-lg"> 
 
-
             <div class="modal-content">
 
               <div class="modal-header">
@@ -90,7 +89,6 @@
                 </div> 
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal"><i class="fa fa-print fa-fw"></i>재출력</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle fa-fw"></i>취소</button>
               </div>
             </div>
@@ -103,35 +101,32 @@
 </body>
 <script>
      $(function() {
-    	// 고객테이블 클릭 시 하이라이트 처리
-	       $("#mainTbody").on("click", ".detailhighlight", function() {
-            $(".detailhighlight").css("background-color", "white");
-            $(this).css("background-color", "#FA58F4");
-            
-            // customer의 id값
-            var value = $(this).attr('id');
-            var posValue = $(this).attr('pos');
-            var purchaseDateValue = $(this).attr('purchaseDate');
-            
-           
-            console.log(value)
-            
-            console.log(purchaseDateValue)
-           
-            
-            if(value) {
-            	// 모달창 열림 스크립트 모달데이터 조회
-     	       $("#btn-open-modal").click(function() {
-     	           $("#myModal").modal("show");
+		   var idValue = "";
+		   var ridValue = "";
+		   var posValue = "";
+		   var purchaseDateValue = "";
+           console.log("초기화" + purchaseDateValue);
+		   
+    		// 고객테이블 클릭 시 하이라이트 처리
+   	       $("#btn-open-modal").click(function() {
+   	    	   
+   	    	   if (!$("tr.active").length) {
+   	    		   return;
+   	    	   }
+   	    	  if(idValue) {
+	            	// 모달창 열림 스크립트 모달데이터 조회
+	   	    		$("#myModal").modal("show");
+	    	           console.log('11');
+	    	           console.log({id: idValue, pos: posValue ,purchaseDate: purchaseDateValue, rid: ridValue});
 	     	          $.ajax({
 	                  	type: "GET",
 	                  	url: "getRidDetailSelect.esc",
-	                  	data:{id: value, pos: posValue ,purchaseDate: purchaseDateValue},
+	                  	data:{id: idValue, pos: posValue ,purchaseDate: purchaseDateValue, rid: ridValue},
 	                  	dataType: "json",
 	                  	success:function(result) {
+	                  		console.log("result" + result.purchaseDate);
 	                  		$("#rid").text(result.rid);
 	                  		$("#modal-purchaseDate").text(result.purchaseDate);
-	                  		console.log(result.purchaseDate);
 	                  		$("#price").text(result.price);
 	                  		if(result.purchaseType == 'O') {
 	                  			$("#paymentType").text('카드');
@@ -146,7 +141,7 @@
 	                  		$("#posId").text(result.pos.id);
 	                  		$("#seller").text(result.employee.name);
 	                  		if(result.customer.id) {
-		                    		$("#customerId").text("Y");
+	                     		$("#customerId").text("Y");
 	                  		}else{
 	                  			$("#customerId").text("N");
 	                  		}
@@ -154,18 +149,31 @@
 	                  		$("#name").text(result.customer.name);
 	                  	}
 	                  })
-     	           		return false;
-     	       })
-            }else {
-            	
-            	alert("값을 선택하지 않았습니다. 선택해주세요");
-            	
-            	// 모달창 닫힘 스크립트
-      	       $("#btn-open-modal").click(function() {
-      	           $("#myModal").modal("hide");
-      	           return false;
-      	       })
-            }
+	    	           		return false;
+	            }else {
+	            	
+	            	alert("값을 선택하지 않았습니다. 선택해주세요");
+	            	
+	            	// 모달창 닫힘 스크립트
+	      	       $("#btn-open-modal").click(function() {
+	      	           $("#myModal").modal("hide");
+	      	           return false;
+	      	       })
+	           }
+   	           
+   	       })
+	       $("#mainTbody").on("click", ".detailhighlight", function() {
+	            $("#mainTbody .active").attr("class", "detailhighlight");
+	            $(".detailhighlight").css("background-color", "white");
+	            $(this).attr("class", "active");
+
+	            // customer의 id값
+	            idValue = $(this).attr('id');
+	            ridValue = $(this).attr('rid');
+	            posValue = $(this).attr('pos');
+	            purchaseDateValue = $(this).attr('purchaseDate');
+	            console.log("초기화 후 값을 담음" + purchaseDateValue);
+	            
 	       	})
          
          // 검색 값 조회
@@ -181,7 +189,7 @@
 	         		success: function(result) {
 	         			var html = "";
 	        			$.each(result, function(index, item) {
-	        				html += "<tr class='detailhighlight' id='"+item.customer.id+"' pos='"+item.pos.id+"' purchaseDate='"+item.purchaseDate+"'>"
+	        				html += "<tr class='detailhighlight' rid='"+item.rid+"' id="+item.customer.id+" pos='"+item.pos.id+"' purchaseDate='"+item.purchaseDate+"'>"
 	            			html += "<td>"+item.purchaseDate+"</td>"
 	            			html += "<td>"+item.price+"</td>"
 	            			if(item.customer.id) {

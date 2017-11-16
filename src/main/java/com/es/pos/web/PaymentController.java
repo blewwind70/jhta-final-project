@@ -118,9 +118,12 @@ public class PaymentController {
 			Customer customer = paymentService.findCustomerInfo(customerId);
 			
 			Integer miliege = paymentForm.getUsedPoint();
-			
-			customer.setMiliege(miliege);
-			paymentService.changeCustomerMiliege(customer);
+			if(miliege != null) {
+				customer.setMiliege(miliege);
+				paymentService.changeCustomerMiliege(customer);
+			} else {
+				customer.setMiliege(null);
+			}
 			
 			receipt.setCustomer(customer);
 		}
@@ -148,41 +151,47 @@ public class PaymentController {
 			
 			CustomerType customerType = movieSelectService.getPriceKeyByTypeId(typeId);
 			
-			int index = 0;
+			int ticketIndex = 0;
 			for(int i=0; i<amount; i++) {
 				Ticket ticket = new Ticket();
 				ticket.setMovieTimetable(timetable);
 				ticket.setCustomerType(customerType);
 				ticket.setSeat(seats.pop());
 				
-				tickets.add(index, ticket);
-				index++;
+				tickets.add(ticketIndex, ticket);
+				ticketIndex++;
 			}
 		}
 		
-		List<String> discountIdList = Arrays.asList(paymentForm.getUsedDiscount().split(","));
+		String discountIdArr = paymentForm.getUsedDiscount();
 		List<Discount> discounts = new ArrayList<Discount>();
-		int index = 0;
-		for(String discountId : discountIdList) {
-			Discount discount = paymentService.findDiscountInfo(Integer.parseInt(discountId));
-			discounts.add(index, discount);
-			index++;
+		if(discountIdArr != "") {
+			List<String> discountIdList = Arrays.asList(discountIdArr.split(","));
+			int discountIndex = 0;
+			for(String discountId : discountIdList) {
+				Discount discount = paymentService.findDiscountInfo(Integer.parseInt(discountId));
+				discounts.add(discountIndex, discount);
+				discountIndex++;
+			}
 		}
 		
-		paymentService.sellMovieTicket(tickets, discounts, receipt);
-		
-		String usedCouponIdArr = paymentForm.getUsedCoupon();
-		if(usedCouponIdArr != "") {
-			List<String> couponList = Arrays.asList(usedCouponIdArr.split(","));
+		String couponIdArr = paymentForm.getUsedCoupon();
+		List<CouponCustomer> coupones = new ArrayList<CouponCustomer>();
+		if(couponIdArr != "") {
+			List<String> couponList = Arrays.asList(couponIdArr.split(","));
 			
+			int couponIndex = 0;
 			for(String couponId : couponList) {
 				CouponCustomer couponCustomer = paymentService.findCouponOfCustomer(Integer.parseInt(couponId));
 				if(couponCustomer == null) {
 					throw new RuntimeException("존재하지 않는 쿠폰입니다.");
 				}
-				paymentService.changeUsedCoupone(couponCustomer);
+				coupones.add(couponIndex, couponCustomer);
+				couponIndex++;
 			}
 		}
+		
+		paymentService.sellMovieTicket(tickets, discounts, coupones, receipt);
 		
 		return "redirect:/pos/home.esc";
 	}

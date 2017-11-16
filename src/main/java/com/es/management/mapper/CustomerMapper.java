@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.es.common.vo.Criteria;
+import com.es.financial.vo.CouponCustomer;
+import com.es.financial.vo.GiftCustomer;
 import com.es.management.vo.Customer;
 import com.es.management.vo.CustomerType;
 
@@ -22,8 +24,9 @@ public interface CustomerMapper {
 	List<Customer> searchByOther(Criteria criteria);
 	// 쿠폰/사은품 사은품으로 조회
 	List<Customer> searchByGift(Criteria criteria);
-	// 쿠폰/사은품 상세정보
-	Customer searchDetailCustomer(int id);
+	// 쿠폰/사은품 쿠폰 상세정보
+	List<CouponCustomer> getDetailCoupon(int id);
+	List<GiftCustomer> getDetailGift(int id);
 	
 	// 키인 저장
 	void setByKeyIn(CustomerType customerType);

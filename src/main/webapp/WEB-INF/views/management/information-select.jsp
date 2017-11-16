@@ -121,79 +121,88 @@
 </body>
 <script>
 	   $(function() {
+		   var value = "";
+		   
+           	// 모달창 열림 스크립트 모달값 조회
+    	       $("#btn-open-modal").click(function() {
+  				  if (!$("tr.active").length) {
+				  	   	return;
+				  }
+    	          $("#myModal").modal("show");
+				  if(value) {
+	    	          $.ajax({
+	                   	type: "GET",
+	                   	url: "getDetailCustomer.esc",
+	                   	data:{id: value},
+	                   	dataType: "json",
+	                   	success:function(result) {
+	                   		$("#id").text(result.id);
+	                   		$("#name").text(result.name);
+	                   		//$("#rank").text(result.customerRank.type);
+	                   		$("#birth").text(result.birth);
+	                   		$("#phone").text(result.phone);
+	                   		$("#email").text(result.email);
+	                   		$("#miliege").text(result.miliege);
+	                   	}
+	                  })
+        			  return false;
+		           }else {
+		              	
+		              	alert("값을 선택하지 않았습니다. 선택해주세요");
+		              	
+		              	// 모달창 닫힘 스크립트
+		        	       $("#btn-open-modal").click(function() {
+		        	           $("#myModal").modal("hide");
+		        	           return false;
+		        	       })
+		              }
+    	       })
+           	
+
+		   
 	       // 고객테이블 클릭 시 하이라이트 처리
 	       $("#mainTbody").on("click", ".detailhighlight", function() {
-                $(".detailhighlight").css("background-color", "white");
-                $(this).css("background-color", "#FA58F4");
+	    	   $("#mainTbody .active").attr("class", "detailhighlight");
+	           $(".detailhighlight").css("background-color", "white");
+	           $(this).attr("class", "active");
                 
                 // customer의 id값
-                var value = $(this).attr('id');
+               value = $(this).attr('id');
                 console.log(value)
                 
-                if(value) {
-                	// 모달창 열림 스크립트 모달값 조회
-         	       $("#btn-open-modal").click(function() {
-         	           $("#myModal").modal("show");
-         	          $.ajax({
-	                    	type: "GET",
-	                    	url: "getDetailCustomer.esc",
-	                    	data:{id: value},
-	                    	dataType: "json",
-	                    	success:function(result) {
-	                    		$("#id").text(result.id);
-	                    		$("#name").text(result.name);
-	                    		//$("#rank").text(result.customerRank.type);
-	                    		$("#birth").text(result.birth);
-	                    		$("#phone").text(result.phone);
-	                    		$("#email").text(result.email);
-	                    		$("#miliege").text(result.miliege);
-	                    	}
-	                    })
-         	           return false;
-         	       })
-                	
-                }else {
-                	
-                	alert("값을 선택하지 않았습니다. 선택해주세요");
-                	
-                	// 모달창 닫힘 스크립트
-          	       $("#btn-open-modal").click(function() {
-          	           $("#myModal").modal("hide");
-          	           return false;
-          	       })
-                }
+                
 	       	})
 	       	
-	        	// 검색 값 조회
-                $("#search-btn").click(function(e) {
-                	e.preventDefault();
-                	var type = $("#type").val();
-                	var searchValue = $("#searchValue").val();
-                	if(searchValue) {
-	                	$.ajax({
-	                		type: "POST",
-	                		url: "getSearchCustomers.esc",
-	                		data: {opt: type, keyword: searchValue},
-	                		dataType: "json",
-	                		success: function(result) {
-	                			var html = "";
-	                			$.each(result, function(index, item) {
-	                				html += "<tr class='detailhighlight' id='"+item.id+"'>"
-	                    			html += "<td>"+item.id+"</td>"
-	                    			html += "<td>"+item.name+"</td>"
-	                    			html += "<td>"+item.birth+"</td>"
-	                    			html += "<td>"+item.phone+"</td>"
-	                    			html += "<td>"+item.email+"</td>"
-	                    			html += "</tr>"
-	                			})
-	                			
-	                			$("#mainTbody").html(html);
-	                		}
-	                	})
-                	}else {
-                		alert("검색어가 입력되지 않았습니다. 검색어를 입력해 주세요.")
-                	}
-                })
+		   	// 검색 값 조회
+	        $("#search-btn").click(function(e) {
+	        	e.preventDefault();
+	        	var type = $("#type").val();
+	        	var searchValue = $("#searchValue").val();
+	        	if(searchValue) {
+	         	$.ajax({
+	         		type: "POST",
+	         		url: "getSearchCustomers.esc",
+	         		data: {opt: type, keyword: searchValue},
+	         		dataType: "json",
+	         		success: function(result) {
+	         			var html = "";
+	         			$.each(result, function(index, item) {
+	         				html += "<tr class='detailhighlight' id='"+item.id+"'>"
+	             			html += "<td>"+item.id+"</td>"
+	             			html += "<td>"+item.name+"</td>"
+	             			html += "<td>"+item.birth+"</td>"
+	             			html += "<td>"+item.phone+"</td>"
+	             			html += "<td>"+item.email+"</td>"
+	             			html += "</tr>"
+	         			})
+	         			
+	         			$("#mainTbody").html(html);
+	         		}
+	         	})
+	        	}else {
+	        		alert("검색어가 입력되지 않았습니다. 검색어를 입력해 주세요.11")
+	        	}
+	        })
 	       
 	       
 	       

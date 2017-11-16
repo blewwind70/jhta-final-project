@@ -4,10 +4,17 @@ import java.util.Date;
 
 public class RidValueSaveForm {
 
-	private Integer id;
+	private String rid;
+	private	Integer id;
 	private Integer pos;
 	private Date purchaseDate;
 	
+	public String getRid() {
+		return rid;
+	}
+	public void setRid(String rid) {
+		this.rid = rid;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -26,6 +33,13 @@ public class RidValueSaveForm {
 	public void setPurchaseDate(Date purchaseDate) {
 		this.purchaseDate = purchaseDate;
 	}
+	
+	@Override
+	public String toString() {
+		return "RidValueSaveForm [Rid=" + rid + ", id=" + id + ", pos=" + pos + ", purchaseDate=" + purchaseDate + "]";
+	}
+	
+	
 	
 	
 }

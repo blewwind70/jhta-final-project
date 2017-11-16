@@ -114,7 +114,6 @@
 		where B.id = A.coupon_id
 		and A.customer_id = #{value}
 		and A.used = 0
-		and B.received = 1
 		and A.expired_at >= sysdate
 	</select>
 	
@@ -130,6 +129,18 @@
 		where id = #{value}
 	</select>
 	
+	<select id="getMovieTranslateByScreenMovieId" parameterType="int" resultType="MovieTranslation">
+		select
+			A.id 			"movie.id"
+			,A.age_limit 	"movie.ageLimit"
+			,B.id			id
+			,B.name		name
+		from movies A, movie_translation B, screen_movies C
+		where A.id = B.movie_id
+		and A.id = C.movie_id
+		and C.id = #{value}		
+	</select>
+	
 	<update id="updateCouponCustomerInfo" parameterType="CouponCustomer">
 		update coupon_customers
 		<set>
@@ -141,6 +152,9 @@
 			</if>
 			<if test="expiredAt != null">
 				expired_at = #{expiredAt},
+			</if>
+			<if test="ticketReceipt != null">
+				ticket_receipt_id = #{ticketReceipt.id,jdbcType=NUMERIC}
 			</if>
 		</set>
 		where id = #{id}

@@ -34,9 +34,11 @@
 			,D.id				id
 			,D.seat_id			"seat.id"
 			,E.name				"seat.name"
-		from movie_timetable C, tickets D, seats E
-		where C.id = D.movie_timetable_id
+		from ticket_receipts B, movie_timetable C, tickets D, seats E
+		where B.id = D.ticket_receipt_id 
+		and C.id = D.movie_timetable_id
 		and E.id = D.seat_id
+		and B.deleted = 'N'
 		and C.id = #{value}
 	</select>
 
@@ -141,11 +143,10 @@
 			B.customer_rank_id		"customer.customerRank.type",
 			B.customer_type_id		"customer.customerTypes.type",
 			B.birth					"customer.birth"
-    		
 		from
 		    TICKET_RECEIPTS A, CUSTOMERS B
 		where
-		    A.CUSTOMER_ID = B.ID
+		    A.CUSTOMER_ID = B.ID (+)
 		and 
 			A.rid like '%' || #{value} || '%'
 	</select>
@@ -164,7 +165,8 @@
         and
             signed_in_at &lt; #{purchaseDate}
         and
-            signed_out_at >= #{purchaseDate}			
+            (signed_out_at >= #{purchaseDate}
+            or signed_out_at is null)			
 	</select>
 	
 	<select id="getRidDetailSelect" parameterType="int" resultType="TicketReceipt">
@@ -202,4 +204,64 @@
 		and 
 			A.customer_id = #{value}
 	</select>
+	
+	<select id="getTicketByReceiptId" parameterType="int" resultType="Ticket">
+		select
+			A.id                           	"ticketReceipt.id"
+			,B.id                           id
+			,B.movie_timetable_id      		"movieTimetable.id"
+			,B.customer_type_id       		"customerType.id"
+			,B.seat_id                    	"seat.id"
+			,C.type                       	"customerType.type"
+			,C.price                      	"customerType.price"
+		from ticket_receipts A, tickets B, customer_types C
+		where A.id = B.ticket_receipt_id
+		and C.id = B.customer_type_id
+		and A.deleted = 'N'
+		and A.id = #{value}
+	</select>
+	
+	<select id="getDiscountsByReceiptId" parameterType="int" resultType="DiscountTicket">
+		select
+			A.id					"discount.id"
+			,A.name					"discount.name"
+			,A.detail				"discount.detail"
+			,A.discount_percent		"discount.discountPercent"
+			,A.started_date			"discount.startedDate"
+			,A.end_date				"discount.endDate"
+			,A.discount_type		"discount.discountType"
+			,A.discount_price		"discount.discountPrice"
+			,A.customer_type_id		"discount.customerType.id"
+			,B.id					id
+			,C.type					"discount.customerType.type"
+			,C.price				"discount.customerType.price"
+		from discounts A, discount_ticket B, customer_types C
+		where A.id = B.discount_id
+		and C.id = A.customer_type_id
+		and B.ticket_receipt_id = #{value}
+	</select>
+	
+	<select id="getCouponesByReceiptId" parameterType="int" resultType="CouponCustomer">
+		select 
+			A.id				id
+			,A.used				used
+			,A.received_at		receivedAt
+			,A.expired_at		expiredAt
+			,A.customer_id		"customer.id"
+			,A.coupon_id		"coupon.id"
+			,B.name				"coupon.name"
+		from coupon_customers A, coupones B
+		where A.coupon_id = B.id 
+		and A.ticket_receipt_id = #{value}
+	</select>
+	
+	<update id="updateReceipt" parameterType="TicketReceipt">
+		update ticket_receipts
+		<set>
+			<if test="deleted != null">
+				deleted = #{deleted},
+			</if>
+		</set>	
+		where id = #{id}
+	</update>
 </mapper>

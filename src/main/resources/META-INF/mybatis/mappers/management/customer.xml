@@ -176,20 +176,29 @@
 		</where>
 	</select>
 	
-	<select id="searchDetailCustomer" resultType="Customer" parameterType="int">
-		select
-			A.id					id,
-			A.username				username,
-			A.name					name,
-			A.phone					phone,
-			A.email					email,
-			A.birth					birth,
-			B.type					"customerRank.type"
-		from
-			customers A, CUSTOMER_RANK B
-		where
-			A.id = #{value}
-			and A.customer_rank_id = B.id		
+	<select id="getDetailCoupon" parameterType="int" resultType="CouponCustomer">
+	select
+		A.ID				id,
+		A.USED				used,
+		A.RECEIVED_AT		receivedAt,
+		A.EXPIRED_AT		expiredAt,
+		B.name				"coupon.name"
+		
+		from COUPON_CUSTOMERS A, COUPONES B
+		where A.COUPON_ID = B.ID
+		and A.CUSTOMER_ID = #{value}
+	</select>
+	
+	<select id="getDetailGift" parameterType="int" resultType="GiftCustomer">
+	select
+		A.ID				id,
+		A.RECEIVED_AT		receivedAt,
+		B.name				"gift.name",
+		A.RECEIVED			received
+		
+		from GIFT_CUSTOMERS A, GIFTS B
+		where A.GIFT_ID = B.ID
+		and A.CUSTOMER_ID = #{value}
 	</select>
 	
 	<select id="getKeyInAllSelect" resultType="CustomerType">

@@ -73,7 +73,6 @@
 		<!-- Management -->
 		<mapper resource="META-INF/mybatis/mappers/management/customer.xml"/>
 		<mapper resource="META-INF/mybatis/mappers/management/discount.xml"/>
-		<mapper resource="META-INF/mybatis/mappers/management/ticket-select.xml"/>
 		<mapper resource="META-INF/mybatis/mappers/management/test.xml"/>
 		<mapper resource="META-INF/mybatis/mappers/management/lost_and_found.xml"/>
 		

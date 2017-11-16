@@ -11,7 +11,7 @@ import com.es.pos.vo.TicketReceipt;
 
 public interface PaymentService {
 
-	void sellMovieTicket(List<Ticket> tickets, List<Discount> discounts, TicketReceipt receipt);
+	void sellMovieTicket(List<Ticket> tickets, List<Discount> discounts, List<CouponCustomer> coupones, TicketReceipt receipt);
 	
 	List<Discount> findAllDiscounts();
 	Discount findDiscountInfo(int discountId);
@@ -20,6 +20,5 @@ public interface PaymentService {
 	
 	CouponCustomer findCouponOfCustomer(int customerId);
 	
-	void changeUsedCoupone(CouponCustomer couponCustomer);
 	void changeCustomerMiliege(Customer customer);
 }

@@ -162,9 +162,9 @@
 <!-- 시간표등록  -->
 	<insert id="addMovieTimetable" parameterType="MovieTimetable">
 		insert into movie_timetable
-			(id, started_at, ended_at, screen_movie_id)
+			(id, started_at, ended_at, screen_movie_id, ordered)
 		values
-			(seq_movie_timetable.nextval, #{startedAt}, #{endedAt}, #{screenMovie.id})
+			(seq_movie_timetable.nextval, #{startedAt}, #{endedAt}, #{screenMovie.id}, #{ordered})
 		
 	</insert>
 	
@@ -177,6 +177,98 @@
 	</insert>
 	<select id="getScreenMovieSeq" resultType="int" >
 		select seq_screen_movies.nextval from dual
+	</select>
+<!-- 특정 연/월/일에 상영하는 모든 영화 조회 (중복 제외) -->
+	<select id="getMoviesByDate" parameterType="date" resultType="MovieTranslation">
+		select
+			distinct(A.id)			"movie.id"
+			,D.name					name
+			,A.age_limit			"movie.ageLimit"
+		from movies A, screen_movies B, movie_timetable C, movie_translation D
+		where A.id = B.movie_id
+		and B.id = C.screen_movie_id
+		and A.id = D.movie_id
+		and C.started_at >= to_date(to_char(#{value}, 'yyyy-mm-dd') || '06:00', 'yyyy-mm-dd hh24:mi')
+		and C.started_at &lt;= to_date(to_char(#{value} + 1, 'yyyy-mm-dd') || '05:00', 'yyyy-mm-dd hh24:mi')
+	</select>
+
+	<!-- 특정 연/월/일 + Movie_id로 상영시간 조회  map에 playingDate, movieId 이름으로 담기 -->
+	<select id="getMovieTimetableByDateNMovieId" parameterType="hashmap" resultType="MovieTimetable">
+		select
+			C.id					id
+			,C.started_at			startedAt
+			,C.ended_at				endedAt
+			,C.online_purchase		onlinePurchase
+			,C.offline_purchase		offlinePurchase
+			,C.screen_movie_id		"screenMovie.id"
+			,C.ordered				ordered
+			,D.id					"screenMovie.screen.id"
+			,D.name					"screenMovie.screen.name"
+			,D.seats_count			"screenMovie.screen.seatsCount"
+		from movies A, screen_movies B, movie_timetable C, screens D
+		where A.id = B.movie_id
+		and B.id = C.screen_movie_id
+		and B.screen_id = D.id
+		and C.started_at >= to_date(to_char(#{playingDate}, 'yyyy-mm-dd') || '06:00', 'yyyy-mm-dd hh24:mi')
+		and C.started_at &lt;= to_date(to_char(#{playingDate} + 1, 'yyyy-mm-dd') || '05:00', 'yyyy-mm-dd hh24:mi')
+		and A.id = #{movieId}
+		order by started_at
+	</select>
+	
+	<!-- 단순 ID로 MovieTimetable 조회 (+ screen_movies, movies, screen 같이 조회) -->
+	<select id="getMovieTimetableById" parameterType="int" resultType="MovieTimeTable">
+		select
+			C.id					id
+			,C.started_at			startedAt
+			,C.ended_at				endedAt
+			,C.online_purchase		onlinePurchase
+			,C.offline_purchase		offlinePurchase
+			,C.screen_movie_id		"screenMovie.id"
+			,C.ordered				ordered
+			,D.id					"screenMovie.screen.id"
+			,D.name					"screenMovie.screen.name"
+			,D.seats_count			"screenMovie.screen.seatsCount"
+		from movies A, screen_movies B, movie_timetable C, screens D
+		where A.id = B.movie_id
+		and B.id = C.screen_movie_id
+		and B.screen_id = D.id
+		and C.id = #{value}
+	</select>
+	
+	<!--위에거 승환이버전 -->
+	<select id="getMovieTimetableByscreenId" parameterType="int" resultType="MovieTimeTable">
+		select
+			C.id					id
+			,C.started_at			startedAt
+			,C.ended_at				endedAt
+			,C.online_purchase		onlinePurchase
+			,C.offline_purchase		offlinePurchase
+			,C.screen_movie_id		"screenMovie.id"
+			,C.ordered				ordered
+			,B.movie_id				"movie.id"
+			,D.id					"screenMovie.screen.id"
+			,D.name					"screenMovie.screen.name"
+			,D.seats_count			"screenMovie.screen.seatsCount"
+		from movies A, screen_movies B, movie_timetable C, screens D
+		where A.id = B.movie_id
+		and B.id = C.screen_movie_id
+		and B.screen_id = D.id
+		and B.movie_id = #{value}
+	
+	</select>
+	
+	<!-- 특정 연/월/일에 상영하는 모든 영화 조회 -->
+	<select id="getAllMoviesByDate" parameterType="date" resultType="MovieTranslation">
+		select
+			A.id			"movie.id"
+			,D.name					name
+			,A.age_limit			"movie.ageLimit"
+		from movies A, screen_movies B, movie_timetable C, movie_translation D
+		where A.id = B.movie_id
+		and B.id = C.screen_movie_id
+		and A.id = D.movie_id
+		and C.started_at >= to_date(to_char(#{value}, 'yyyy-mm-dd') || '06:00', 'yyyy-mm-dd hh24:mi')
+		and C.started_at &lt;= to_date(to_char(#{value} + 1, 'yyyy-mm-dd') || '05:00', 'yyyy-mm-dd hh24:mi')
 	</select>
 	
 </mapper>
