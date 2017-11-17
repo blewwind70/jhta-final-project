@@ -47,6 +47,7 @@
 		<typeAlias alias="ScreenMovie" type="com.es.movie.vo.ScreenMovie"/>
 		<typeAlias alias="Seat" type="com.es.movie.vo.Seat"/>
 		<typeAlias alias="SeatDisabled" type="com.es.movie.vo.SeatDisabled"/>
+		<typeAlias alias="SelectTimetable" type="com.es.movie.vo.SelectTimetable"/>
 		
 		<!-- POS -->
 		<typeAlias alias="Pos" type="com.es.pos.vo.Pos"/>

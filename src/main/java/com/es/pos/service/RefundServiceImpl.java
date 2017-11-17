@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import com.es.financial.vo.CouponCustomer;
 import com.es.management.mapper.CustomerMapper;
 import com.es.management.vo.Customer;
+import com.es.movie.mapper.MovieMapper;
 import com.es.movie.vo.MovieTimetable;
 import com.es.movie.vo.MovieTranslation;
-import com.es.pos.mapper.PosTestMapper;
 import com.es.pos.mapper.TicketMapper;
 import com.es.pos.vo.DiscountTicket;
 import com.es.pos.vo.Ticket;
@@ -22,11 +22,11 @@ import com.es.pos.vo.TicketReceipt;
 public class RefundServiceImpl implements RefundService {
 
 	@Autowired
+	private MovieMapper movieMapper;
+	@Autowired
 	private CustomerMapper customerMapper;
 	@Autowired
 	private TicketMapper ticketMapper;
-	@Autowired
-	private PosTestMapper posTestMapper;
 
 	@Override
 	public TicketReceipt findReceiptByRid(String rid) {
@@ -49,10 +49,10 @@ public class RefundServiceImpl implements RefundService {
 		List<CouponCustomer> coupones = ticketMapper.getCouponesByReceiptId(receipt.getId());
 		map.put("couponList", coupones);
 		
-		MovieTimetable timetable = posTestMapper.getMovieTimetableById(tickets.get(0).getMovieTimetable().getId());
+		MovieTimetable timetable = movieMapper.getMovieTimetableById(tickets.get(0).getMovieTimetable().getId());
 		map.put("movieTime", timetable);
 		
-		MovieTranslation movie = posTestMapper.getMovieTranslateByScreenMovieId(timetable.getScreenMovie().getId());
+		MovieTranslation movie = movieMapper.getMovieTranslateByScreenMovieId(timetable.getScreenMovie().getId());
 		map.put("movie", movie);
 		
 		return map;
@@ -69,13 +69,15 @@ public class RefundServiceImpl implements RefundService {
 			int customerId = customer.getId();
 			
 			customer = customerMapper.getDetailCustomer(customerId);
-			customer.setMiliege(customer.getMiliege() - miliege);
+			customer.setMiliege(customer.getMiliege() + miliege);
+			customerMapper.updateCustomerInfo(customer);
 		}
 		
 		List<CouponCustomer> coupones = ticketMapper.getCouponesByReceiptId(receipt.getId());
 		for(CouponCustomer coupon : coupones) {
 			coupon.setUsed(0);
-			posTestMapper.updateCouponCustomerInfo(coupon);
+			coupon.getTicketReceipt().setId(null);
+			customerMapper.updateCouponCustomerInfo(coupon);
 		}
 		
 	}

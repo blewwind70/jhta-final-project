@@ -63,7 +63,12 @@
 	                            	</c:choose>
 	                            	
 	                            </td>
-	                            <td>${value.customerType.type }</td>
+	                            <td>
+	                            	<c:if test="${value.customerType.type == null || value.customerType.type == ''}">
+	                            		전체
+	                            	</c:if>
+	                            	${value.customerType.type }
+	                            </td>
 	                            <td>${value.detail }</td>
 	                            <td><fmt:formatDate value="${value.startedDate }" pattern="yyyy-MM-dd"/></td>
 	                            <td><fmt:formatDate value="${value.endDate }" pattern="yyyy-MM-dd"/></td>
@@ -90,7 +95,7 @@
                      <label class="control-label col-xs-1" for="customerTypeId">적용대상:</label>
                      <div class="col-sm-5">          
                        <select name="customerTypeId" id="customerTypeId" class="form-control">
-                           <option value="">전체</option>
+                           <option value="4">전체</option>
                            <c:forEach var="value" items="${customerTypeList }">
 	                           <option value="${value.id }">${value.type }</option>
                            </c:forEach>
@@ -192,6 +197,7 @@
 			
 			var startDateCompare = new Date(startDateValue[0], parseInt(startDateValue[1])-1, startDateValue[2]);
 	        var endDateCompare = new Date(endDateValue[0], parseInt(endDateValue[1])-1, endDateValue[2]);
+	        console.log(name + "" + customerTypeId + "" + discountPercent + "" + detail);
 	        
 	        if(discountType == "P") {
 	        	if(!(name && customerTypeId && discountPercent && detail)) {
@@ -199,12 +205,6 @@
 		        	e.preventDefault();
 		        	return;
 		        }	
-	        }else {
-	        	if(!(name && customerTypeId && discountPrice && detail)) {
-		        	alert("값을 입력하지 않았습니다. 값을 입력해 주세요.")
-		        	e.preventDefault();
-		        	return;
-		        }
 	        }
 	        
 	        var stringSize = $("#discountPercent").val();

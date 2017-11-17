@@ -4,11 +4,11 @@ import java.util.Date;
 
 public class CouponForm {
 	
+	private Integer id;
 	private String distributeType;
 	private Date distributUntil;
 	private String reason;
 	private String name;
-	private Integer rank;
 	
 	public String getDistributeType() {
 		return distributeType;
@@ -34,17 +34,13 @@ public class CouponForm {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Integer getRank() {
-		return rank;
+	public Integer getId() {
+		return id;
 	}
-	public void setRank(Integer rank) {
-		this.rank = rank;
+	public void setId(Integer id) {
+		this.id = id;
 	}
-	@Override
-	public String toString() {
-		return "CouponForm [distributeType=" + distributeType + ", distributUntil=" + distributUntil + ", reason="
-				+ reason + ", name=" + name + ", rank=" + rank + "]";
-	}
+	
 	
 	
 }

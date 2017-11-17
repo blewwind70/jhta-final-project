@@ -29,9 +29,11 @@ public class CouponServiceImpl implements CouponService {
 	
 	// 등록
 	@Override
-	public void addCoupon(Coupon coupon) {
-		
+	public Coupon addCoupon(Coupon coupon) {
+		coupon.setId(couponMapper.couponId());
 		couponMapper.addCoupon(coupon);
+		
+		return coupon;
 	}
 	
 	// 업데이트

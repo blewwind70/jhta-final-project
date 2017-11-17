@@ -20,34 +20,29 @@
 			<div class="container top-margin">
 				<h2 class="page-header">시간표 조회</h2>
 				 
-				 <form class="form-horizontal">
+				 <form method="post" action="exceldownload.esc" class="form-horizontal">
 				 	<div class= "form-group">
 						<label class="control-label col-sm-1">일자선택 </label> 
 						<div class="col-sm-3">
-							<input type="date" class="form-control" id="select-dates"/>
+							<input type="date" class="form-control" id="select-dates" name = "date"/>
 						</div>
 						<div class="col-sm-1 col-sm-offset-7">
-							<button class="btn btn-success form-control" >
-							<i class="fa fa-table fa-fw"></i> 엑셀
-							</button>
+							<button type="submit" id="btn-excel"class="btn btn-success form-control" ><i class="fa fa-table fa-fw"></i> 엑셀</button>
 						</div>
 					</div>
 				 </form>
 
-								
-					
-				
 				<div class="box">
 				<table class="table table-bordered" style="text-align: center">
 					<colgroup>
 						<col width="12.5%"/>
 						<col width="12.5%"/>
 						<col width="12.5%"/>
-						<col width="12.5%"/>
-						<col width="12.5%"/>
-						<col width="12.5%"/>
-						<col width="12.5%"/>
-						<col width="12.5%"/>
+						<col width="17%"/>
+						<col width="17%"/>
+						<col width="9.5%"/>
+						<col width="9.5%"/>
+						<col width="9.5%"/>
 					</colgroup>
 					<thead>
 						<tr>
@@ -61,17 +56,8 @@
 							<th>전체좌석</th>
 						</tr>
 					</thead>
-					<tbody>
-						<tr>
-							<td>1관</td>
-							<td>1회</td>
-							<td>토르</td>
-							<td>9:00</td>
-							<td>11:40</td>
-							<td>34</td>
-							<td>66</td>
-							<td>100</td>
-						</tr>
+					<tbody id="main-tbody">
+						
 						
 					</tbody>
 				</table>
@@ -85,6 +71,13 @@
 </body>
 <script>
 $(function() {
+	/* $('#btn-excel').click(function(e) {
+		
+		
+		var selectdates = $("#select-dates").val(); 
+		
+		
+	}); */
 	
 	$('#select-dates').on("change", function(){
 		var selectDate = $(this).val()
@@ -93,15 +86,24 @@ $(function() {
 	 	$.ajax({
 			type: "GET",
         	url: "getTimetableInfo.esc",
-        	data:{playingDate: selectDate},
+        	data:{playDate: selectDate},
         	dataType: "json",
         	success:function(result) {
         		var html = "";
         		console.log(result);
-        		/* $.each(result, function(index, item){	
-        			html += ""
+        		$.each(result, function(index, item){	
+        			html += "<tr>"
+        			html += "<td>"+item.screenName+"</td>"
+        			html += "<td>"+item.ordered+"</td>"
+        			html += "<td>"+item.title+"</td>"
+        			html += "<td>"+item.startedAt+"</td>"
+        			html += "<td>"+item.endedAt+"</td>"
+        			html += "<td>"+item.reservedSeatsCount+"</td>"
+        			html += "<td>"+(item.seatsCount - item.reservedSeatsCount)+"</td>"
+        			html += "<td>"+item.seatsCount+"</td>"        			
+        			html += "</tr>"
         		})
-        		$("뿌려질곳").html(html) */
+        		$("#main-tbody").html(html)
         	}
 		})  
 	})

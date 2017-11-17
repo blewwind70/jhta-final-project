@@ -8,4 +8,5 @@ public interface TicketRePrintService {
 
 	List<TicketReceipt> getRidSelect(String rid);
 	TicketReceipt getRidDetailSelect(TicketReceipt ticketReceipt);
+	void updatePrint(TicketReceipt ticketReceipt);
 }

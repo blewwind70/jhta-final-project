@@ -48,6 +48,40 @@
                 $("#total-price-box span").text(totalPrice);
             }
             
+			// 첫 시작시 Date로 조회
+            var now = new Date();
+            $playingDate.val(getStringToDate(new Date()));
+            $("#playing-date-btn").trigger("click");
+            
+            // 첫 시작시 가격 btn 불러오기
+            $.ajax({
+            	type:"GET",
+            	url:"pricekey.esc",
+            	dataType:"json",
+            	success:function(result) {
+            		$priceKeyBox.empty();
+            		
+            		$priceKeyBox.append("<button id='move-btn-left' class='btn btn-boots move-key-btn'><span class='glyphicon glyphicon-chevron-left'></span></button>");
+            		
+            		$(result).each(function(index, item) {
+	            		var htmlContents = "";
+	            		
+	            		if(index > 3) {
+	            			htmlContents += "<button type='button' id='price-key-btn-" + this.id + "' class='btn btn-boots btn-lg price-key-btn btn-hide'>";
+	            		} else {
+	            			htmlContents += "<button type='button' id='price-key-btn-" + this.id + "' class='btn btn-boots btn-lg price-key-btn'>";
+	            		}
+	            		htmlContents += "	<div class='btn-kind'>" + this.type + "</div>";
+	            		htmlContents += "	<div class='btn-price'>" + this.price + "</div>";
+	            		htmlContents += "</button>";
+	
+	            		$priceKeyBox.append(htmlContents);
+	            		
+            		});
+            		$priceKeyBox.append("<button id='move-btn-right' class='btn btn-boots move-key-btn pull-right'><span class='glyphicon glyphicon-chevron-right'></span></button>");
+            	}
+            });
+			
             // 조회 btn 클릭 Event
             $("#playing-date-btn").on("click", function() {
             	var searchingDate = $playingDate.val();
@@ -74,31 +108,15 @@
             	});
             });
             
-			// 첫 시작시 Date로 조회
-            var now = new Date();
-            $playingDate.val(getStringToDate(new Date()));
-            $("#playing-date-btn").trigger("click");
-            
-            // 첫 시작시 가격 btn 불러오기
-            $.ajax({
-            	type:"GET",
-            	url:"pricekey.esc",
-            	dataType:"json",
-            	success:function(result) {
-            		$priceKeyBox.empty();
-            		
-            		$(result).each(function() {
-	            		var htmlContents = "";
-	            		
-	            		htmlContents += "<button type='button' id='price-key-btn-" + this.id + "' class='btn btn-boots btn-lg price-key-btn'>";
-	            		htmlContents += "	<div class='btn-kind'>" + this.type + "</div>";
-	            		htmlContents += "	<div class='btn-price'>" + this.price + "</div>";
-	            		htmlContents += "</button>";
-	
-	            		$priceKeyBox.append(htmlContents);
-            		});
-            	}
-            });
+			// 가격 Key 좌우 이동 btn 위임 Event
+			$priceKeyBox.on("click", "#move-btn-right", function() {
+				var $hiddenBtn = $(this).siblings(".btn-hide:first");
+				
+				if($hiddenBtn.text()) {
+					$(this).siblings(".price-key-btn:first").hide();
+					$hiddenBtn.show();
+				}
+			});
             
             // Movie List tr 위임 Event
             $movieListTbody.on("click", "tr", function() {
@@ -238,9 +256,20 @@
 		#price-key-box, #final-check-box {
 			height: 57px;
 		}
+		.btn-hide {
+			display: none;
+		}
+		.move-key-btn {
+			margin-right: 8px;
+			padding-right: 28px;
+			width: 25px;
+			height: 57px;
+			font-size: 17px;
+		}
 		.price-key-btn {
-			width: 90px;
+			margin: 1px;
 			padding: 6px;
+			width: 100px;
 		}
         #seat-select-btn {
             width: 200px;
@@ -264,7 +293,7 @@
             background-color: darkgoldenrod;
             font-size: 14px;
         }
-        #grade-19 {
+        #grade-18 {
             background-color: firebrick;
             font-size: 14px;
         }
@@ -306,7 +335,7 @@
                 
                 <div class="border-box">
 					<div id="price-key-box">
-
+						
 					</div>
                 </div>
             </div>

@@ -43,4 +43,12 @@ public interface CustomerMapper {
 	
 	// typeId로 type가져오기
 	CustomerType getCustomerTypeByType(int typeId);
+	
+	// Customer id로 Coupon 전체 조회
+	List<CouponCustomer> getCouponesByCustomerId(int customerId);
+	// CouponCustomer Id로 특정 Coupon 조회
+	CouponCustomer getCouponCustomerById(int customerId);
+	
+	void updateCouponCustomerInfo(CouponCustomer couponCustomer);
+	void updateCustomerInfo(Customer customer);
 }

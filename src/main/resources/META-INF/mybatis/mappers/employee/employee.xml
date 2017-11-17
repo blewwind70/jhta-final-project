@@ -260,6 +260,23 @@
 		 	and to_char(#{value}, 'YYYYMMDD') = to_char(T.started_at, 'YYYYMMDD')
 	</select>
 	
+	<select id="getEmployeeByIdentifier" parameterType="long" resultType="Employee">
+		select 
+			id
+			,name
+			,address
+			,phone
+			,hourly_pay
+			,gender
+			,account_no					accountNo
+			,job_type					jobType
+			,hired_at					hiredAt
+			,dismissed_at				dismissedAt
+			,birth						birth	
+		from employees
+		where to_char(birth, 'yymmdd') || replace(substr(phone, 4), '-', '') = #{value}
+	</select>
+	
 	<update id="updateTimetable" parameterType="EmployeeTimetable">
 		update
 			employee_timetable

@@ -5,10 +5,10 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.es.employee.mapper.EmployeeMapper;
 import com.es.employee.vo.Employee;
 import com.es.employee.vo.EmployeeTimetable;
 import com.es.pos.mapper.PosMapper;
-import com.es.pos.mapper.PosTestMapper;
 import com.es.pos.vo.Pos;
 import com.es.pos.vo.PosLoginHistory;
 
@@ -16,13 +16,13 @@ import com.es.pos.vo.PosLoginHistory;
 public class LogServiceImpl implements LogService {
 
 	@Autowired
-	private PosTestMapper posTestMapper;
+	private EmployeeMapper employeeMapper;
 	@Autowired
 	private PosMapper posMapper;
 	
 	@Override
 	public Employee findEmployeeById(long id, long pwd) {
-		Employee employee = posTestMapper.getEmployeeByIdentifier(id);
+		Employee employee = employeeMapper.getEmployeeByIdentifier(id);
 		if(employee == null) {
 			return null;
 		}

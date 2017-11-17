@@ -31,14 +31,14 @@
 						<div class="form-group">
 							<label class="control-label col-sm-1">상품분류</label>
 							<div class="col-sm-5">
-								<select class="form-control">
-									<option>쿠폰</option>
-									<option>사은품</option>
+								<select class="form-control" id="product" name="product">
+									<option value="coupon">쿠폰</option>
+									<option value="gift">사은품</option>
 								</select>
 							</div>
 							<label class="control-label col-sm-1">상품명</label>
 							<div class="col-sm-5">
-								<textarea rows="1" cols="60" id="name" name="name"></textarea>
+								<input type="text" class="form-control" id="name" name="name" placeholder="짧은 이름" />
 							</div>
 						</div>
 						<div class="form-group">
@@ -53,12 +53,12 @@
 							</div>
 							<label class="control-label col-sm-1">지급날짜</label>
 							<div class="col-sm-5">
-								<input type="date" class="form-control" id="distributUntil"
-									name="distributUntil">
+								<input type="date" class="form-control" id="distributUntil" name="distributUntil"/>
+									
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="control-label col-sm-1">수령가능등급</label>
+							<label class="control-label col-sm-1">수령등급</label>
 							<div class="col-sm-5">
 								<select class="form-control" id="customerRank"
 									name="customerRank.id">
@@ -69,15 +69,22 @@
 									<option value="5">BRONZE</option>
 								</select>
 							</div>
-
+							<div class="expired">
+								<label class="control-label col-sm-1">만기날짜</label>
+								<div class="col-sm-5">
+									<input type="date" class="form-control" id="expiredAt" name="expiredAt" />
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
 							<label class="control-label col-sm-1">지급사유</label>
 							<div class="col-sm-5">
-								<textarea rows="2" cols="60" id="reason" name="reason"></textarea>
+								<input type="text" class="form-control" placeholder="상세 이유" id="reason" name="reason" />
 							</div>
-
-							<div class="col-sm-1 col-sm-offset-11">
-								<button type="submit" class="btn btn-primary">등록</button>
-							</div>
+						</div>
+						<div class="col-sm-1 col-sm-offset-11">
+							<button id="regist" class="btn btn-primary">등록</button>
+							
 						</div>
 					</form>
 				</div>
@@ -88,6 +95,20 @@
 <script type="text/javascript">
 $(function(){
 	
+	$("#regist").click(function(){
+		
+		
+	});
+	
+	
+	// 만기날짜 감추기
+	$("#product").change(function(){
+		if($(this).val() == 'coupon'){
+			$(".expired").show();
+		} else {
+			$(".expired").hide();
+		}
+	});
 });
 </script>
 </html>

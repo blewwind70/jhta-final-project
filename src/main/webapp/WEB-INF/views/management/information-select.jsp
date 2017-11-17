@@ -136,9 +136,10 @@
 	                   	data:{id: value},
 	                   	dataType: "json",
 	                   	success:function(result) {
+	                   		console.log(result);
 	                   		$("#id").text(result.id);
 	                   		$("#name").text(result.name);
-	                   		//$("#rank").text(result.customerRank.type);
+	                   		$("#rank").text(result.customerRank.type);
 	                   		$("#birth").text(result.birth);
 	                   		$("#phone").text(result.phone);
 	                   		$("#email").text(result.email);

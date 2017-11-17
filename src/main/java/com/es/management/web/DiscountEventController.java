@@ -50,6 +50,13 @@ public class DiscountEventController {
 	
 	@RequestMapping("/addDiscountEvent.esc")
 	public String add(DiscountForm discountForm) {
+		System.out.println("1111");
+		String allType = discountForm.getDiscountType();
+		System.out.println(allType);
+		if(allType == "4") {
+			discountForm.setDiscountType("");
+		}
+		
 		discountEventService.insertDiscount(discountForm);
 		return "redirect:discountEvent.esc";
 	}

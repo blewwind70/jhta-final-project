@@ -14,7 +14,6 @@ import com.es.management.mapper.CustomerMapper;
 import com.es.management.mapper.DiscountMapper;
 import com.es.management.vo.Customer;
 import com.es.management.vo.Discount;
-import com.es.pos.mapper.PosTestMapper;
 import com.es.pos.mapper.TicketMapper;
 import com.es.pos.vo.DiscountTicket;
 import com.es.pos.vo.Ticket;
@@ -29,8 +28,6 @@ public class PaymentServiceImpl implements PaymentService {
 	private TicketMapper ticketMapper;
 	@Autowired
 	private DiscountMapper discountMapper;
-	@Autowired
-	private PosTestMapper posTestMapper;
 	
 	@Override
 	public void sellMovieTicket(List<Ticket> tickets, List<Discount> discounts, List<CouponCustomer> coupones, TicketReceipt receipt) {
@@ -46,9 +43,12 @@ public class PaymentServiceImpl implements PaymentService {
 		receipt.setId(receiptSeq);
 		receipt.setRid(rid);
 		Customer customer = receipt.getCustomer();
-		Integer miliege = customer.getMiliege();
-		if(customer != null && miliege != null) {
-			receipt.setMiliege(miliege);			
+		if(customer != null) {
+			
+			Integer miliege = customer.getMiliege();
+			if(miliege != null) {
+				receipt.setMiliege(miliege);			
+			}
 		}
 		
 		ticketMapper.addTicketReceipt(receipt);
@@ -70,7 +70,7 @@ public class PaymentServiceImpl implements PaymentService {
 			forCoupon.setUsed(1);
 			forCoupon.setTicketReceipt(receipt);
 			
-			posTestMapper.updateCouponCustomerInfo(forCoupon);
+			customerMapper.updateCouponCustomerInfo(forCoupon);
 		}
 	}
 	
@@ -87,7 +87,7 @@ public class PaymentServiceImpl implements PaymentService {
 	@Override
 	public Map<String, Object> findCustomerInfo(Map<String, String> map) {
 		Customer customer = customerMapper.getCustomerByNameNPhone(map);
-		List<CouponCustomer> couponList =  posTestMapper.getCouponesByCustomerId(customer.getId());
+		List<CouponCustomer> couponList =  customerMapper.getCouponesByCustomerId(customer.getId());
 		
 		Map<String, Object> customerInfo = new HashMap<String, Object>();
 		
@@ -104,7 +104,7 @@ public class PaymentServiceImpl implements PaymentService {
 	
 	@Override
 	public CouponCustomer findCouponOfCustomer(int customerId) {
-		return posTestMapper.getCouponCustomerById(customerId);
+		return customerMapper.getCouponCustomerById(customerId);
 	}
 
 	@Override
@@ -113,6 +113,6 @@ public class PaymentServiceImpl implements PaymentService {
 		int miliege = customer.getMiliege();
 		checkedCustomer.setMiliege(checkedCustomer.getMiliege() - miliege);
 		
-		posTestMapper.updateCustomerInfo(checkedCustomer);
+		customerMapper.updateCustomerInfo(checkedCustomer);
 	}
 }

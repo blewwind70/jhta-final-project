@@ -21,7 +21,7 @@ public class TicketRePrintAjaxController {
 	@RequestMapping("/getRidSelect.esc")
 	@ResponseBody
 	public List<TicketReceipt> getRidSelect(String rid) {
-		
+		System.out.println(rid);
 		return ticketReprintService.getRidSelect(rid);
 	}
 	
@@ -29,7 +29,7 @@ public class TicketRePrintAjaxController {
 	@ResponseBody
 	public TicketReceipt getRidDetailSelect(RidValueSaveForm ridValueSaveForm) {
 		
-		System.out.println("카드번호" + ridValueSaveForm.getRid());
+		System.out.println(ridValueSaveForm.toString());
 		TicketReceipt ticketReceipt = new TicketReceipt();
 		Pos pos = new Pos();
 		
@@ -50,5 +50,13 @@ public class TicketRePrintAjaxController {
 		TicketReceipt ticketReceipt2 = ticketReprintService.getRidDetailSelect(ticketReceipt);
 		
 		return ticketReceipt2;
+	}
+	
+	@RequestMapping("/updatePrint.esc")
+	@ResponseBody
+	public void updatePrint(TicketReceipt ticketReceipt) {
+		System.out.println(ticketReceipt.getId() + " " + ticketReceipt.getDeleted() + " " + ticketReceipt.getPrinted());
+		ticketReceipt.setPrinted("N");
+		ticketReprintService.updatePrint(ticketReceipt);
 	}
 }

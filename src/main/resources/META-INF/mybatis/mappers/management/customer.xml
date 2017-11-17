@@ -30,26 +30,29 @@
 	
 	<select id="getDetailCustomer" resultType="Customer" parameterType="int">
 		select
-			id						id,
-			username				username,
-			password				password,
-			name					name,
-			phone					phone,
-			email					email,
-			gender					gender,
-			miliege					miliege,
-			image_uri				imageUri,
-			deleted					deleted,
-			third_party				thirdParty,
-			created_at				createdAt,
-			updated_at				updatedAt,
-			customer_rank_id		"customerRank.type",
-			customer_type_id		"customerTypes.type",
-			birth					birth
+			A.id					id,
+			A.username				username,
+			A.password				password,
+			A.name					name,
+			A.phone					phone,
+			A.email					email,
+			A.gender				gender,
+			A.miliege				miliege,
+			A.image_uri				imageUri,
+			A.deleted				deleted,
+			A.third_party			thirdParty,
+			A.created_at			createdAt,
+			A.updated_at			updatedAt,
+			A.customer_rank_id		"customerRank.id",
+			A.customer_type_id		"customerTypes.type",
+			A.birth					birth,
+			B.type					"customerRank.type"
 		from
-			customers
+			customers A, CUSTOMER_RANK B
 		where
-			id = #{value}		
+			A.customer_rank_id = B.id
+		and
+			A.id = #{value}		
 	</select>
 	
 	<select id="searchByCustomers" parameterType="Criteria" resultType="Customer">
@@ -278,6 +281,88 @@
 		
 	</select>
 	
+	<select id="getCouponesByCustomerId" parameterType="int" resultType="CouponCustomer">
+		select
+			A.id					id
+			,A.received_at			receivedAt
+			,A.expired_at			expiredAt
+			,B.id					"coupon.id"
+			,B.distribute_type		"coupon.distributeType"
+			,B.distribute_until		"coupon.distributeUntil"
+			,B.name					"coupon.name"
+		from coupon_customers A, coupones B
+		where B.id = A.coupon_id
+		and A.customer_id = #{value}
+		and A.used = 0
+		and A.expired_at >= sysdate
+	</select>
 	
+	<select id="getCouponCustomerById" parameterType="int" resultType="CouponCustomer">
+		select
+			id
+			,used
+			,received_at		receivedAt
+			,expired_at		expriedAt
+			,customer_id		"customer.id"
+			,coupon_id		"coupon.id"
+		from coupon_customers
+		where id = #{value}
+	</select>
+	
+	<update id="updateCouponCustomerInfo" parameterType="CouponCustomer">
+		update coupon_customers
+		<set>
+			<if test="used != null">
+				used = #{used},
+			</if>
+			<if test="receivedAt != null">
+				received_at = #{receivedAt},
+			</if>
+			<if test="expiredAt != null">
+				expired_at = #{expiredAt},
+			</if>
+			<if test="ticketReceipt != null">
+				ticket_receipt_id = #{ticketReceipt.id,jdbcType=NUMERIC}
+			</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<update id="updateCustomerInfo" parameterType="Customer">
+		update customers
+		<set>
+			<if test="password != null">
+				password = #{password},
+			</if>
+			<if test="phone != null">
+				phone = #{phone},
+			</if>
+			<if test="email != null">
+				email = #{email},
+			</if>
+			<if test="miliege != null">
+				miliege = #{miliege},
+			</if>
+			<if test="imageUri != null">
+				image_uri = #{imageUri},
+			</if>
+			<if test="deleted != null">
+				deleted = #{deleted},
+			</if>
+			<if test="thirdParty != null">
+				third_party = #{thirdParty},
+			</if>
+			<if test="updatedAt != null">
+				updated_at = #{updatedAt},
+			</if>
+			<if test="customerRank.id != null">
+				customer_rank_id = #{customerRank.id},
+			</if>
+			<if test="customerTypes.id != null">
+				customer_type_id = #{customerTypes.id},
+			</if>
+		</set>
+		where id = #{id}
+	</update>
 	
 </mapper>

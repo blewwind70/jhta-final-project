@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 import com.es.management.mapper.CustomerMapper;
 import com.es.management.vo.CustomerType;
 import com.es.movie.mapper.MovieMapper;
+import com.es.movie.mapper.ScreenMapper;
 import com.es.movie.vo.MovieTimetable;
 import com.es.movie.vo.MovieTranslation;
 import com.es.movie.vo.Seat;
-import com.es.pos.mapper.PosTestMapper;
 import com.es.pos.mapper.TicketMapper;
 import com.es.pos.vo.Ticket;
 
@@ -24,15 +24,15 @@ public class MovieSelectServiceImpl implements MovieSelectService {
 	@Autowired
 	private MovieMapper movieMapper;
 	@Autowired
+	private ScreenMapper screenMapper;
+	@Autowired
 	private TicketMapper ticketMapper;
 	@Autowired
 	private CustomerMapper customerMapper;
-	@Autowired
-	private PosTestMapper posTestMapper;
 
 	@Override
 	public List<MovieTranslation> findMoviesInDay(Date playingDate) {
-		return posTestMapper.getMoviesByDate(playingDate);
+		return movieMapper.getMoviesByDate(playingDate);
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class MovieSelectServiceImpl implements MovieSelectService {
 		map.put("playingDate", playingDate);
 		map.put("movieId", movieId);
 		
-		List<MovieTimetable> timetableList = posTestMapper.getMovieTimetableByDateNMovieId(map);
+		List<MovieTimetable> timetableList = movieMapper.getMovieTimetableByDateNMovieId(map);
 		for(MovieTimetable timetable : timetableList) {
 			int reservedSeats = ticketMapper.getReservedSeatsByTimetableId(timetable.getId()).size();
 			int totalSeats = timetable.getScreenMovie().getScreen().getSeatsCount();
@@ -70,17 +70,17 @@ public class MovieSelectServiceImpl implements MovieSelectService {
 	
 	@Override
 	public MovieTimetable findMovieTimetable(int timetableId) {
-		return posTestMapper.getMovieTimetableById(timetableId);
+		return movieMapper.getMovieTimetableById(timetableId);
 	}
 	
 	@Override
 	public Seat getSeatInfo(int seatId) {
-		return posTestMapper.getSeatBySeatId(seatId);
+		return screenMapper.getSeatBySeatId(seatId);
 	}
 
 	@Override
 	public List<Seat> getSeatInfoInScreen(int screenId) {
-		return posTestMapper.getSeatsByScreenId(screenId);
+		return screenMapper.getSeatsByScreenId(screenId);
 	}
 
 	@Override

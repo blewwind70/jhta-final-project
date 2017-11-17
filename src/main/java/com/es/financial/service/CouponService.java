@@ -10,7 +10,7 @@ import com.es.management.vo.Customer;
 
 public interface CouponService {
 	
-	void addCoupon(Coupon coupon);
+	Coupon addCoupon(Coupon coupon);
 	void changeReceived(int[] gid);
 	
 	List<Customer> searchByOther(Criteria criteria);

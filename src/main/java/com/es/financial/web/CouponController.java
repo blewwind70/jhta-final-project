@@ -27,12 +27,10 @@ public class CouponController {
 		
 		Coupon coupon = new Coupon();
 		BeanUtils.copyProperties(couponForm, coupon);
-		CustomerRank customerRank = new CustomerRank();
-		customerRank.setId(couponForm.getRank());
-		coupon.setCustomerRank(customerRank);
+		coupon = this.couponService.addCoupon(coupon);
 		
 		
-		return "redirect:/financial/managementCoupon.esc";
+		return "redirect:/financial/searchCoupon.esc";
 	}
 	
 	/*@RequestMapping("/changeReceived.esc")

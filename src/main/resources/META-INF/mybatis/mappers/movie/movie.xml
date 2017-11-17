@@ -257,19 +257,38 @@
 	
 	</select>
 	
-	<!-- 특정 연/월/일에 상영하는 모든 영화 조회 -->
-	<select id="getAllMoviesByDate" parameterType="date" resultType="MovieTranslation">
+	<!-- 시간표 조회 특정 연/월/일에 상영하는 모든 영화 조회 -->
+	<select id="getAllMoviesByDate" parameterType="date" resultType="SelectTimetable">
 		select
-			A.id			"movie.id"
-			,D.name					name
-			,A.age_limit			"movie.ageLimit"
-		from movies A, screen_movies B, movie_timetable C, movie_translation D
-		where A.id = B.movie_id
+		    C.id   			id,
+			D.NAME  		screenName,
+			C.ORDERED  		ordered,
+			E.NAME    		title,
+			C.STARTED_AT 	startedAt,
+			C.ENDED_AT 		endedAt,
+			D.SEATS_COUNT 	seatsCount
+					
+		from movies A, screen_movies B, movie_timetable C, screens D ,MOVIE_TRANSLATION E
+		where E.MOVIE_ID = A.id 
+		and A.id = B.movie_id
 		and B.id = C.screen_movie_id
-		and A.id = D.movie_id
+		and B.screen_id = D.id
 		and C.started_at >= to_date(to_char(#{value}, 'yyyy-mm-dd') || '06:00', 'yyyy-mm-dd hh24:mi')
 		and C.started_at &lt;= to_date(to_char(#{value} + 1, 'yyyy-mm-dd') || '05:00', 'yyyy-mm-dd hh24:mi')
+		order by D.NAME, C.ORDERED
 	</select>
+	
+	<select id="getMovieTranslateByScreenMovieId" parameterType="int" resultType="MovieTranslation">
+		select
+			A.id 			"movie.id"
+			,A.age_limit 	"movie.ageLimit"
+			,B.id			id
+			,B.name		name
+		from movies A, movie_translation B, screen_movies C
+		where A.id = B.movie_id
+		and A.id = C.movie_id
+		and C.id = #{value}		
+	</select>	
 	
 </mapper>
 

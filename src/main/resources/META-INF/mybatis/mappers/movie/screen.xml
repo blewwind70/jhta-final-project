@@ -30,7 +30,7 @@
 		and A.id = #{value}
 		order by B.id
 	</select>
-	<!--  -->
+	<!-- 시간표조회 예약석 뽑기  -->
 	<select id="getReservedSeatsByTimetableId" parameterType="int" resultType="Ticket">
 		select
 			C.id				"movieTimetable.id"

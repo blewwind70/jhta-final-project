@@ -54,5 +54,10 @@ public class TicketRePrintImpl implements TicketRePrintService{
 		return ticketReceipt;
 	}
 	
+	@Override
+	public void updatePrint(TicketReceipt ticketReceipt) {
+		ticketMapper.updateReceipt(ticketReceipt);
+	}
+	
 	
 }

@@ -89,6 +89,7 @@
                 </div> 
               </div>
               <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal" id="printAccept"><i class="fa fa-times-circle fa-fw"></i>재출력 승인</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle fa-fw"></i>취소</button>
               </div>
             </div>
@@ -105,6 +106,9 @@
 		   var ridValue = "";
 		   var posValue = "";
 		   var purchaseDateValue = "";
+		   var no = "";
+		   var printed = "";
+		   var deleted = "";
            console.log("초기화" + purchaseDateValue);
 		   
     		// 고객테이블 클릭 시 하이라이트 처리
@@ -147,6 +151,7 @@
 	                  		}
 	                  		$("#userName").text(result.customer.username);
 	                  		$("#name").text(result.customer.name);
+	                  		printed = result.printed;
 	                  	}
 	                  })
 	    	           		return false;
@@ -171,10 +176,31 @@
 	            idValue = $(this).attr('id');
 	            ridValue = $(this).attr('rid');
 	            posValue = $(this).attr('pos');
+	            no = $(this).attr('no');
+	            deleted = $(this).attr('deleted');
 	            purchaseDateValue = $(this).attr('purchaseDate');
-	            console.log("초기화 후 값을 담음" + purchaseDateValue);
+	            console.log("초기화 후 값을 담음" + purchaseDateValue + "no" + no + "deleted" + deleted);
 	            
 	       	})
+	       	
+	       	$("#printAccept").click(function(e) {
+	       		e.preventDefault();
+	       		console.log("dddd")
+	       		if(printed == 'Y') {
+		       		$.ajax({
+		       			type: "POST",
+		       			url: "updatePrint.esc",
+		       			data: {id: no, printed: printed, deleted: deleted},
+		       			dateType: "JSON",
+		       			success: function() {
+		       				alert("승인이 완료됬습니다.");
+		       			}
+		       		})
+		       	}else {
+		       		$("#printAccept").hide();
+		       	}
+	       	})
+	       	
          
          // 검색 값 조회
          $("#search-btn").click(function(e) {
@@ -187,9 +213,10 @@
 	         		data: {rid: searchValue},
 	         		dataType: "json",
 	         		success: function(result) {
+	         			console.log(result)
 	         			var html = "";
 	        			$.each(result, function(index, item) {
-	        				html += "<tr class='detailhighlight' rid='"+item.rid+"' id="+item.customer.id+" pos='"+item.pos.id+"' purchaseDate='"+item.purchaseDate+"'>"
+	        				html += "<tr class='detailhighlight' rid='"+item.rid+"' id="+item.customer.id+" pos='"+item.pos.id+"' purchaseDate='"+item.purchaseDate+"' no="+item.id+" deleted="+item.deleted+">"
 	            			html += "<td>"+item.purchaseDate+"</td>"
 	            			html += "<td>"+item.price+"</td>"
 	            			if(item.customer.id) {

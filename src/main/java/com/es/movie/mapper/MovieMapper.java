@@ -14,6 +14,7 @@ import com.es.movie.vo.MovieImage;
 import com.es.movie.vo.MovieTimetable;
 import com.es.movie.vo.MovieTranslation;
 import com.es.movie.vo.ScreenMovie;
+import com.es.movie.vo.SelectTimetable;
 
 public interface MovieMapper {
 	// 영화등록
@@ -49,14 +50,18 @@ public interface MovieMapper {
 		
 	//특정 연/월/일에 상영하는 모든 영화 조회 (중복 제외) 
 		List<MovieTranslation> getMoviesByDate(Date playingDate);
-	//특정 연/월/일에 상영하는 모든 영화 조회
-		List<MovieTranslation> getAllMoviesByDate(Date playingDate);
 		
 	// 특정 연/월/일 + Movie_id로 상영시간 조회  map에 playingDate, movieId 이름으로 담기
 	List<MovieTimetable> getMovieTimetableByDateNMovieId(Map<String, Object> map);
 	
+	MovieTimetable getMovieTimetableById(int timetableId);
+	
 	//단순 ID로 MovieTimetable 조회
 	List<MovieTimetable> getMovieTimetableByscreenId(int movieId);
-		
+	
+	// 시간표조회
+	List<SelectTimetable> getAllMoviesByDate(Date playDate);
+	
+	MovieTranslation getMovieTranslateByScreenMovieId(int screenMovieId);
 		
 }

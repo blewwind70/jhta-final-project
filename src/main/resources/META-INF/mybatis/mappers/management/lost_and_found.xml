@@ -69,7 +69,8 @@
 			receiver_name = #{receverName},
 			receiver_phone = #{receverPhone},
 			giver = #{giver},
-			status = #{status}
+			status = #{status},
+			RETURNED_AT = sysdate
 		where
 			id = #{id}
 	</update>

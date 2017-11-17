@@ -181,6 +181,7 @@
     		A.deleted				deleted,
     		A.purchase_date			purchaseDate,
     		A.credit_no				creditNo,
+    		A.printed				printed,
 			B.username				"customer.username",
 			B.password				"customer.password",
 			B.name					"customer.name",
@@ -243,13 +244,14 @@
 	
 	<select id="getCouponesByReceiptId" parameterType="int" resultType="CouponCustomer">
 		select 
-			A.id				id
-			,A.used				used
-			,A.received_at		receivedAt
-			,A.expired_at		expiredAt
-			,A.customer_id		"customer.id"
-			,A.coupon_id		"coupon.id"
-			,B.name				"coupon.name"
+			A.id					id
+			,A.used					used
+			,A.received_at			receivedAt
+			,A.expired_at			expiredAt
+			,A.customer_id			"customer.id"
+			,A.coupon_id			"coupon.id"
+			,A.ticket_receipt_id	"ticketReceipt.id"
+			,B.name					"coupon.name"
 		from coupon_customers A, coupones B
 		where A.coupon_id = B.id 
 		and A.ticket_receipt_id = #{value}
@@ -260,6 +262,9 @@
 		<set>
 			<if test="deleted != null">
 				deleted = #{deleted},
+			</if>
+			<if test="printed != null">
+				printed = #{printed},
 			</if>
 		</set>	
 		where id = #{id}

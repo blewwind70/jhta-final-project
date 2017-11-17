@@ -43,4 +43,6 @@ public interface EmployeeMapper {
 	void updateTimetable(EmployeeTimetable timetable);
 	void updateManagement(EmployeeTimetable timetable);
 	void insertManagement(EmployeeTimetable timetable);
+	
+	Employee getEmployeeByIdentifier(long empId);
 }

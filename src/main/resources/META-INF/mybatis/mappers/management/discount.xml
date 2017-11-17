@@ -30,7 +30,7 @@
 		insert into discounts 
 			(id, name, detail, discount_percent, started_date, end_date, discount_type, discount_price, customer_type_id)
 		values
-			(seq_discounts.nextval, #{name}, #{detail, jdbcType=NUMERIC}, #{discountPercent, jdbcType=NUMERIC}, #{startedDate}, #{endDate}, #{discountType, jdbcType=NUMERIC}, #{discountPrice, jdbcType=NUMERIC}, #{customerTypeId, jdbcType=NUMERIC})	
+			(seq_discounts.nextval, #{name}, #{detail, jdbcType=VARCHAR}, #{discountPercent, jdbcType=NUMERIC}, #{startedDate}, #{endDate}, #{discountType, jdbcType=VARCHAR}, #{discountPrice, jdbcType=NUMERIC}, #{customerTypeId, jdbcType=NUMERIC})	
 	</insert>
 	
 	<!-- collection에 값은 map의 값이 들어온다 값은 list또는 배열만 들어올 수 있다. -->

@@ -1,11 +1,11 @@
 package com.es.financial.mapper;
 
-import java.util.List;
 
 import com.es.financial.vo.Coupon;
 
 public interface CouponMapper {
 	
+	int couponId();
 	void addCoupon(Coupon coupon);
-	 void changeReceived(int gid);
+	void changeReceived(int gid);
 }

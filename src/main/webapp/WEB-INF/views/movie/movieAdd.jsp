@@ -56,14 +56,14 @@
 									<label> <input type="checkbox" id="genre-thriller" value="3" name="genre"> 스릴러 </label>
 								</div>
 								<div>
-									<label> <input type="checkbox" id="genre-action" value="4" name="genre"> 호  러 </label> 
-									<label> <input type="checkbox" id="genre-romance" value="5" name="genre"> S  F </label> 
-									<label> <input type="checkbox" id="genre-thriller" value="6" name="genre"> 코미디 </label>
+									<label> <input type="checkbox" id="genre-action" value="4" name="genre"> S  F </label> 
+									<label> <input type="checkbox" id="genre-romance" value="5" name="genre"> 범죄 </label> 
+									<label> <input type="checkbox" id="genre-thriller" value="6" name="genre"> 추리 </label>
 								</div>
 								<div>
-									<label> <input type="checkbox" id="genre-action" value="1" name="genre"> 액  션 </label> 
-									<label> <input type="checkbox" id="genre-romance" value="2" name="genre"> 로맨스 </label> 
-									<label> <input type="checkbox" id="genre-thriller" value="3" name="genre"> 스릴러 </label>
+									<label> <input type="checkbox" id="genre-action" value="7" name="genre"> 판타지 </label> 
+									<label> <input type="checkbox" id="genre-romance" value="8" name="genre"> 멜 로 </label> 
+									<label> <input type="checkbox" id="genre-thriller" value="9" name="genre"> 드라마 </label>
 								</div>
 							</div>
 						</div>	

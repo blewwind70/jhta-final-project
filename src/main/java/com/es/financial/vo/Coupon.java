@@ -9,7 +9,6 @@ public class Coupon {
 	private Integer id;
 	private String distributeType;
 	private Date distributUntil;
-	private Integer received;
 	private String reason;
 	private String name;
 	private CustomerRank customerRank;
@@ -33,12 +32,7 @@ public class Coupon {
 	public void setDistributUntil(Date distributUntil) {
 		this.distributUntil = distributUntil;
 	}
-	public Integer getReceived() {
-		return received;
-	}
-	public void setReceived(Integer received) {
-		this.received = received;
-	}
+	
 	public String getReason() {
 		return reason;
 	}
@@ -60,8 +54,8 @@ public class Coupon {
 	@Override
 	public String toString() {
 		return "Coupon [id=" + id + ", distributeType=" + distributeType + ", distributUntil=" + distributUntil
-				+ ", received=" + received + ", reason=" + reason + ", name=" + name + ", customerRank=" + customerRank
-				+ "]";
+				+ ", reason=" + reason + ", name=" + name + ", customerRank=" + customerRank + "]";
 	}
+	
 	
 }
