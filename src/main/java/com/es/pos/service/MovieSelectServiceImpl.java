@@ -55,7 +55,7 @@ public class MovieSelectServiceImpl implements MovieSelectService {
 
 	@Override
 	public List<CustomerType> getAllPriceKey() {
-		return customerMapper.getCustomerType(0);
+		return customerMapper.getKeyInAllSelect();
 	}
 
 	@Override

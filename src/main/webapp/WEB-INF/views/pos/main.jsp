@@ -51,7 +51,6 @@
 			// 첫 시작시 Date로 조회
             var now = new Date();
             $playingDate.val(getStringToDate(new Date()));
-            $("#playing-date-btn").trigger("click");
             
             // 첫 시작시 가격 btn 불러오기
             $.ajax({
@@ -67,7 +66,7 @@
 	            		var htmlContents = "";
 	            		
 	            		if(index > 3) {
-	            			htmlContents += "<button type='button' id='price-key-btn-" + this.id + "' class='btn btn-boots btn-lg price-key-btn btn-hide'>";
+	            			htmlContents += "<button type='button' id='price-key-btn-" + this.id + "' class='btn btn-boots btn-lg price-key-btn btn-after-hide'>";
 	            		} else {
 	            			htmlContents += "<button type='button' id='price-key-btn-" + this.id + "' class='btn btn-boots btn-lg price-key-btn'>";
 	            		}
@@ -82,7 +81,7 @@
             	}
             });
 			
-            // 조회 btn 클릭 Event
+            // 조회 btn 클릭 Event + 시작시 조회 활성화
             $("#playing-date-btn").on("click", function() {
             	var searchingDate = $playingDate.val();
             	$movieListTbody.empty();
@@ -107,14 +106,31 @@
             		}
             	});
             });
+            $("#playing-date-btn").trigger("click");
             
 			// 가격 Key 좌우 이동 btn 위임 Event
 			$priceKeyBox.on("click", "#move-btn-right", function() {
-				var $hiddenBtn = $(this).siblings(".btn-hide:first");
+				var $hiddenBeforeBtn = $(this).siblings(".btn-before-hide:last");
+				var $hiddenAfterBtn = $(this).siblings(".btn-after-hide:first");
 				
-				if($hiddenBtn.text()) {
-					$(this).siblings(".price-key-btn:first").hide();
-					$hiddenBtn.show();
+				if($hiddenAfterBtn.text() && !$hiddenBeforeBtn.text()) {
+					$(this).siblings(".price-key-btn:first").addClass("btn-before-hide");
+					$hiddenAfterBtn.removeClass("btn-after-hide");
+				} else if($hiddenAfterBtn.text() && $hiddenBeforeBtn.text()) {
+					$hiddenBeforeBtn.next().addClass("btn-before-hide");
+					$hiddenAfterBtn.removeClass("btn-after-hide");
+				}
+			});
+			$priceKeyBox.on("click", "#move-btn-left", function() {
+				var $hiddenAfterBtn = $(this).siblings(".btn-after-hide:first");
+				var $hiddenBeforeBtn = $(this).siblings(".btn-before-hide:last");
+				
+				if($hiddenBeforeBtn.text() && !$hiddenAfterBtn.text()) {
+					$(this).siblings(".price-key-btn:last").addClass("btn-after-hide");
+					$hiddenBeforeBtn.removeClass("btn-before-hide");
+				} else if($hiddenBeforeBtn.text() && $hiddenAfterBtn.text()) {
+					$hiddenAfterBtn.prev().addClass("btn-after-hide");
+					$hiddenBeforeBtn.removeClass("btn-before-hide");
 				}
 			});
             
@@ -247,6 +263,7 @@
             font-size: 15px;
         }
 		#time-table-box, #price-box {
+			overflow: scroll;
 			height: 550px;
 			font-size: 17px;
 		}
@@ -256,7 +273,7 @@
 		#price-key-box, #final-check-box {
 			height: 57px;
 		}
-		.btn-hide {
+		.btn-before-hide, .btn-after-hide {
 			display: none;
 		}
 		.move-key-btn {
@@ -308,7 +325,7 @@
         
         <div id="main-box">
             <div class="col-sm-4">
-                <div class="border-box">
+                <div class="border-box outer-box">
                     <form class="form-inline">
                         <input type="date" name="playingdate" id="playing-date" class="form-control" style="width: 400px;"/>
                         <button type="button" id="playing-date-btn" class="btn btn-boots pull-right">조회</button>
@@ -327,6 +344,11 @@
             <div class="col-sm-4">
                 <div id="time-table-box" class="border-box">
                     <table id="time-table" class="table table-condensed">
+                    	<thead>
+                    		<tr>
+                    			<th>시작시간</th><th>상영관</th><th>잔여석</th>
+                    		</tr>
+                    	</thead>
                         <tbody>
 
                         </tbody>

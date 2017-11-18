@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.es.pos.service.RefundService;
 import com.es.pos.vo.PaymentForm;
@@ -38,5 +39,11 @@ public class RefundController {
 		refundService.refundReceipt(receipt);
 		
 		return "redirect:/pos/home.esc";
+	}
+	
+	@PostMapping("/reprint.esc")
+	@ResponseBody
+	public TicketReceipt reprint(String rid) {
+		return refundService.findReceiptByRid(rid);
 	}
 }
