@@ -7,8 +7,9 @@ import com.es.pos.vo.PosLoginHistory;
 public interface LogService {
 
 	PosLoginHistory enrollStartingWork(Employee employee, int posId);
-	Employee findEmployeeById(long id, long pwd);
+	Employee findEmployeeById(String id, Long pwd);
 	PosLoginHistory enrollFinishingWork(PosLoginHistory login);
-	EmployeeTimetable enrollStartingRest(PosLoginHistory loginHistory);
-	EmployeeTimetable enrollFinishingRest(PosLoginHistory loginHistory);
+	EmployeeTimetable getEmployeeTimetable(PosLoginHistory loginHistory);
+	EmployeeTimetable enrollStartingRest(EmployeeTimetable timetable);
+	EmployeeTimetable enrollFinishingRest(EmployeeTimetable timetable);
 }

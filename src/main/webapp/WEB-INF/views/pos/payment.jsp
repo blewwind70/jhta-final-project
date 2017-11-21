@@ -12,7 +12,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         $(function() {
-        	// 첫 시작시 인당 가격이 높은 순으로 배열
+        	// 첫 시작시 Key의 인당 가격이 높은 순으로 배열
        		$("#price-box tbody tr.key-tr").sort(function(a, b) {
            		var aPersonalPrice = 
            			parseInt($(a).find(".amount-price-td").text()) / parseInt($(a).find(".amount-td span").text());
@@ -87,7 +87,7 @@
 				return str;
 			};
         	
-        	// 첫 시작시 총금액 계산 & 실금액 계산 & 가격 높은 순으로 배열
+        	// 첫 시작시 총금액 계산 & 실금액 계산 & Key 가격 높은 순으로 배열
 			calculTotalPrice();
         	
        		// 카드 / 현금 Radio 클릭 이벤트 & 시작시 카드 trigger
@@ -96,13 +96,41 @@
                 
                 var htmlContents = "";
                 if(payment == "C") {
-                    htmlContents += "<label class='payment-info-label'>카드번호</label>";
-                    htmlContents += "<input type='text' name='cardNo' id='card-no' class='form-control'/>";        
+                	htmlContents += "<div class='row'>";
+                	htmlContents += "	<div class='col-sm-3'>";
+                    htmlContents += "		<label class='payment-info-label'>카드번호</label>";
+                    htmlContents += "	</div>";
+                    htmlContents += "	<div class='col-sm-9'>";
+                    htmlContents += "		<input type='text' name='cardNo' id='card-no' class='form-control'/>";
+                    htmlContents += "	</div>";
+                    htmlContents += "</div>";
                 } else if(payment == "M") {
-                    htmlContents += "<label class='payment-info-label'>받은 금액</label>";
-                    htmlContents += "<input type='text' name='takenPrice' id='taken-price' class='form-control'/>";
-                    htmlContents += "<label class='payment-info-label'>거스름돈</label>";
-                    htmlContents += "<div id='change-price' class='payment-info col-sm-9 text-right pull-right'></div>";
+                	htmlContents += "<div class='row'>";
+                	htmlContents += "	<div class='col-sm-3'>";
+                    htmlContents += "		<label class='payment-info-label'>받은 금액</label>";
+                    htmlContents += "	</div>";
+                    htmlContents += "	<div class='col-sm-9'>";
+                    htmlContents += "		<input type='text' name='takenPrice' id='taken-price' class='form-control'/>";
+                    htmlContents += "	</div>";
+                    htmlContents += "</div>";
+                    
+                    htmlContents += "<div class='row'>";
+                    htmlContents += "	<div class='col-sm-11 text-right'>";
+                    htmlContents += "		<button type='button' class='btn btn-sm cash-btn'>" + 1000 + "</button>";
+                    htmlContents += "		<button type='button' class='btn btn-sm cash-btn'>" + 5000 + "</button>";
+                    htmlContents += "		<button type='button' class='btn btn-sm cash-btn'>" + 10000 + "</button>";
+                    htmlContents += "		<button type='button' class='btn btn-sm cash-btn'>" + 50000 + "</button>";
+                    htmlContents += "	</div>";
+                    htmlContents += "</div>";
+                    
+                	htmlContents += "<div class='row'>";
+                	htmlContents += "	<div class='col-sm-3'>";
+                    htmlContents += "		<label class='payment-info-label'>거스름돈</label>";
+                    htmlContents += "	</div>";
+                	htmlContents += "	<div class='col-sm-9'>";
+                    htmlContents += "		<div id='change-price' class='payment-info text-right pull-right'></div>";
+                    htmlContents += "	</div>";
+                    htmlContents += "</div>";
                 }
                 $("#needed-payment-box").empty().append(htmlContents);
 
@@ -110,12 +138,26 @@
             });
             $("input[value='C']").trigger("click");
             
+            // 현금 금액 btn 금액 덧셈 위임 Event
+            $("#needed-payment-box").on("click", ".cash-btn", function() {
+            	var price = parseInt($(this).text());
+            	var takenPrice = parseInt($("input#taken-price").val());
+            	if(!takenPrice) {
+            		takenPrice = 0;
+            	}
+            	
+            	$("input#taken-price").val(takenPrice + price).change();
+            });
+            
             // 현금 받은금액 - 거스름돈 자동 계산 위임 Event
-            $("#needed-payment-box").on("keyup", "input[name='taken-price']", function() {
+            $("#needed-payment-box").on("change", "input#taken-price", function() {
                 var realPrice = parseInt($("#real-price").text());
                 var takenPrice = parseInt($(this).val());
                 
-                $("#change-price").empty().text(takenPrice - realPrice);
+                $("#change-price").empty()
+                if(realPrice <= takenPrice) {
+                	$("#change-price").text(takenPrice - realPrice);
+                }
             });
             
             // 일반할인 btn Event & 시작시 일반할인 trigger
@@ -127,14 +169,13 @@
             		url:"general.esc",
             		dataType:"json",
             		success:function(result) {
-            			
             			$(result).each(function() {
 							var htmlContents = "";
 							
 							if(this.discountPercent == null) {
-								htmlContents += "<button type='button' id='discount-btn-" + this.discountType + this.discountPrice + "' class='btn btn-default btn-sm'>";
+								htmlContents += "<button type='button' id='discount-btn-" + this.discountType + this.discountPrice + "' class='btn btn-default btn-sm general-discount-btn'>";
 							} else {
-								htmlContents += "<button type='button' id='discount-btn-" + this.discountType + this.discountPercent + "' class='btn btn-default btn-sm'>";
+								htmlContents += "<button type='button' id='discount-btn-" + this.discountType + this.discountPercent + "' class='btn btn-default btn-sm general-discount-btn'>";
 							}
 							htmlContents += "	<span id='discount-span-" + this.id + "'>" + this.name + "</span>";
 							htmlContents += "	<label class='sr-only'>";							
@@ -152,7 +193,7 @@
            	$("#general-discount-btn").trigger("click");
            	
            	// 일반할인 btn 위임 Event
-           	$discountBtnBox.on("click", "button.btn", function() {
+           	$discountBtnBox.on("click", "button.general-discount-btn", function() {
            		var discountName = $(this).find("span").text();
            		var discountKind = $(this).attr("id").replace("discount-btn-", "");
            		var discountId = $(this).find("span").attr("id").replace("discount-span-", "");
@@ -266,7 +307,90 @@
            		}
            	});
            	
-           	// modal 핸드폰 번호 input event
+           	// 직원 할인 btn Event
+           	$("#employee-discount-btn").on("click", function() {
+           		var htmlContents = "";
+           		
+           		htmlContents += "<form id='check-emp-form' class='form-horizontal'>";
+           		htmlContents += "	<div class='form-group'>";
+           		htmlContents += "		<div class='col-sm-2'>";
+           		htmlContents += "			<label class='control-label'>사원 ID</label>";
+           		htmlContents += "		</div>";
+           		htmlContents += "		<div class='col-sm-8'>";
+           		htmlContents += "			<input type='text' name='empid' class='form-control'/>";
+           		htmlContents += "		</div>";
+           		htmlContents += "		<div class='col-sm-1'>";
+           		htmlContents += "			<button type='submit' id='check-emp-btn' class='btn btn-boots'>확인</button>";
+           		htmlContents += "		</div>";
+           		htmlContents += "	</div>";
+           		htmlContents += "</form>";
+           		
+           		$discountBtnBox.empty().append(htmlContents);
+           	});
+           	
+           	// 직원 할인 확인 btn 위임 Event
+           	$discountBtnBox.on("click", "#check-emp-btn", function(e) {
+           		e.preventDefault();
+           		var empid = $("input[name='empid']").val();
+           		
+				console.log(2143);
+           		if(empid != "") {
+           			$.ajax({
+           				type:"POST",
+           				url:"checkemp.esc",
+           				data:{empid:empid},
+           				dataType:"json",
+           				success:function(result) {
+           					console.log(result.success);
+           					if(result.success) {
+           						var adjustDiscount = false;
+           		           		$priceBoxTr.filter("tr.key-tr").each(function() {
+           		           			var keyId = $(this).attr("id").replace("key-tr-", "");
+           		           			var amount = parseInt($(this).find("td.amount-td label.sr-only").text());
+           		           			
+           		           			if(amount > 0) {
+           		               			var personalPrice = parseInt($(this).find(".amount-price-td").text()) / parseInt($(this).find(".amount-td span").text());
+		           						alert(result.employee.name + "직원 확인이 완료되었습니다.");
+           		               			
+           		               			var htmlContents = "";
+           		                   		htmlContents += "<tr id='target-key-" + keyId + "' class='discount-tr emp-discount'>";
+           		                   		htmlContents += "	<td>직원할인</td>";
+           		                   		htmlContents += "	<td>1</td>";
+           		        	           	htmlContents += "	<td class='amount-price-td'>-" + personalPrice + "</td>";
+           		                   		htmlContents += "	<td>";
+           		                   		htmlContents += "		<button class='btn btn-danger btn-xs remove-btn'>";
+           		                   		htmlContents += "			<span class='glyphicon glyphicon-remove'></span>";
+           		                   		htmlContents += "		</button>";
+           		                   		htmlContents += "	</td>";
+           		                   		htmlContents += "</tr>";
+           		                   		
+           		                   		$priceBoxTr.closest("tbody").append(htmlContents);
+           		                   		
+           		                   		$(this).find("td.amount-td label.sr-only").text((amount - 1));
+           		                   		adjustDiscount = true;
+           				           		calculTotalPrice();
+
+           		                   		return false;
+           		           			}
+           		           		});
+           		           		
+	           		           	if(!adjustDiscount) {
+	           	           			alert("적용 가능한 상품이 없습니다.");
+	           	           		}
+           					} else {
+           						alert(result.message);
+           					}
+           				},
+           				error:function() {
+           					alert("알수없는 ERROR입니다.");
+           				}
+           			});
+           		} else {
+           			alert("직원 ID를 입력하세요");
+           		}
+           	});
+           	
+           	// modal 핸드폰 번호 input Event
            	$("#customer-phone").on("keyup", function() {
            		var autoNo = autoMinus($(this).val());
 				$(this).val(autoNo);
@@ -393,7 +517,7 @@
                		
                		var usedPoint = $("input[name='usedPoint']").val();
                		if(usedPoint) {
-	               		$("input[name='usedPoint']").val(parsInt(usedPoint) + parseInt(usingPoint));
+	               		$("input[name='usedPoint']").val(parseInt(usedPoint) + parseInt(usingPoint));
                		} else {
 	               		$("input[name='usedPoint']").val(parseInt(usingPoint));
                		}
@@ -465,7 +589,8 @@
             margin: 30px;
         }
         label.payment-info-label {
-            margin-top: 25px;
+            margin-top: 20px;
+            margin-right: -20px;
         }
         div.payment-info {
             margin-top: 10px;
@@ -475,10 +600,15 @@
             height: 50px;
             font-size: 32px;
         }
-        input#card-no {
+        input#card-no, #taken-price {
             margin-top: 20px;
             border: 3px solid #6a5dc0;
             height: 40px;
+        }
+        button.cash-btn {
+        	margin: 2px;
+        	margin-top: 10px;
+        	width: 60px;
         }
         #needed-payment-box {
             height: 200px;
@@ -500,6 +630,10 @@
         }
 		#discount-kind-box .btn {
 			margin: 5px;
+		}
+		#check-emp-form {
+			margin-top: 70px;
+			margin-left: 30px;
 		}
     </style>
 </head>
@@ -620,8 +754,7 @@
                                 <div id="discount-kind-box" class="col-sm-2 pull-right">
                                     <button type="button" id="membership-btn" class="discount-btn btn btn-boots btn-lg" data-toggle="modal" data-target="#membership-modal">멤버쉽</button>
                                     <button type="button" id="general-discount-btn" class="discount-btn btn btn-boots btn-lg">일반 할인</button>
-                                    <button type="button" class="discount-btn btn btn-boots btn-lg">직원 할인</button>
-                                    <button type="button" class="discount-btn btn btn-boots btn-lg">포인트 할인</button>
+                                    <button type="button" id="employee-discount-btn" class="discount-btn btn btn-boots btn-lg">직원 할인</button>
                                 </div>
                             </div>
                         </div>

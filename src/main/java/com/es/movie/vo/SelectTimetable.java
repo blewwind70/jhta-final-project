@@ -15,7 +15,23 @@ public class SelectTimetable {
 	@JsonSerialize(using=TimeSerializer.class)
 	private Date endedAt;
 	private Integer seatsCount;
+	private Integer onlinePurchase;
+	private Integer offlinePurchase;
 	private Integer reservedSeatsCount;
+	
+	
+	public Integer getOnlinePurchase() {
+		return onlinePurchase;
+	}
+	public void setOnlinePurchase(Integer onlinePurchase) {
+		this.onlinePurchase = onlinePurchase;
+	}
+	public Integer getOfflinePurchase() {
+		return offlinePurchase;
+	}
+	public void setOfflinePurchase(Integer offlinePurchase) {
+		this.offlinePurchase = offlinePurchase;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -68,8 +84,9 @@ public class SelectTimetable {
 	public String toString() {
 		return "SelectTimetable [id=" + id + ", screenName=" + screenName + ", ordered=" + ordered + ", title=" + title
 				+ ", startedAt=" + startedAt + ", endedAt=" + endedAt + ", seatsCount=" + seatsCount
+				+ ", onlinePurchase=" + onlinePurchase + ", offlinePurchase=" + offlinePurchase
 				+ ", reservedSeatsCount=" + reservedSeatsCount + "]";
-	} 
+	}
 	
 	
 	

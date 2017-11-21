@@ -3,7 +3,7 @@ package com.es.pos.vo;
 public class PosLoginForm {
 
 	private Integer posId;
-	private Long empId;
+	private String empId;
 	private Long empPwd;
 	
 	public Integer getPosId() {
@@ -12,10 +12,10 @@ public class PosLoginForm {
 	public void setPosId(Integer posId) {
 		this.posId = posId;
 	}
-	public Long getEmpId() {
+	public String getEmpId() {
 		return empId;
 	}
-	public void setEmpId(Long empId) {
+	public void setEmpId(String empId) {
 		this.empId = empId;
 	}
 	public Long getEmpPwd() {

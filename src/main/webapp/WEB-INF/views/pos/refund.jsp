@@ -60,54 +60,54 @@
 			});
 			
 			// 조회 btn Event
-			$("#search-btn").on("click", function(e) {
-				e.preventDefault();
-				
-				var receiptNo = $("#receipt-no-input").val();
-				
+ 			$("#search-btn").on("click", function(e) {
+ 				e.preventDefault();
+ 				
+ 				var receiptNo = $("#receipt-no-input").val();
+ 				
 				if(receiptNo) {
 					$.ajax({
-						type:"POST",
-						url:"reprint.esc",
-						data:{rid:receiptNo},
-						dataType:"json",
-						success:function(result) {
-							$("#search-ticket-form").submit();
-						},
-						error:function() {
-							alert("존재하지 않는 번호입니다.");
-						}
-					});
-				} else {
-					alert("영수증 번호를 입력하세요.");
-				}
-			});
-			
-			// 재출력 btn Event
-			$("#reprinted-btn").on("click", function() {
-				var receiptNo = $("#receipt-no-input").val();
-				
-				if(receiptNo) {
-					$.ajax({
-						type:"POST",
-						url:"reprint.esc",
-						data:{rid:receiptNo},
-						dataType:"json",
-						success:function(result) {
-							if(result.printed == 'Y') {
-								alert("이미 출력된 티켓입니다. 관리자에게 문의하세요.");
-							} else {
-								alert("출력이 완료되었습니다.");
-							}
-						},
-						error:function() {
-							alert("존재하지 않는 번호입니다.");
-						}
-					});
-				} else {
-					alert("영수증 번호를 입력하세요.");
-				}
-			});
+ 						type:"POST",
+ 						url:"reprint.esc",
+ 						data:{rid:receiptNo},
+ 						dataType:"json",
+ 						success:function(result) {
+ 							$("#search-ticket-form").submit();
+ 						},
+ 						error:function() {
+ 							alert("존재하지 않는 번호입니다.");
+ 						}
+ 					});
+ 				} else {
+ 					alert("영수증 번호를 입력하세요.");
+ 				}
+ 			});
+ 			
+ 			// 재출력 btn Event
+ 			$("#reprinted-btn").on("click", function() {
+ 				var receiptNo = $("#receipt-no-input").val();
+ 				
+ 				if(receiptNo) {
+ 					$.ajax({
+ 						type:"POST",
+ 						url:"reprint.esc",
+ 						data:{rid:receiptNo},
+ 						dataType:"json",
+ 						success:function(result) {
+ 							if(result.printed == 'Y') {
+ 								alert("이미 출력된 티켓입니다. 관리자에게 문의하세요.");
+ 							} else {
+ 								alert("출력이 완료되었습니다.");
+ 							}
+ 						},
+ 						error:function() {
+ 							alert("존재하지 않는 번호입니다.");
+ 						}
+ 					});
+ 				} else {
+ 					alert("영수증 번호를 입력하세요.");
+ 				}
+ 			});
 			
 			// 환불 btn Event
 			$("#refund-btn").on("click", function(e) {
@@ -134,8 +134,8 @@
 			height: 630px;
 		}
 		#reprinted-btn {
-			margin-right: 20px;
-		}
+ 			margin-right: 20px;
+ 		}
 		#purchase-info-box {
 			margin: 20px;
 			width: 700px;
@@ -161,10 +161,10 @@
 			height: 200px;
 		}
 		#price-box {
-			background-color: #6a5dc0;
-			font-size: 17px;
-			color: white;
-		}
+ 			background-color: #6a5dc0;
+ 			font-size: 17px;
+ 			color: white;
+ 		}
 		#btn-box .btn {
 			margin: 10px;
 			width: 270px;
@@ -191,7 +191,7 @@
 								</div>
 
 								<button type="submit" id="search-btn" class="btn btn-boots">조회</button>
-								<button type="button" id="reprinted-btn" class="btn btn-boots pull-right">재출력</button>
+ 								<button type="button" id="reprinted-btn" class="btn btn-boots pull-right">재출력</button>
 							</div>
 						</form>
 					</div>
@@ -323,7 +323,7 @@
 					<div id="price-box" class="border-box">
 						<div class="row">
 							<label class="col-sm-3">총 결제 금액</label>
-							<div id="total-price-box" class="col-sm-8 text-right"><fmt:formatNumber value="${info.receiptInfo.price + info.receiptInfo.discountedPrice}" pattern="#,###"/></div>
+ 							<div id="total-price-box" class="col-sm-8 text-right"><fmt:formatNumber value="${info.receiptInfo.price + info.receiptInfo.discountedPrice}" pattern="#,###"/></div>
 						</div>
 					</div>
 					

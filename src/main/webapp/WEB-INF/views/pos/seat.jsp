@@ -68,8 +68,15 @@
 	            	seatId += $(this).attr("id").replace("seat-no-", "") + ",";
             	});
             	
-            	$("#hidden-seatId").val(seatId);
-            	$(this).closest("form").submit();
+            	var ableSelectSeat = parseInt($("#able-select-seat").text());
+            	if(seatId == "") {
+            		alert("좌석을 선택해 주세요.");
+            	} else if(ableSelectSeat != getSelectedSeat().split(" ").length - 1) {
+            		alert("총 " + ableSelectSeat + "자리를 선택해야 합니다.");
+            	} else {
+	            	$("#hidden-seatId").val(seatId);
+	            	$(this).closest("form").submit();
+            	}
             });
         });
     </script>

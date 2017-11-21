@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.es.employee.vo.Employee;
 import com.es.financial.vo.CouponCustomer;
 import com.es.management.vo.Customer;
 import com.es.management.vo.CustomerType;
@@ -23,6 +24,7 @@ import com.es.management.vo.Discount;
 import com.es.movie.vo.MovieTimetable;
 import com.es.movie.vo.MovieTranslation;
 import com.es.movie.vo.Seat;
+import com.es.pos.service.LogService;
 import com.es.pos.service.MovieSelectService;
 import com.es.pos.service.PaymentService;
 import com.es.pos.vo.MovieSelectForm;
@@ -34,6 +36,8 @@ import com.es.pos.vo.TicketReceipt;
 @Controller
 public class PaymentController {
 	
+	@Autowired
+	private LogService logService;
 	@Autowired
 	private MovieSelectService movieSelectService;
 	@Autowired
@@ -194,5 +198,22 @@ public class PaymentController {
 		paymentService.sellMovieTicket(tickets, discounts, coupones, receipt);
 		
 		return "redirect:/pos/home.esc";
+	}
+	
+	@PostMapping("/checkemp.esc")
+	@ResponseBody
+	public Map<String, Object> checkemp(String empid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		Employee employee = logService.findEmployeeById(empid, null);
+		if(employee != null) {
+			map.put("success", true);
+			map.put("employee", employee);
+		} else {
+			map.put("success", false);
+			map.put("message", "존재하지 않는 직원 ID입니다.");
+		}
+		
+		return map;
 	}
 }

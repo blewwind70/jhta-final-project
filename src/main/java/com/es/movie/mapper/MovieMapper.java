@@ -59,9 +59,14 @@ public interface MovieMapper {
 	//단순 ID로 MovieTimetable 조회
 	List<MovieTimetable> getMovieTimetableByscreenId(int movieId);
 	
-	// 시간표조회
+	// 시간표조회 // 상영관리 조회
 	List<SelectTimetable> getAllMoviesByDate(Date playDate);
 	
+	//상영관리 날짜별 상영관 조회
+	List<SelectTimetable> getAllScreenNameByDate(Date playDate);
+	
 	MovieTranslation getMovieTranslateByScreenMovieId(int screenMovieId);
+	//온라인/오프라인예매 변경
+	void updateMovieManagement(MovieTimetable movieTimetable);
 		
 }

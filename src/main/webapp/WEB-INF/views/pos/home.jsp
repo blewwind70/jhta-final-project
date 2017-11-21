@@ -81,7 +81,7 @@
             	}
             });
 			
-            // 조회 btn 클릭 Event + 시작시 조회 활성화
+         	// 조회 btn 클릭 Event + 시작시 조회 활성화
             $("#playing-date-btn").on("click", function() {
             	var searchingDate = $playingDate.val();
             	$movieListTbody.empty();
@@ -111,28 +111,28 @@
 			// 가격 Key 좌우 이동 btn 위임 Event
 			$priceKeyBox.on("click", "#move-btn-right", function() {
 				var $hiddenBeforeBtn = $(this).siblings(".btn-before-hide:last");
-				var $hiddenAfterBtn = $(this).siblings(".btn-after-hide:first");
-				
-				if($hiddenAfterBtn.text() && !$hiddenBeforeBtn.text()) {
-					$(this).siblings(".price-key-btn:first").addClass("btn-before-hide");
-					$hiddenAfterBtn.removeClass("btn-after-hide");
-				} else if($hiddenAfterBtn.text() && $hiddenBeforeBtn.text()) {
-					$hiddenBeforeBtn.next().addClass("btn-before-hide");
-					$hiddenAfterBtn.removeClass("btn-after-hide");
-				}
+ 				var $hiddenAfterBtn = $(this).siblings(".btn-after-hide:first");
+ 				
+ 				if($hiddenAfterBtn.text() && !$hiddenBeforeBtn.text()) {
+ 					$(this).siblings(".price-key-btn:first").addClass("btn-before-hide");
+ 					$hiddenAfterBtn.removeClass("btn-after-hide");
+ 				} else if($hiddenAfterBtn.text() && $hiddenBeforeBtn.text()) {
+ 					$hiddenBeforeBtn.next().addClass("btn-before-hide");
+ 					$hiddenAfterBtn.removeClass("btn-after-hide");
+ 				}
 			});
 			$priceKeyBox.on("click", "#move-btn-left", function() {
 				var $hiddenAfterBtn = $(this).siblings(".btn-after-hide:first");
 				var $hiddenBeforeBtn = $(this).siblings(".btn-before-hide:last");
 				
 				if($hiddenBeforeBtn.text() && !$hiddenAfterBtn.text()) {
-					$(this).siblings(".price-key-btn:last").addClass("btn-after-hide");
-					$hiddenBeforeBtn.removeClass("btn-before-hide");
+ 					$(this).siblings(".price-key-btn:last").addClass("btn-after-hide");
+ 					$hiddenBeforeBtn.removeClass("btn-before-hide");
 				} else if($hiddenBeforeBtn.text() && $hiddenAfterBtn.text()) {
-					$hiddenAfterBtn.prev().addClass("btn-after-hide");
-					$hiddenBeforeBtn.removeClass("btn-before-hide");
-				}
-			});
+ 					$hiddenAfterBtn.prev().addClass("btn-after-hide");
+ 					$hiddenBeforeBtn.removeClass("btn-before-hide");
+  				}
+  			});
             
             // Movie List tr 위임 Event
             $movieListTbody.on("click", "tr", function() {
@@ -141,6 +141,7 @@
             	$(this).addClass("selected-movie").siblings("tr").removeClass("selected-movie");
             	
             	$timeTableTbody.empty();
+            	$("#hidden-timetableId").val("");
             	
             	$.ajax({
             		type:"GET",
@@ -231,7 +232,7 @@
                 }
 			});
             
-            // 구매 btn Event
+            // 좌석선택 btn Event
             $("#seat-select-btn").on("click", function(e) {
             	e.preventDefault();
             	
@@ -247,6 +248,17 @@
             	
             	$("#hidden-priceKeyId").val(keyIdList);
             	$("#hidden-amount").val(amountList);
+            	
+            	if($("#hidden-movieId").val() == "") {
+            		alert("영화가 선택되지 않았습니다.");
+            		return false;
+            	} else if($("#hidden-timetableId").val() == "") {
+            		alert("관람할 상영시간이 선택되지 않았습니다.");
+            		return false;
+            	} else if(keyIdList == "" || amountList == "") {
+            		alert("관람할 인원이 선택되지 않았습니다.");
+            		return false;
+            	}
             	
             	$(this).closest("form").submit();
             });
@@ -345,10 +357,10 @@
                 <div id="time-table-box" class="border-box">
                     <table id="time-table" class="table table-condensed">
                     	<thead>
-                    		<tr>
-                    			<th>시작시간</th><th>상영관</th><th>잔여석</th>
-                    		</tr>
-                    	</thead>
+                     		<tr>
+                     			<th>시작시간</th><th>상영관</th><th>잔여석</th>
+                     		</tr>
+                     	</thead>
                         <tbody>
 
                         </tbody>

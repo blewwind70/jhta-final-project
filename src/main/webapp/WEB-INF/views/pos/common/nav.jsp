@@ -20,14 +20,17 @@
 					url:"restin.esc",
 					dataType:"json",
 					success:function(result) {
-						
-						var htmlContents = "";
-						htmlContents += "<small class='pull-right'>";
-						htmlContents += "휴식 시작 시간 :";
-						htmlContents += result.restStartedAt;
-						htmlContents += "</small>";
-						
-						$("div#rest-modal-info").append(htmlContents);
+						if(result.success == true) {
+							var htmlContents = "";
+							htmlContents += "<small class='pull-right'>";
+							htmlContents += "휴식 시작 시간 :";
+							htmlContents += result.timetable.restStartedAt;
+							htmlContents += "</small>";
+
+							$("div#rest-modal-info").append(htmlContents);
+						} else {
+							alert(result.message);
+						}
 					}
 				});
 			});
@@ -38,7 +41,11 @@
 					url:"workback.esc",
 					dataType:"json",
 					success:function(result) {
-						alert("휴식을 종료하였습니다. 휴식종료 시간 : " + result.restEndedAt);
+						if(result.success == true) {
+							alert("휴식을 종료하였습니다. 휴식종료 시간 : " + result.timetable.restEndedAt);
+						} else {
+							alert(result.message);
+						}
 					},
 					error:function() {
 						

@@ -71,13 +71,14 @@
 </body>
 <script>
 $(function() {
-	/* $('#btn-excel').click(function(e) {
-		
-		
-		var selectdates = $("#select-dates").val(); 
-		
-		
-	}); */
+	$('#btn-excel').click(function(e) {
+		e.preventDefault();
+		if($("#select-dates").val() == "") {
+			alert("먼저 날짜를 선택하세요.")
+		} else {
+			$(this).closest("form").submit();
+		}
+	})
 	
 	$('#select-dates').on("change", function(){
 		var selectDate = $(this).val()

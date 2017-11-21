@@ -1,9 +1,13 @@
 package com.es.pos.web;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,10 +33,11 @@ public class LoginController {
 	}
 	
 	@PostMapping("/login.esc")
-	public String login(PosLoginForm loginForm, HttpSession session) {
+	public String login(PosLoginForm loginForm, HttpSession session, Model model) {
 		Employee employee = logService.findEmployeeById(loginForm.getEmpId(), loginForm.getEmpPwd());
 		if(employee == null) {
-			throw new RuntimeException("잘못된 사원 ID 혹은 비밀번호입니다.");
+			model.addAttribute("error", "잘못된 ID 혹은 비밀번호입니다.");
+			return "redirect:/pos/login.esc";
 		}
 		
 		PosLoginHistory loginInfo = logService.enrollStartingWork(employee, loginForm.getPosId());
@@ -52,17 +57,43 @@ public class LoginController {
 	
 	@GetMapping("/restin.esc")
 	@ResponseBody
-	public EmployeeTimetable restin(HttpSession session) {
-		EmployeeTimetable timetable = logService.enrollStartingRest((PosLoginHistory) session.getAttribute("LOGIN_INFO"));
+	public Map<String, Object> restin(HttpSession session) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		
-		return timetable;
+		EmployeeTimetable timetable = logService.getEmployeeTimetable((PosLoginHistory) session.getAttribute("LOGIN_INFO"));
+		if(timetable == null) {
+			map.put("success", false);
+			map.put("message", "만료된 세션입니다.");
+		} else if(timetable.getRestStartedAt() != null) {
+			map.put("success", false);
+			map.put("message", "이미 휴식을 다녀온 직원입니다.");
+		} else {
+			timetable = logService.enrollStartingRest(timetable);
+			map.put("success", true);
+			map.put("timetable", timetable);
+		}
+		
+		return map;
 	}
 	
 	@GetMapping("/workback.esc")
 	@ResponseBody
-	public EmployeeTimetable workingbakc(HttpSession session) {
-		EmployeeTimetable timetable = logService.enrollFinishingRest((PosLoginHistory) session.getAttribute("LOGIN_INFO"));
+	public Map<String, Object> workingbakc(HttpSession session) {
+		Map<String, Object> map = new HashMap<String, Object>();
 		
-		return timetable;
+		EmployeeTimetable timetable = logService.getEmployeeTimetable((PosLoginHistory) session.getAttribute("LOGIN_INFO"));
+		if(timetable == null) {
+			map.put("success", false);
+			map.put("message", "만료된 세션입니다.");
+		} else if(timetable.getRestStartedAt() != null) {
+			map.put("success", false);
+			map.put("message", "잘못된 접근입니다.");
+		} else {
+			timetable = logService.enrollFinishingRest(timetable);
+			map.put("success", true);
+			map.put("timetable", timetable);
+		}
+		
+		return map;
 	}
 }

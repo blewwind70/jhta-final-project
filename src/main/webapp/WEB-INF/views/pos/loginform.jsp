@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" isErrorPage="true"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,6 +10,15 @@
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		$(function() {
+			var error = $("div.alert span").text();
+			
+			if(error != "") {
+				$("div.alert").slideDown();
+			}
+		});
+	</script>
 	<style>       
         .btn-boots {
             color: #fff;
@@ -16,6 +26,14 @@
             background-repeat: repeat-x;
             border-color: #885dc0;
             background-color: #6a5dc0;
+        }
+        .alert-danger {
+        	padding-top: 15px;
+        	top: 0px;
+        	position: fixed;
+        	width: 2000px;
+        	height: 70px;
+        	font-size: 25px;
         }
         .container {
             margin-top: 250px;
@@ -37,7 +55,12 @@
     </style>
 </head>
 <body>
+   	<div class="alert alert-danger text-center" style="display:none;">
+   		<strong>WARNING!</strong> <span>${param.error }</span>
+   	</div>
+   	
     <div class="container well">
+    
         <div id="image-box" class="row">
             <img src="/resources/images/pos/cinema.jpg" style="width: 990px; height: 280px;"/>
         </div>

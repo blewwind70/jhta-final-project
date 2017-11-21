@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.es.movie.vo.MovieTimetable;
+
 public class TimetableForm {
 	
 	private String dates;
@@ -13,7 +15,19 @@ public class TimetableForm {
 	private Integer screen3;
 	private Integer screen4;
 	private Map<Integer, List<Timetable>> tables = new HashMap<Integer, List<Timetable>>();
-
+	
+	private List<MovieTimetable> timetableList;
+	public void setTimetableList(List<MovieTimetable> timetableList) {
+		timetableList.add(new MovieTimetable());
+		this.timetableList = timetableList;
+	}
+	
+	public List<MovieTimetable> getTimetableList() {
+		return timetableList;
+	}
+	
+	
+	
 	public TimetableForm() {
 		for (int i=1; i<=4; i++) {
 			List<Timetable> list = new ArrayList<Timetable>();

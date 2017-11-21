@@ -43,6 +43,8 @@ public class TimetableInfoController {
 
 	@PostMapping("/exceldownload.esc")
 	public ModelAndView timetableExcel(Date date) {
+		
+		
 		ModelAndView mav = new ModelAndView();
 		List<SelectTimetable> selectTimetables = new ArrayList<SelectTimetable>();
 		selectTimetables = timeTableInfoService.getAllMoviesByDate(date);

@@ -44,5 +44,6 @@ public interface EmployeeMapper {
 	void updateManagement(EmployeeTimetable timetable);
 	void insertManagement(EmployeeTimetable timetable);
 	
-	Employee getEmployeeByIdentifier(long empId);
+	// id, password 이름으로 2개 담기
+	Employee getEmployeeByIdentifier(Map<String, Object> map);
 }

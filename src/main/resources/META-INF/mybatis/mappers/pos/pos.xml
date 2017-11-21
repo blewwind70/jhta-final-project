@@ -33,6 +33,8 @@
 			,started_at			startedAt
 			,ended_at			endedAt
 			,employee_id		"employee.id"
+			,rest_started_at	restStartedAt
+			,rest_ended_at		restEndedAt
 		from employee_timetable
 		where to_char(started_at, 'yyyy-mm-dd') = to_char(#{signedIn}, 'yyyy-mm-dd')
 		and employee_id = #{employee.id}

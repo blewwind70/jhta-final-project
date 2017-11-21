@@ -29,7 +29,7 @@ public class PosController {
 
 	@RequestMapping("/home.esc")
 	public String movieSelect() {
-		return "main";
+		return "home";
 	}
 	
 	@GetMapping("/pricekey.esc")
@@ -85,7 +85,7 @@ public class PosController {
 		
 		for(Ticket forTicket : allTicket) {
 			for(Seat forSeat : allSeat) {
-				if(forTicket.getSeat().getId() == forSeat.getId()) {
+				if(forTicket.getSeat().getId().intValue() == forSeat.getId().intValue()) {
 					forSeat.setStatus("R");
 				}
 			}

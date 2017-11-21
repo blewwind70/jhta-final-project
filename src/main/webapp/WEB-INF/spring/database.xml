@@ -20,7 +20,7 @@
 	</bean>
 	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.es.employee.mapper,com.es.financial.mapper,com.es.management.mapper,com.es.movie.mapper,com.es.pos.mapper"/>
+		<property name="basePackage" value="com.es.employee.mapper,com.es.financial.mapper,com.es.management.mapper,com.es.movie.mapper,com.es.pos.mapper,com.es.common.mapper"/>
 		<property name="sqlSessionFactoryBeanName" value="sqlSession"/>
 	</bean>
 </beans>

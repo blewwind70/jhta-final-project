@@ -260,7 +260,7 @@
 		 	and to_char(#{value}, 'YYYYMMDD') = to_char(T.started_at, 'YYYYMMDD')
 	</select>
 	
-	<select id="getEmployeeByIdentifier" parameterType="long" resultType="Employee">
+	<select id="getEmployeeByIdentifier" parameterType="hashmap" resultType="Employee">
 		select 
 			id
 			,name
@@ -274,7 +274,14 @@
 			,dismissed_at				dismissedAt
 			,birth						birth	
 		from employees
-		where to_char(birth, 'yymmdd') || replace(substr(phone, 4), '-', '') = #{value}
+		<where>
+			<if test="id != null">
+				and job_type || id || to_char(hired_at, 'yymmdd') = #{id}
+			</if>
+			<if test="password != null">
+				and to_char(birth, 'yymmdd') || replace(substr(phone, 4), '-', '') = #{password}
+			</if>
+		</where>
 	</select>
 	
 	<update id="updateTimetable" parameterType="EmployeeTimetable">

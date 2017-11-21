@@ -1,6 +1,8 @@
 package com.es.pos.service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,15 +23,14 @@ public class LogServiceImpl implements LogService {
 	private PosMapper posMapper;
 	
 	@Override
-	public Employee findEmployeeById(long id, long pwd) {
-		Employee employee = employeeMapper.getEmployeeByIdentifier(id);
+	public Employee findEmployeeById(String id, Long pwd) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("id", id);
+		map.put("password", pwd);
+		
+		Employee employee = employeeMapper.getEmployeeByIdentifier(map);
 		if(employee == null) {
 			return null;
-		}
-		
-		long noMinusPhone = Long.parseLong(employee.getPhone().replaceAll("-", ""));
-		if(noMinusPhone != pwd) {
-			return null;		
 		}
 		
 		return employee;
@@ -77,17 +78,12 @@ public class LogServiceImpl implements LogService {
 	}
 	
 	@Override
-	public EmployeeTimetable enrollStartingRest(PosLoginHistory loginHistory) {
-		EmployeeTimetable timetable = posMapper.getEmployeeTimetableByPosHistory(loginHistory);
-		
-		if(timetable == null) {
-			throw new RuntimeException("만료된 세션입니다.");
-		}
-		
-		if(timetable.getRestStartedAt() != null) {
-			throw new RuntimeException("이미 휴식을 완료했습니다.");
-		}
-		
+	public EmployeeTimetable getEmployeeTimetable(PosLoginHistory loginHistory) {
+		return posMapper.getEmployeeTimetableByPosHistory(loginHistory);
+	}
+	
+	@Override
+	public EmployeeTimetable enrollStartingRest(EmployeeTimetable timetable) {
 		Date now = new Date();
 		timetable.setRestStartedAt(now);
 		
@@ -96,17 +92,7 @@ public class LogServiceImpl implements LogService {
 	}
 
 	@Override
-	public EmployeeTimetable enrollFinishingRest(PosLoginHistory loginHistory) {
-		EmployeeTimetable timetable = posMapper.getEmployeeTimetableByPosHistory(loginHistory);
-		
-		if(timetable == null) {
-			throw new RuntimeException("만료된 세션입니다.");
-		}
-		
-		if(timetable.getRestStartedAt() != null) {
-			throw new RuntimeException("잘못된 접근입니다.");
-		}
-		
+	public EmployeeTimetable enrollFinishingRest(EmployeeTimetable timetable) {
 		Date now = new Date();
 		timetable.setRestEndedAt(now);
 		

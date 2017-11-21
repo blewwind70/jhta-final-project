@@ -26,7 +26,7 @@
 	    border: 3px solid silver;
 	}
 	div.outer-box {
-		background-image: linear-gradient(to bottom,#DCDCDC 0,#C0C0C0 100%);
-	    background-repeat: repeat-x;
-	}
+ 		background-image: linear-gradient(to bottom,#DCDCDC 0,#C0C0C0 100%);
+ 	    background-repeat: repeat-x;
+ 	}
 </style>
